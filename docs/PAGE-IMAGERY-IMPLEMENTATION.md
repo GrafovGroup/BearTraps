@@ -16,7 +16,10 @@ All 12 selected originals and their contact sheet were visually inspected. SHA-2
 - The cloud workflow checks original/source uniqueness, output hashes, and exactly one placement per image in exported HTML.
 - Browser verification loads each image on all 11 pages at 1440px and 320px, checks alt text, decoding and horizontal overflow, and captures screenshots.
 - Existing browser, accessibility, unit and synthetic product/contact checks remain enabled.
-- Cloud results and release review are pending at this initial implementation commit.
+- Both jobs passed in [cloud run 38296058442](https://github.com/GrafovGroup/BearTraps/actions/runs/38296058442) for implementation commit `bfbce257f4356c099548228f7e14a92832c05317`: install, audit under the existing time-limited lint exception, lint, TypeScript, unit tests, PHP checks, catalogue validation, export, image checks, Chromium/Firefox/WebKit workflows, axe scans and the isolated product/contact job.
+- All 12 images decoded on their assigned pages at 1440px and 320px; no horizontal overflow. Desktop/mobile contact sheets and the full homepage screenshot were visually inspected. The dedicated homepage imagery snapshot catches the lower wildlife section while the normal desktop screenshot verifies the hero.
+- The downloaded static ZIP and all 139 manifest file hashes matched. ZIP SHA-256: `156b38bf928d679ca07f6d79bc7d7b8ff49e011ffd60971f6ade8f6914b37960`.
+- [WHC package and manifest](https://github.com/GrafovGroup/BearTraps/actions/runs/38296058442/artifacts/11767868173); [browser evidence](https://github.com/GrafovGroup/BearTraps/actions/runs/38296058442/artifacts/11768077951). Artifacts expire October 26, 2026. Subsequent documentation-only commits do not change the tested deployment package.
 
 ## Operating state
 
