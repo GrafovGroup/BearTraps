@@ -27,11 +27,11 @@ export function contactDelivery(
         credentials: "omit",
         redirect: "error",
       });
-      if (!response.ok)
+      if (response.status !== 202)
         throw new Error(
           response.status === 429
             ? "Too many attempts. Please wait before retrying."
-            : "Delivery was not confirmed. Keep your contact download and retry later.",
+            : "Delivery was not confirmed. Retry or email info@beartraps.ca directly.",
         );
       return receiptSchema.parse(await response.json());
     },

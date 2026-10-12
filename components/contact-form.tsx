@@ -119,10 +119,11 @@ export default function ContactForm() {
               key={String(key)}
               htmlFor={`contact-${key}`}
             >
-              <span>{label}</span>
+              <span id={`label-${key}`}>{label}</span>
               <input
                 id={`contact-${key}`}
                 name={String(key)}
+                aria-labelledby={`label-${key}`}
                 type={String(type)}
                 required={Boolean(required)}
                 maxLength={Number(max)}
@@ -144,10 +145,11 @@ export default function ContactForm() {
             </label>
           ))}
           <label className="field" htmlFor="contact-message">
-            <span>MESSAGE</span>
+            <span id="label-message">MESSAGE</span>
             <textarea
               id="contact-message"
               name="message"
+              aria-labelledby="label-message"
               rows={6}
               maxLength={3000}
               required
