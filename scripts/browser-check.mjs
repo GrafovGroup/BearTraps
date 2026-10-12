@@ -27,7 +27,8 @@ try {
   ]) {
     const browser = await type.launch();
     try {
-      const page = await browser.newPage();
+      const context = await browser.newContext();
+      const page = await context.newPage();
       const failures = [];
       page.on("pageerror", (e) => failures.push(e.message));
       for (const [name, width] of [
