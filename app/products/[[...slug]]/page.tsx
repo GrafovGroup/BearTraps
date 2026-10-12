@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { publishedProducts, siteUrl } from "@/lib/catalog";
+import { categories, publishedProducts, siteUrl } from "@/lib/catalog";
 import { productStructuredData } from "@/lib/product-schema";
 import { Breadcrumb } from "@/components/site";
 import CatalogueBrowser from "@/components/catalogue/catalogue-browser";
 import {
+  ProductLogistics,
   SpecificationTable,
   TechnicalDocuments,
   ComplianceNotice,
@@ -68,9 +69,18 @@ export default async function ProductRoute({
   const p = publishedProducts.find((p) => p.slug === slug[0]);
   if (!p) notFound();
   const schema = productStructuredData(p, siteUrl);
+  const category = categories.find((c) => c.slug === p.category)!;
   return (
     <section className="section product-detail">
-      <Breadcrumb title={p.title} />
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">HOME</Link>
+        <span>/</span>
+        <Link href="/products/">EQUIPMENT</Link>
+        <span>/</span>
+        <Link href={`/${p.category}/`}>{category.short.toUpperCase()}</Link>
+        <span>/</span>
+        <span aria-current="page">{p.title}</span>
+      </nav>
       <p className="eyebrow">
         {p.manufacturer} / {p.model} / {p.sku}
       </p>
@@ -93,6 +103,7 @@ export default async function ProductRoute({
           ASK ABOUT THIS PRODUCT ↗
         </Link>
       </div>
+      <ProductLogistics product={p} />
       <TechnicalDocuments product={p} />
       <ComplianceNotice product={p} />
       <RelatedAccessories
@@ -104,7 +115,23 @@ export default async function ProductRoute({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+            __html: JSON.stringify([
+              schema,
+              {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  { name: "Home", item: siteUrl + "/" },
+                  { name: "Equipment", item: siteUrl + "/products/" },
+                  { name: category.title, item: `${siteUrl}/${p.category}/` },
+                  { name: p.title, item: `${siteUrl}/products/${p.slug}/` },
+                ].map((item, i) => ({
+                  "@type": "ListItem",
+                  position: i + 1,
+                  ...item,
+                })),
+              },
+            ]).replace(/</g, "\\u003c"),
           }}
         />
       )}

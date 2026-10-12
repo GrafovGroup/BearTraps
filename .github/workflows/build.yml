@@ -50,13 +50,40 @@ jobs:
           retention-days: 14
       - name: Package WHC upload
         run: cd out && zip -r ../beartraps-whc.zip .
+      - run: pnpm run release:manifest
+        env:
+          RELEASE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/upload-artifact@v4
         with:
           name: beartraps-whc
-          path: beartraps-whc.zip
+          path: |
+            beartraps-whc.zip
+            release-manifest.json
           retention-days: 14
       - uses: actions/upload-artifact@v4
         with:
           name: whc-contact-bridge-disabled
           path: integrations/whc/contact.php
           retention-days: 14
+  product-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CATALOGUE_FIXTURE_BUILD: "true"
+      NEXT_PUBLIC_CONTACT_ENDPOINT: https://contact.example.invalid/receive
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+          run_install: false
+      - run: pnpm install --frozen-lockfile
+      - run: node --experimental-strip-types scripts/prepare-test-catalogue.ts
+      - run: pnpm run build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: node scripts/product-browser-check.mjs
+      # This job never packages, uploads artifacts or deploys its synthetic catalogue.

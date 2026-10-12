@@ -61,6 +61,9 @@ export default function CatalogueBrowser({
       publishedProducts.map((p) => [p.supplier.id, p.supplier]),
     ).values(),
   ];
+  const manufacturers = [
+    ...new Set(publishedProducts.map((p) => p.manufacturer)),
+  ].sort();
   const features = [...new Set(publishedProducts.flatMap((p) => p.features))];
   const count = populated ? results.length : sourcing.length;
   const select = (
@@ -69,8 +72,9 @@ export default function CatalogueBrowser({
     options: { value: string; label: string }[],
   ) => (
     <label className="field">
-      <span>{label}</span>
+      <span id={`${id}-${key}-label`}>{label}</span>
       <select
+        aria-labelledby={`${id}-${key}-label`}
         value={filters[key]}
         onChange={(e) => update(key, e.target.value)}
       >
@@ -129,6 +133,11 @@ export default function CatalogueBrowser({
                 suppliers.map((s) => ({ value: s.id, label: s.name })),
               )}
               {select(
+                "manufacturer",
+                "MANUFACTURER",
+                manufacturers.map((m) => ({ value: m, label: m })),
+              )}
+              {select(
                 "feature",
                 "FEATURE",
                 features.map((s) => ({ value: s, label: s })),
@@ -176,8 +185,11 @@ export default function CatalogueBrowser({
                 No matches for these filters. Adjust your search or contact our
                 team about your sourcing requirements.
               </p>
-              <Link className="button amber" href="/contact/">
-                CONTACT US ↗
+              <Link
+                className="button amber"
+                href={`/contact/?interest=${encodeURIComponent((filters.query || categories.find((c) => c.slug === filters.category)?.title || "Equipment sourcing").slice(0, 200))}`}
+              >
+                DISCUSS SOURCING ↗
               </Link>
             </div>
           )}

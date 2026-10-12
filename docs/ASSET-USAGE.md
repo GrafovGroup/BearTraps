@@ -7,7 +7,7 @@
 
 There are no stock photographs, fallback photos or category image mappings. The technical drawing is conceptual, not a photograph or a model specification. It makes no completed-project or inventory claim. The brand mark is identity, not content photography. Future separate image placements require distinct originals.
 
-Exact content-image reuse within this implementation: one content image, one placement. Portfolio-wide visual duplicate verification has not been completed; prior-site asset inventories were not audited. Check those inventories before publishing image changes. Phase 1B is deployed; this Phase 1C logo update is not yet deployed.
+Exact content-image reuse within this implementation: one content image, one placement. Portfolio-wide visual duplicate verification has not been completed; prior-site asset inventories were not audited. Check those inventories before publishing image changes. The owner-selected logo was deployed with Phase 1D on October 12, 2026; see DEPLOYMENT-PHASE-1D-2026-10-12.md. No additional content imagery was introduced.
 
 ## Phase 1B
 

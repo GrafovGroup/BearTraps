@@ -4,6 +4,7 @@ export type CatalogFilters = {
   category: string;
   application: string;
   supplier: string;
+  manufacturer: string;
   feature: string;
   maxWidthMm: string;
   sort: "relevance" | "title-asc" | "title-desc";
@@ -13,6 +14,7 @@ export const defaultFilters: CatalogFilters = {
   category: "",
   application: "",
   supplier: "",
+  manufacturer: "",
   feature: "",
   maxWidthMm: "",
   sort: "relevance",
@@ -41,6 +43,7 @@ export function filterProducts(records: Product[], f: CatalogFilters) {
         (!f.category || p.category === f.category) &&
         (!f.application || p.applications.includes(f.application)) &&
         (!f.supplier || p.supplier.id === f.supplier) &&
+        (!f.manufacturer || p.manufacturer === f.manufacturer) &&
         (!f.feature || p.features.includes(f.feature)) &&
         (!f.maxWidthMm ||
           (p.dimensions !== null &&

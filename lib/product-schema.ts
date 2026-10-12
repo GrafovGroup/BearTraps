@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { categoryIds } from "./categories.ts";
+import { categories, categoryIds } from "./categories.ts";
 import { provinces } from "./geography.ts";
 const text = z.string().trim().min(1).max(2000);
 const url = z
@@ -9,7 +9,13 @@ const url = z
 const proof = z.object({
   url,
   reviewedBy: text,
-  reviewedAt: z.string().datetime(),
+  reviewedAt: z
+    .string()
+    .datetime()
+    .refine(
+      (v) => Date.parse(v) <= Date.now(),
+      "Evidence review cannot be in the future",
+    ),
 });
 export const productSchema = z.object({
   id: text,
@@ -70,6 +76,7 @@ export const productSchema = z.object({
       title: text,
       url,
       kind: z.enum(["manual", "specification", "evidence"]),
+      model: text,
       evidence: proof,
     }),
   ),
@@ -92,6 +99,11 @@ export const productSchema = z.object({
   certificationsEvidence: z.array(
     z.object({ claim: text, scope: text, evidence: proof }),
   ),
+  compatibilityEvidence: z
+    .array(
+      z.object({ accessorySlug: text, accessoryModel: text, evidence: proof }),
+    )
+    .default([]),
   relatedProducts: z.array(text),
   relatedAccessories: z.array(text),
 });
@@ -126,13 +138,34 @@ export function validateCatalog(input: unknown): Product[] {
     )
       throw new Error(`Unverified publication: ${p.slug}`);
     if (
-      /certified|bear-resistant|humane/i.test(p.title + " " + p.summary) &&
+      /certified|bear-resistant|humane/i.test(
+        [
+          p.title,
+          p.summary,
+          ...p.features,
+          ...Object.values(p.specifications),
+          ...p.variants.flatMap((v) => [
+            v.label,
+            ...Object.values(v.specifications),
+          ]),
+        ].join(" "),
+      ) &&
       p.certificationsEvidence.length === 0
     )
       throw new Error(`Unsupported performance claim: ${p.slug}`);
     for (const claim of p.certificationsEvidence)
       if (claim.scope !== p.model)
         throw new Error(`Evidence scope must match the exact model: ${p.slug}`);
+    if (
+      categories.find((c) => c.slug === p.category)?.regulated &&
+      p.regulatoryClassification !== "regulated"
+    )
+      throw Error(
+        `Regulated category cannot be classified as general: ${p.slug}`,
+      );
+    for (const document of p.documents)
+      if (document.model !== p.model)
+        throw Error(`Document scope must match the exact model: ${p.slug}`);
     const provincesSeen = new Set<string>();
     for (const j of p.jurisdictions) {
       if (provincesSeen.has(j.province))
@@ -152,6 +185,25 @@ export function validateCatalog(input: unknown): Product[] {
     for (const ref of [...p.relatedProducts, ...p.relatedAccessories])
       if (ref === p.slug || !slugs.has(ref))
         throw new Error(`Broken relationship: ${p.slug} -> ${ref}`);
+  for (const p of records) {
+    const seen = new Set<string>();
+    for (const proof of p.compatibilityEvidence) {
+      const accessory = records.find((a) => a.slug === proof.accessorySlug);
+      if (
+        seen.has(proof.accessorySlug) ||
+        !p.relatedAccessories.includes(proof.accessorySlug) ||
+        !accessory ||
+        proof.accessoryModel !== accessory.model
+      )
+        throw Error(`Invalid compatibility evidence: ${p.slug}`);
+      seen.add(proof.accessorySlug);
+    }
+    for (const slug of p.relatedAccessories)
+      if (!seen.has(slug))
+        throw Error(
+          `Missing exact-model compatibility evidence: ${p.slug} -> ${slug}`,
+        );
+  }
   return records;
 }
 export function productStructuredData(p: Product, siteUrl: string) {
@@ -166,5 +218,18 @@ export function productStructuredData(p: Product, siteUrl: string) {
     model: p.model,
     manufacturer: { "@type": "Organization", name: p.manufacturer },
     url: `${siteUrl}/products/${p.slug}/`,
+    category: categories.find((c) => c.slug === p.category)?.title,
+    additionalProperty: Object.entries(p.specifications).map(
+      ([name, value]) => ({ "@type": "PropertyValue", name, value }),
+    ),
+    ...(p.weightKg !== null
+      ? {
+          weight: {
+            "@type": "QuantitativeValue",
+            value: p.weightKg,
+            unitCode: "KGM",
+          },
+        }
+      : {}),
   };
 }

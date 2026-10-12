@@ -11,7 +11,9 @@
     "test": "node --experimental-strip-types --test lib/*.test.ts tests/*.test.ts",
     "test:browser": "node scripts/browser-check.mjs",
     "check:catalogue": "node --experimental-strip-types scripts/check-catalogue.ts",
-    "import:catalogue": "node --experimental-strip-types scripts/import-catalogue.ts"
+    "import:catalogue": "node --experimental-strip-types scripts/import-catalogue.ts",
+    "catalogue:digests": "node --experimental-strip-types scripts/catalogue-digests.ts",
+    "release:manifest": "node scripts/release-manifest.mjs"
   },
   "dependencies": {
     "next": "16.3.8",
