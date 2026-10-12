@@ -54,7 +54,7 @@ try {
   await quantities.first().fill("3");
   await page.reload();
   await page.getByRole("button", { name: "DOWNLOAD YOUR RFQ" }).click();
-  await page.getByRole("alert").waitFor();
+  await page.getByRole("alert").filter({ hasText: "Review your request" }).waitFor();
   await page.getByLabel("CONTACT NAME").fill("QA Buyer");
   await page
     .getByLabel("ORGANIZATION", { exact: false })
