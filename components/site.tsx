@@ -25,7 +25,7 @@ export function Header() {
     <>
       <div className="utility">
         <span>EQUIPMENT FOR CANADA’S WILD PLACES</span>
-        <a href="tel:+18336969996">(833) 696-9996 ↗</a>
+        <a href="mailto:info@beartraps.ca">EMAIL OUR TEAM ↗</a>
       </div>
       <header>
         <Brand />
@@ -35,8 +35,8 @@ export function Header() {
           <Link href="/industries">INDUSTRIES</Link>
           <Link href="/about">ABOUT</Link>
         </nav>
-        <Link className="button amber header-quote" href="/request-quote">
-          REQUEST A QUOTE <span>↗</span>
+        <Link className="button amber header-quote" href="/contact/">
+          CONTACT US <span>↗</span>
         </Link>
         <details className="mobile-nav">
           <summary>MENU</summary>
@@ -45,7 +45,7 @@ export function Header() {
             <Link href="/government-procurement">PROCUREMENT</Link>
             <Link href="/industries">INDUSTRIES</Link>
             <Link href="/about">ABOUT</Link>
-            <Link href="/request-quote">REQUEST A QUOTE</Link>
+            <Link href="/contact/">CONTACT US</Link>
           </nav>
         </details>
       </header>
@@ -62,7 +62,7 @@ export function Footer() {
           <br />
           Trusted for the job.
         </p>
-        <a href="tel:+18336969996">(833) 696-9996 ↗</a>
+        <a href="mailto:info@beartraps.ca">EMAIL OUR TEAM ↗</a>
       </div>
       <div className="footer-links">
         <span>© {new Date().getFullYear()} BEARTRAPS.CA</span>
@@ -95,8 +95,8 @@ export function CTA() {
           Our starting point.
         </h2>
       </div>
-      <Link className="button dark" href="/request-quote">
-        BUILD YOUR RFQ <span>↗</span>
+      <Link className="button dark" href="/contact/">
+        CONTACT US <span>↗</span>
       </Link>
     </section>
   );

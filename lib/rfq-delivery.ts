@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { quoteSchema, type Quote } from "./quote.ts";
-export const receiptSchema = z.object({
+const receiptSchema = z.object({
   status: z.literal("accepted"),
-  reference: z.string().regex(/^[A-Za-z0-9_-]{1,100}$/),
+  reference: z.string().min(1).max(100),
   acceptedAt: z.string().datetime(),
 });
 export type Receipt = z.infer<typeof receiptSchema>;

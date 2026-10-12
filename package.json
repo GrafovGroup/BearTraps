@@ -14,7 +14,7 @@
     "import:catalogue": "node --experimental-strip-types scripts/import-catalogue.ts"
   },
   "dependencies": {
-    "next": "16.3.4",
+    "next": "16.3.8",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "zod": "3.25.76"
@@ -25,7 +25,7 @@
     "@types/react-dom": "19.2.3",
     "typescript": "5.9.3",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.3.4",
+    "eslint-config-next": "16.3.8",
     "tailwindcss": "4.2.1",
     "@tailwindcss/postcss": "4.2.1",
     "playwright": "1.56.1",

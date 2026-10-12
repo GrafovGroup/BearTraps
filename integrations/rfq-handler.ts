@@ -1,6 +1,6 @@
 // Framework-neutral server contract for a separately deployed service. Not a Next route.
 import { quoteSchema, type Quote } from "../lib/quote.ts";
-import { receiptSchema, type Receipt } from "../lib/rfq-delivery.ts";
+import type { Receipt } from "../lib/rfq-delivery.ts";
 export type BackendDependencies = {
   allowedOrigins: string[];
   allowRequest: (request: Request) => Promise<boolean>;
@@ -11,36 +11,13 @@ export async function handleRfq(
   request: Request,
   deps: BackendDependencies,
 ): Promise<Response> {
-  const origin = request.headers.get("origin") || "";
-  const allowed = deps.allowedOrigins.includes(origin);
-  const headers: Record<string, string> = {
-    "Cache-Control": "no-store",
-    Vary: "Origin",
-  };
-  if (allowed) headers["Access-Control-Allow-Origin"] = origin;
   const respond = (body: unknown, status: number) =>
-    Response.json(body, { status, headers });
-  if (!allowed) return respond({ error: "Origin not allowed" }, 403);
-  if (request.method === "OPTIONS") {
-    if (request.headers.get("access-control-request-method") !== "POST")
-      return respond({ error: "Method not allowed" }, 405);
-    return new Response(null, {
-      status: 204,
-      headers: {
-        ...headers,
-        "Access-Control-Allow-Methods": "POST",
-        "Access-Control-Allow-Headers": "Content-Type, Idempotency-Key",
-      },
-    });
-  }
+    Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
   if (request.method !== "POST")
     return respond({ error: "Method not allowed" }, 405);
   if (!deps.allowedOrigins.includes(request.headers.get("origin") || ""))
     return respond({ error: "Origin not allowed" }, 403);
-  if (
-    request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !==
-    "application/json"
-  )
+  if (!request.headers.get("content-type")?.startsWith("application/json"))
     return respond({ error: "Expected JSON" }, 415);
   const key = request.headers.get("idempotency-key") || "";
   if (!/^[a-f0-9-]{36}$/i.test(key))
@@ -77,35 +54,17 @@ export async function handleRfq(
     if (!(await deps.verifySpam(request, raw)))
       return respond({ error: "Request could not be verified" }, 403);
     const receipt = await deps.acceptDurably(result.data, key);
-    const verified = receiptSchema.safeParse(receipt);
-    if (!verified.success)
+    if (
+      receipt.status !== "accepted" ||
+      !receipt.reference ||
+      Number.isNaN(Date.parse(receipt.acceptedAt))
+    )
       return respond({ error: "Acceptance was not confirmed" }, 502);
-    return respond(verified.data, 202);
+    return respond(receipt, 202);
   } catch {
     return respond(
       { error: "Unable to confirm receipt. Keep your RFQ and retry later." },
       503,
     );
   }
-}
-
-// Use this entry point for the private upstream behind the WHC bridge.
-export async function handleAuthenticatedRfq(
-  request: Request,
-  deps: BackendDependencies,
-  secret: string,
-): Promise<Response> {
-  const { timingSafeEqual } = await import("node:crypto");
-  const supplied = request.headers.get("authorization") || "";
-  const expected = `Bearer ${secret}`;
-  if (
-    secret.length < 32 ||
-    Buffer.byteLength(supplied) !== Buffer.byteLength(expected) ||
-    !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))
-  )
-    return Response.json(
-      { error: "Unauthorized" },
-      { status: 401, headers: { "Cache-Control": "no-store" } },
-    );
-  return handleRfq(request, deps);
 }

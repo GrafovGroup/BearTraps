@@ -1,28 +1,21 @@
-import QuoteForm from "@/components/quote-form";
-import { Breadcrumb } from "@/components/site";
+import Link from "next/link";
+import LegacyContactRedirect from "@/components/legacy-contact-redirect";
 export const metadata = {
-  title: "Build your equipment RFQ",
-  description:
-    "Prepare a multi-category equipment request with quantities, delivery details and tender requirements.",
-  alternates: { canonical: "/request-quote" },
+  title: "Contact our team",
+  robots: { index: false, follow: true },
+  alternates: { canonical: "/contact/" },
 };
-export default function QuotePage() {
+export default function LegacyPage() {
   return (
-    <>
-      <div className="page-intro">
-        <Breadcrumb title="Request a quote" />
-        <p className="eyebrow">YOUR EQUIPMENT / YOUR REQUIREMENTS</p>
-        <h1>
-          Build a better
-          <br />
-          equipment request.
-        </h1>
-        <p className="large-copy">
-          Select equipment categories, add your specifications and download your
-          RFQ. The download stays on your device; it does not submit an enquiry.
-        </p>
-      </div>
-      <QuoteForm />
-    </>
+    <section className="section">
+      <h1>Contact our team</h1>
+      <p>
+        Discuss equipment, quotations and procurement directly with our team.
+      </p>
+      <Link className="button amber" href="/contact/">
+        CONTACT US ↗
+      </Link>
+      <LegacyContactRedirect />
+    </section>
   );
 }

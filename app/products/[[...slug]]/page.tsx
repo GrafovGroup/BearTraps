@@ -10,7 +10,8 @@ import {
   ComplianceNotice,
   RelatedAccessories,
 } from "@/components/catalogue/product-components";
-import ProductSelection from "@/components/product-selection";
+import Link from "next/link";
+import { productContactHref } from "@/lib/contact";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return [{ slug: [] }, ...publishedProducts.map((p) => ({ slug: [p.slug] }))];
@@ -88,7 +89,9 @@ export default async function ProductRoute({
       </div>
       <div className="split">
         <SpecificationTable product={p} />
-        <ProductSelection product={p} />
+        <Link className="button amber" href={productContactHref(p)}>
+          ASK ABOUT THIS PRODUCT ↗
+        </Link>
       </div>
       <TechnicalDocuments product={p} />
       <ComplianceNotice product={p} />

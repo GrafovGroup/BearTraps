@@ -96,8 +96,8 @@ export default function CatalogueBrowser({
         </div>
         <p>
           {populated
-            ? "Search verified product records and build an RFQ."
-            : "Browse sourcing categories. Exact products, supplier availability and compatibility are confirmed through your RFQ."}
+            ? "Search verified specifications and contact our team about a product."
+            : "Browse sourcing categories. Exact products, supplier availability and compatibility are confirmed in conversation with our team."}
         </p>
       </div>
       <div className="catalogue-layout">
@@ -173,11 +173,11 @@ export default function CatalogueBrowser({
             <div className="empty-results">
               <h3>Describe what you need.</h3>
               <p>
-                No matches for these filters. Adjust your search or add a custom
-                sourcing line to your RFQ.
+                No matches for these filters. Adjust your search or contact our
+                team about your sourcing requirements.
               </p>
-              <Link className="button amber" href="/request-quote/">
-                REQUEST CUSTOM SOURCING ↗
+              <Link className="button amber" href="/contact/">
+                CONTACT US ↗
               </Link>
             </div>
           )}

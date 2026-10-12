@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../integrations/whc/rfq.php';
+require __DIR__ . '/../integrations/whc/contact.php';
 function check(bool $condition): void { if (!$condition) throw new RuntimeException('Bridge assertion failed'); }
 check(bridgeReceipt(['status'=>'accepted','reference'=>'RFQ-123','acceptedAt'=>'2026-10-12T00:00:00.000Z']));
 check(!bridgeReceipt(['status'=>'sent','reference'=>'RFQ-123','acceptedAt'=>'2026-10-12T00:00:00Z']));

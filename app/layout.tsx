@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               "@type": "Organization",
               name: "BEARTRAPS.CA",
               url: siteUrl,
-              telephone: "+18336969996",
+              email: "info@beartraps.ca",
             }),
           }}
         />

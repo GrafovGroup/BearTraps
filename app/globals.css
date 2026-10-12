@@ -1375,3 +1375,10 @@ button:disabled {
   max-width: 75ch;
   line-height: 1.7;
 }
+
+.contact-form-section { max-width: 900px; margin: auto; }
+.contact-form-section fieldset { border: 0; padding: 0; margin: 24px 0; min-width: 0; }
+.contact-form-section .field { margin-bottom: 22px; }
+.contact-form-section textarea { width: 100%; }
+.contact-form-section .honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

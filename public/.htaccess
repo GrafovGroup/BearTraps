@@ -1,5 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteRule ^(?:request-quote|equipment-package)/?$ https://beartraps.ca/contact/ [R=301,L,QSD]
 # Keep HTTP domain-control validation available for certificate renewal.
 RewriteCond %{REQUEST_URI} !^/\.well-known/(acme-challenge|pki-validation)/
 RewriteCond %{HTTPS} !=on [OR]

@@ -1,42 +1,29 @@
-# Website operations and acceptance
+# Site operations
 
-## Current facts
+Phase 1C is product discovery and simple contact lead generation. Staff handle quotations, tender documents and orders offline. There is no public basket, package builder, tender portal or checkout. Legacy RFQ URLs redirect to Contact. Until the contact service is verified, the form prepares an email for the visitor's own email app; it never claims a message was sent.
 
-WHC hosts the live Phase 1B static site. Phase 1C is a review branch until an authorized deployment. `info@beartraps.ca` is owner-confirmed active; no website delivery provider or actual email receipt has been verified. The instructed phone `(833) 696-9996` remains a placeholder and must be confirmed by the owner. No verified products, prices, stock, affiliations or certifications are claimed.
+## Release and rollback
 
-The privacy page accurately describes local basket storage and RFQ downloads, hosting logs and contact for privacy enquiries. Terms distinguish enquiries from orders. These are implementation checks, not a legal opinion or completed business identity review.
+- Use the exact successful cloud commit/run; retain the artifact checksum and previous complete ZIP outside public hosting. Review the dependency audit and time-limited exception in SECURITY.md.
+- Verify WHC cPanel root, certificate, PHP settings and current files. Back up the root and .htaccess, excluding unrelated domains. Deploy only after owner approval; never modify DNS/MX as part of a file deployment.
+- Confirm root/category/catalogue/contact routes, legacy 301 redirects, canonical HTTPS/www behavior, 404, sitemap/robots and security/cache headers. HTML revalidates; hashed Next assets cache immutably. Keep old hashed assets during rollout for open sessions.
+- Test category search, product enquiry prefill (once records exist), optional fields, consent/errors, email preparation and mobile contact CTA. Do not click mailto and infer that an email was sent.
+- Restore the matching prior HTML/assets/.htaccess if checks fail; ensure files 0644. Preserve private service queues, mail and DNS. Recheck all routes after rollback.
 
-## Measurement and Search Console
+## Lead operations
 
-No analytics scripts, advertising cookies, invented property IDs or automatic personal-data events are installed. Optional `GOOGLE_SITE_VERIFICATION` adds only the owner-supplied public verification meta tag at build time. It does not submit a sitemap or prove property ownership. Bind the value in the cloud workflow only after obtaining the actual token; rebuild and verify ownership in Search Console.
+Confirm the actual business telephone before adding CALL US/tel links; the previous placeholder was removed under the latest project brief. Confirm business identity and a lead owner. Check info@beartraps.ca and spam daily, record incoming enquiries privately and acknowledge manually. Discuss specifications, buyer authorization, jurisdiction, compatibility, freight and supplier availability before quoting. Do not promise tender submission or unapproved response times.
 
-Before analytics activation, document the chosen provider, data residency, retention and privacy disclosures. Prefer aggregate, cookieless page counts. Never send contact fields, line specifications, tender references, full URLs with queries or downloaded RFQs. Suggested aggregate events are catalogue visit, add-to-RFQ, download and backend acceptance; acceptance must never be labelled inbox delivery. No provider has been selected or activated.
+Choose an owner-approved retention period and deletion/access process before online delivery activation. Arrange secure document transfer offline. Complete the external sample/inbox/spam/failure checklist in CONTACT-DELIVERY.md. No attachments are stored by the website.
 
-## Release checklist
+## Privacy and measurement
 
-- Record the exact commit and successful CI run, artifact checksum and expiry. Review dependency audit output; high/critical advisories fail CI, lower severity findings need triage.
-- Inspect mobile/desktop screenshots and axe report; perform keyboard navigation, zoom, reduced motion and manual screen-reader checks. Three engine automation is not real iOS/Safari testing.
-- Back up the current WHC document root and `.htaccess` outside public hosting; exclude unrelated domains. Follow WHC-DEPLOYMENT.md. Never restore or change MX/DNS as part of a file rollback.
-- Deploy only with owner approval. Verify root/category/catalogue/RFQ routes, canonical HTTPS and www redirects, 404, robots/sitemap and correct MIME/cache/security headers. HTML revalidates; content-addressed Next assets cache immutably. Keep old hashed assets during the rollout to support open sessions, then remove only through a separately reviewed cleanup.
-- Confirm the disabled online button and functioning download until delivery verification is complete. With an activated backend, test actual acceptance, failure and inbox delivery independently.
-- Review contact/business details, privacy wording and product evidence before publishing updated content. No images added in Phase 1C; no portfolio-wide visual audit claimed.
+Privacy/terms/contact copy reflects email preparation, transient fields and hosting logs. No tracker is installed, and no business identity or phone has been invented. This is an implementation review, not a legal opinion.
 
-## Lead handling
+Optional GOOGLE_SITE_VERIFICATION inserts the actual owner-supplied public meta token at build time. No property ID is fabricated or Search Console ownership claimed. Bind it in CI only after the owner provides the real token, rebuild and verify ownership separately.
 
-Check the designated inbox and spam folder each business day. Assign an owner, record receipt time and tender deadline/time zone, acknowledge manually, and request missing specifications. Verify buyer authorization, province restrictions, compatibility, freight and supplier availability before quoting. Do not promise tender submission or a response SLA that the operator has not agreed to.
+Analytics remains disabled. Before selecting a provider, document residency, retention, disclosures and consent requirements. Prefer aggregate cookieless page counts. Never send message text, contact fields, product-interest query strings or full query-bearing URLs. Potential aggregate events: catalogue visit, contact visit, email preparation and backend acceptance. Do not label any of these inbox delivery.
 
-Set an owner-approved retention period for enquiries and delivery records before activating online intake. Define deletion/access procedures, queue failure alerts and backup handling. The PHP bridge keeps only salted abuse identifiers/counts, removes expired rate rows on traffic after ten minutes, and should have a daily database cleanup during idle periods. No procurement attachments are accepted.
+## Ongoing checks
 
-## Mail activation evidence
-
-Use a non-sensitive sample request and record timestamp/reference privately:
-
-1. Submit from an external browser/network with consent; confirm accepted-for-processing wording.
-2. Owner confirms actual receipt at info@beartraps.ca; check sender authentication, reply-to, all RFQ fields, line quantities/SKUs, tender time zone and text encoding.
-3. Check spam/rejection reports and intentionally fail the queue/provider in staging. No success may appear before durable acceptance.
-4. Retry identical key/payload: same receipt, one queued job. Same key/different payload must fail. Verify rate limit, oversized body, malformed data, spam and origin checks.
-5. Verify retention/deletion and failure alerting without logging contact content. Record tested provider and recipient; never commit credentials or private message contents.
-
-## Rollback
-
-Keep the previous complete artifact and configuration outside the public root. Restore the matching HTML/asset set and `.htaccess` with file mode 0644, then repeat health checks. Preserve mail/DNS and separately deployed private RFQ storage. To disable intake, rebuild with an empty endpoint and remove the public bridge after pending requests have been accounted for. Do not delete queues or receipts to roll back a frontend.
+Review search/indexability, sitemap and redirects after releases. Monitor availability/TLS and failed intake privately once configured. Review supplier evidence and document links regularly. Run keyboard/zoom/reduced-motion/contrast checks plus manual screen-reader and real iOS/Safari checks; automated three-engine/axe results do not replace them. No new images were introduced in Phase 1C and no portfolio-wide visual audit is claimed.

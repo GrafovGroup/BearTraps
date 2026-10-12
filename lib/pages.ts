@@ -82,7 +82,7 @@ export const pages: Record<
     sections: [
       {
         title: "Equipment and procurement enquiries",
-        text: "Use the RFQ builder to organize your requirements and download a copy. You can prepare multiple equipment categories in a single request.",
+        text: "Use the contact form to prepare an email or contact info@beartraps.ca directly. Our team discusses specifications, quotations and orders with you.",
       },
       {
         title: "What to include",
@@ -101,7 +101,7 @@ export const pages: Record<
     sections: [
       {
         title: "Professional capture equipment",
-        text: "Capture equipment is request-for-quote only. An enquiry is not permission to acquire, possess or use a device. The buyer must establish applicable permissions and product eligibility with the relevant authority.",
+        text: "Capture equipment is discussed directly with our team before any quotation. An enquiry is not permission to acquire, possess or use a device. The buyer must establish applicable permissions and product eligibility with the relevant authority.",
       },
       {
         title: "Unknown status blocks purchase",
@@ -118,29 +118,24 @@ export const pages: Record<
     ],
   },
   privacy: {
-    title: "Privacy and your equipment request.",
-    intro:
-      "The RFQ builder is designed to keep your contact details under your control.",
+    title: "Privacy and your enquiry.",
+    intro: "Share only the details needed for our team to respond.",
     sections: [
       {
-        title: "Information in this browser",
-        text: "The quote basket stores equipment categories, product selections, quantities and line specifications in local storage on your device. Contact and project details remain in the form while the page is open and are not saved to the basket. Avoid confidential information in persistent line specifications.",
+        title: "Contact form and email",
+        text: "Contact fields stay in the form while the page is open and are not saved in browser storage. Preparing an email creates a mailto link on your device; it does not submit data to our server. Opening the link passes the details to your chosen email application, where you review and send the message yourself.",
       },
       {
-        title: "RFQ downloads",
-        text: "Generating an RFQ creates a text file on your device. Printing lets you save a PDF through your browser. Downloading does not send your request to BEARTRAPS.CA. You decide how and with whom to share the file.",
+        title: "Information you choose to share",
+        text: "You can provide your name, email, optional organization and phone, subject and message. Avoid sensitive documents or confidential procurement information in the form. Arrange an appropriate transfer method directly with our team.",
       },
       {
-        title: "Server and hosting information",
-        text: "The site does not include advertising trackers or analytics. Hosting infrastructure may process technical request information such as IP addresses and access logs. A delivery integration requires updated disclosures before activation.",
+        title: "Hosting and analytics",
+        text: "No advertising trackers or analytics are installed. Hosting infrastructure may process technical information such as IP addresses and access logs. Delivery-service disclosures will reflect the actual configured service before online submissions are enabled.",
       },
       {
-        title: "Privacy enquiries",
-        text: "Contact info@beartraps.ca about information you have shared by email or to request correction or deletion. Do not include sensitive procurement documents in website fields; arrange an appropriate transfer method directly.",
-      },
-      {
-        title: "Clearing your information",
-        text: "Remove items in the basket or clear browser site data to delete saved equipment selections. Close or reload the page to clear contact fields. Delete any downloaded files separately.",
+        title: "Your choices",
+        text: "Contact info@beartraps.ca about information you shared by email, including correction or deletion requests. Close or reload the form to clear entered details. Older saved equipment selections from a previous site version can be removed by clearing this website’s browser data.",
       },
     ],
   },
@@ -151,7 +146,7 @@ export const pages: Record<
     sections: [
       {
         title: "An enquiry is not an order",
-        text: "Category descriptions are sourcing requirements, not confirmation of stock, manufacturer affiliation, price or availability. An RFQ download does not create a sale or confirm receipt of a request.",
+        text: "Category descriptions are sourcing requirements, not confirmation of stock, manufacturer affiliation, price or availability. Preparing an email does not send it or create a sale.",
       },
       {
         title: "Specifications and evidence",

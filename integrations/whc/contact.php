@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 // Deploy separately only after configuring and verifying the secured upstream.
-// Full product, buyer and tender validation is performed by handleRfq upstream.
+// Full product, buyer and tender validation is performed by handleContact upstream.
 function bridgeReceipt(mixed $body): bool {
     return is_array($body) && ($body['status'] ?? null) === 'accepted'
         && is_string($body['reference'] ?? null)
@@ -45,17 +45,17 @@ function runBridge(): never {
         if (strtolower(trim(explode(';', $_SERVER['CONTENT_TYPE'] ?? '')[0])) !== 'application/json') bridgeResponse(415, ['error'=>'Expected JSON']);
         $key = $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? '';
         if (!preg_match('/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/iD', $key)) bridgeResponse(400, ['error'=>'Invalid identifier']);
-        $endpoint = getenv('RFQ_UPSTREAM_URL') ?: '';
-        $token = getenv('RFQ_UPSTREAM_TOKEN') ?: '';
-        $salt = getenv('RFQ_RATE_SALT') ?: '';
-        $dbPath = getenv('RFQ_RATE_DB') ?: '';
+        $endpoint = getenv('CONTACT_UPSTREAM_URL') ?: '';
+        $token = getenv('CONTACT_UPSTREAM_TOKEN') ?: '';
+        $salt = getenv('CONTACT_RATE_SALT') ?: '';
+        $dbPath = getenv('CONTACT_RATE_DB') ?: '';
         $parts = parse_url($endpoint);
         $parent = realpath(dirname($dbPath));
         $root = realpath($_SERVER['DOCUMENT_ROOT'] ?? '');
         if (!$parts || ($parts['scheme'] ?? '') !== 'https' || empty($parts['host']) || isset($parts['user']) || isset($parts['pass'])
             || strlen($token) < 32 || preg_match('/[\r\n]/', $token) || strlen($salt) < 32 || !$parent || !$root
             || $parent === $root || str_starts_with($parent, $root . DIRECTORY_SEPARATOR) || !is_writable($parent))
-            bridgeResponse(503, ['error'=>'Online receipt unavailable. Keep your RFQ download.']);
+            bridgeResponse(503, ['error'=>'Online receipt unavailable. Email info@beartraps.ca directly.']);
         // REMOTE_ADDR only: forwarding headers supplied by clients are not trusted.
         $ip = $_SERVER['REMOTE_ADDR'] ?? '';
         if (!filter_var($ip, FILTER_VALIDATE_IP)) bridgeResponse(503, ['error'=>'Unable to verify request']);
@@ -69,9 +69,8 @@ function runBridge(): never {
         try { $body = json_decode($raw, true, 32, JSON_THROW_ON_ERROR); }
         catch (JsonException) { bridgeResponse(400, ['error'=>'Invalid JSON']); }
         if (!is_array($body) || ($body['website'] ?? null) !== '' || ($body['consent'] ?? null) !== true
-            || ($body['eligibility'] ?? null) !== true || !is_array($body['items'] ?? null)
-            || count($body['items']) < 1 || count($body['items']) > 50)
-            bridgeResponse(400, ['error'=>'Invalid RFQ']);
+            || !is_string($body['message'] ?? null) || strlen($body['message']) > 12000)
+            bridgeResponse(400, ['error'=>'Invalid message']);
         $curl = curl_init($endpoint);
         $response = '';
         curl_setopt_array($curl, [CURLOPT_POST=>true, CURLOPT_POSTFIELDS=>$raw,
@@ -90,12 +89,12 @@ function runBridge(): never {
         if ($ok !== false && $status === 202 && bridgeReceipt($receipt))
             bridgeResponse(202, array_intersect_key($receipt, array_flip(['status','reference','acceptedAt'])));
         if ($ok !== false && in_array($status, [400,403,409,429], true))
-            bridgeResponse($status, ['error'=>'Request could not be accepted. Review your RFQ or retry later.']);
-        bridgeResponse(503, ['error'=>'Receipt was not confirmed. Keep your RFQ and retry with the same identifier.']);
+            bridgeResponse($status, ['error'=>'Request could not be accepted. Review your message or retry later.']);
+        bridgeResponse(503, ['error'=>'Receipt was not confirmed. Keep your message and retry with the same identifier.']);
     } catch (Throwable) {
         // No payloads, IPs, exception messages or provider responses in logs.
-        error_log('rfq_bridge_unavailable');
-        bridgeResponse(503, ['error'=>'Receipt unavailable. Keep your RFQ download.']);
+        error_log('contact_bridge_unavailable');
+        bridgeResponse(503, ['error'=>'Receipt unavailable. Email info@beartraps.ca directly.']);
     }
 }
 if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) runBridge();

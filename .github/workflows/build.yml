@@ -24,11 +24,13 @@ jobs:
           run_install: false
       - run: pnpm install --frozen-lockfile
       - name: Dependency vulnerability audit
-        run: pnpm audit --audit-level=high
+        run: |
+          node -e 'if (Date.now() > Date.parse("2026-10-26T23:59:59Z")) throw Error("Review the time-limited braces advisory exception in docs/SECURITY.md")'
+          pnpm audit --audit-level=high
       - name: Verify optional WHC PHP bridge
         run: |
           php --version
-          php -l integrations/whc/rfq.php
+          php -l integrations/whc/contact.php
           php tests/whc-bridge.php
       - run: pnpm run lint
       - run: pnpm run typecheck
@@ -55,6 +57,6 @@ jobs:
           retention-days: 14
       - uses: actions/upload-artifact@v4
         with:
-          name: whc-rfq-bridge-disabled
-          path: integrations/whc/rfq.php
+          name: whc-contact-bridge-disabled
+          path: integrations/whc/contact.php
           retention-days: 14

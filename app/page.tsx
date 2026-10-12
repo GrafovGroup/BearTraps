@@ -28,8 +28,8 @@ export default function Home() {
             <Link className="button amber" href="#equipment">
               VIEW EQUIPMENT <span>↘</span>
             </Link>
-            <Link className="text-link" href="/request-quote">
-              REQUEST A QUOTE ↗
+            <Link className="text-link" href="/contact/">
+              CONTACT US ↗
             </Link>
           </div>
           <p className="hero-footnote">
