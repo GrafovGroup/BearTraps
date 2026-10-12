@@ -3,12 +3,22 @@
 | Asset | Source | Website | Page | Placement |
 | --- | --- | --- | --- | --- |
 | Culvert equipment technical drawing | Original inline SVG authored in app/page.tsx | BearTraps.ca | / | Hero, one placement |
-| Bear shield brand mark | Original inline SVG in components/site.tsx | BearTraps.ca | Site shell | Header/footer brand identity |
+| Selected shield logo | Owner-selected option 1; built-in imagegen background extraction | BearTraps.ca | Site shell | Header/footer brand identity, explicitly selected by owner |
 
 There are no stock photographs, fallback photos or category image mappings. The technical drawing is conceptual, not a photograph or a model specification. It makes no completed-project or inventory claim. The brand mark is identity, not content photography. Future separate image placements require distinct originals.
 
-Exact content-image reuse within this implementation: one content image, one placement. Portfolio-wide visual duplicate verification has not been completed; prior-site asset inventories were not audited. Check those inventories before publishing image changes. No deployment has occurred.
+Exact content-image reuse within this implementation: one content image, one placement. Portfolio-wide visual duplicate verification has not been completed; prior-site asset inventories were not audited. Check those inventories before publishing image changes. Phase 1B is deployed; this Phase 1C logo update is not yet deployed.
 
 ## Phase 1B
 
 No new content image was added. The existing homepage illustration remains a single placement. Product cards and related-equipment cards are text-only; future validated product images render only on their product-detail page. Product asset records require source, rights evidence and SHA-256; build validation rejects missing files, hash mismatches and repeated source/path/hash. This is an exact-duplicate control, not visual similarity or portfolio-wide verification. The latter remains a human audit before publication. Internal fixture records contain no deployed images.
+
+## Selected logo — October 12, 2026
+
+The owner selected option 1 from the five-logo concept set. `public/brand/beartraps-shield.png` is the transparent website derivative: shield, bear, trees, amber sun and BEARTRAPS wordmark, without .ca. It replaces the earlier inline shield and text lockup in the shared header/footer. The footer uses a light brand panel to preserve contrast and the approved colours. Header and footer reuse is the explicitly selected brand identity; it does not authorize content-photo reuse.
+
+- Source concept: `design/logo-options-2026-10-12/01-shield.png` in the original project workspace; generated October 12, 2026.
+- Preparation: built-in imagegen, transparent background extraction; no supplier/product imagery.
+- Website asset SHA-256: `7f535007dbbf85eaba0c3697cbc6eb50fe59e86ec1c02f76ecc50e5c08baf230`.
+- Edit prompt: “Preserve the selected shield, bear head facing right, three pine trees, amber sun and BEARTRAPS wordmark. Remove the surrounding background to transparency; retain opaque white bear details. Tightly frame the horizontal lockup; no .ca, tagline, shadows or redesign.”
+- Portfolio-wide prior-site inventory remains unaudited. This is an owner-selected identity asset; no claim of portfolio-wide visual uniqueness is made.

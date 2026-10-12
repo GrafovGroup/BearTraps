@@ -55,7 +55,7 @@ The downloaded static artifact was inspected: 140 ZIP entries, .htaccess include
 
 WHC cPanel confirms an independent root under account home at `/beartraps.ca` (absolute account path retained privately) and inherited PHP 8.2 (ea-php82), observed October 12. HTTPS, rewrites and File Manager upload were verified during Phase 1B deployment. cURL/SQLite extensions, environment injection and service connectivity need verification before backend activation.
 
-**No Phase 1C live upload, DNS/MX/mail setting change, email send or inbox receipt verification occurred.** Phase 1B remains live. The owner-confirmed active recipient is info@beartraps.ca. No authenticated provider/queue credentials were supplied, so the public form uses a truthful email-app fallback. Mocked acceptance tests are not delivery tests. No verified supplier records or new images were added; actual product detail content, portfolio-wide imagery and real-device/manual assistive-technology audits remain unverified.
+**No Phase 1C live upload, DNS/MX/mail setting change, email send or inbox receipt verification occurred.** Phase 1B remains live. The owner-confirmed active recipient is info@beartraps.ca. No authenticated provider/queue credentials were supplied, so the public form uses a truthful email-app fallback. Mocked acceptance tests are not delivery tests. No verified supplier records or product images were added; actual product detail content, portfolio-wide imagery and real-device/manual assistive-technology audits remain unverified.
 
 ## External acceptance and Phase 2
 
@@ -66,3 +66,7 @@ WHC cPanel confirms an independent root under account home at `/beartraps.ca` (a
 5. Complete manual screen-reader/real-device checks and reviewed French content; add aggregate analytics and supplier/CMS integration only when operational inputs are available.
 
 See CONTACT-DELIVERY.md, CATALOGUE-PUBLISHING.md, OPERATIONS.md and WHC-DEPLOYMENT.md. This report is an implementation assessment, not independent security certification or legal advice.
+
+## Owner-selected logo follow-up
+
+Applied the first logo option to the shared header and footer: shield with bear, trees and amber sun, and BEARTRAPS wordmark without .ca. The transparent asset is stored in `public/brand/beartraps-shield.png`; provenance and SHA-256 are recorded in ASSET-USAGE.md. Responsive sizing and a light footer panel preserve legibility. The home link has an accessible name. This follow-up is part of PR #3 and has not been deployed to WHC. Follow-up cloud validation is pending.

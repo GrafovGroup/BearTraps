@@ -1,22 +1,16 @@
+import Image from "next/image";
 import Link from "@/components/site-link";
 export function Brand() {
   return (
-    <Link className="brand" href="/" aria-label="BearTraps.ca home">
-      <svg viewBox="0 0 44 46" width="38" height="40" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M22 1 41 8v16c0 10-12 18-19 21C15 42 3 34 3 24V8Z"
-        />
-        <path
-          fill="#192A24"
-          d="m10 22 3-9 6 2 6-1 7 6 3 2-2 5-9 1-3 7-5-2 1-6-7-1Z"
-        />
-        <circle cx="28" cy="20" r="1.4" fill="#F5F5F0" />
-      </svg>
-      <span>
-        BEARTRAPS<span className="brand-ca">.CA</span>
-        <small>PROFESSIONAL WILDLIFE EQUIPMENT</small>
-      </span>
+    <Link className="brand" href="/" aria-label="BearTraps home">
+      <Image
+        className="brand-logo"
+        src="/brand/beartraps-shield.png"
+        alt="BEARTRAPS"
+        width={2172}
+        height={724}
+        priority
+      />
     </Link>
   );
 }
