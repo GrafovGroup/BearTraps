@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { importCatalogue } from "../lib/catalog-import.ts";
+import {
+  importCatalogue,
+  productDigest,
+  catalogueChanges,
+} from "../lib/catalog-import.ts";
 import { fixtureProduct } from "./fixtures/products.ts";
 const review = {
   reviewer: "TEST REVIEWER",
@@ -14,7 +18,7 @@ const review = {
 const record = () => ({
   internalId: "test",
   status: "publishable",
-  review,
+  review: { ...review, productSha256: productDigest(fixtureProduct()) },
   product: fixtureProduct(),
 });
 test("only reviewed publishable records enter production output", () => {
@@ -27,7 +31,7 @@ test("only reviewed publishable records enter production output", () => {
   assert.throws(() => importCatalogue([{ ...record(), review: undefined }]));
   assert.throws(() =>
     importCatalogue([
-      { ...record(), review: { ...review, regulatoryReview: false } },
+      { ...record(), review: { ...record().review, regulatoryReview: false } },
     ]),
   );
   assert.throws(() =>
@@ -54,4 +58,26 @@ test("imports reject duplicate IDs, broken relationships and unsupported claims"
       },
     ]),
   );
+});
+
+test("review is bound to product content, with deterministic audit changes", () => {
+  const r = record();
+  assert.throws(
+    () =>
+      importCatalogue([
+        { ...r, product: { ...r.product, leadTime: "Changed" } },
+      ]),
+    /changed after review/,
+  );
+  assert.equal(productDigest({ a: 1, b: 2 }), productDigest({ b: 2, a: 1 }));
+  const before = [fixtureProduct("old"), fixtureProduct("same")];
+  const after = [
+    fixtureProduct("new"),
+    { ...fixtureProduct("same"), leadTime: "Reviewed change" },
+  ];
+  assert.deepEqual(catalogueChanges(before, after), {
+    added: ["new"],
+    changed: ["same"],
+    removed: ["old"],
+  });
 });

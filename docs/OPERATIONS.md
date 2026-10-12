@@ -1,6 +1,6 @@
 # Site operations
 
-Phase 1C is product discovery and simple contact lead generation. Staff handle quotations, tender documents and orders offline. There is no public basket, package builder, tender portal or checkout. Legacy RFQ URLs redirect to Contact. Until the contact service is verified, the form prepares an email for the visitor's own email app; it never claims a message was sent.
+Phase 1D continues product discovery and simple contact lead generation. Staff handle quotations, tender documents and orders offline. There is no public basket, package builder, tender portal or checkout. Legacy RFQ URLs redirect to Contact. Until the contact service is verified, the form prepares an email for the visitor's own email app; it never claims a message was sent.
 
 ## Release and rollback
 
@@ -12,7 +12,7 @@ Phase 1C is product discovery and simple contact lead generation. Staff handle q
 
 ## Lead operations
 
-Confirm the actual business telephone before adding CALL US/tel links; the previous placeholder was removed under the latest project brief. Confirm business identity and a lead owner. Check info@beartraps.ca and spam daily, record incoming enquiries privately and acknowledge manually. Discuss specifications, buyer authorization, jurisdiction, compatibility, freight and supplier availability before quoting. Do not promise tender submission or unapproved response times.
+The owner confirmed (833) 696-9996 on October 12, 2026. `content/business.json` records +18336969996 and the confirmation. Call links and structured data are derived from that validated configuration. Set phone to null to remove call links if the number is withdrawn. Confirm business identity and a lead owner. Check info@beartraps.ca and spam daily, record incoming enquiries privately and acknowledge manually. Discuss specifications, buyer authorization, jurisdiction, compatibility, freight and supplier availability before quoting. Do not promise tender submission or unapproved response times.
 
 Choose an owner-approved retention period and deletion/access process before online delivery activation. Arrange secure document transfer offline. Complete the external sample/inbox/spam/failure checklist in CONTACT-DELIVERY.md. No attachments are stored by the website.
 
@@ -26,4 +26,6 @@ Analytics remains disabled. Before selecting a provider, document residency, ret
 
 ## Ongoing checks
 
-Review search/indexability, sitemap and redirects after releases. Monitor availability/TLS and failed intake privately once configured. Review supplier evidence and document links regularly. Run keyboard/zoom/reduced-motion/contrast checks plus manual screen-reader and real iOS/Safari checks; automated three-engine/axe results do not replace them. No new images were introduced in Phase 1C and no portfolio-wide visual audit is claimed.
+Review search/indexability, sitemap and redirects after releases. Monitor availability/TLS and failed intake privately once configured. Review supplier evidence and document links regularly. Run keyboard/zoom/reduced-motion/contrast checks plus manual screen-reader and real iOS/Safari checks; automated three-engine/axe results do not replace them. The owner-selected shield logo from Phase 1C is retained. No product imagery was added in Phase 1D, and no portfolio-wide visual audit is claimed.
+
+Release acceptance uses RELEASE-CHECKLIST.md and the artifact release manifest. Supplier review uses SUPPLIER-ONBOARDING.md; retain private input/output digests and manifests outside public hosting and Git.

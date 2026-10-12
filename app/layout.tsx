@@ -1,3 +1,5 @@
+import configuration from "@/content/business.json";
+import { phoneLink } from "@/lib/business";
 import type { Metadata } from "next";
 import { Header, Footer } from "@/components/site";
 import { siteUrl } from "@/lib/catalog";
@@ -36,6 +38,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               name: "BEARTRAPS.CA",
               url: siteUrl,
               email: "info@beartraps.ca",
+              ...(phoneLink(configuration)
+                ? { telephone: phoneLink(configuration)!.e164 }
+                : {}),
             }),
           }}
         />

@@ -1,33 +1,40 @@
-# Supplier intake and publication
+# Verified catalogue publication
 
-Keep supplier intake files outside `public/` and outside Git if commercially sensitive. Copy `templates/catalogue-intake.json`, assign unique internal IDs and collect evidence. No supplier inventory has been provided; `content/products.json` remains empty.
+Production `content/products.json` remains empty. Category discovery is live business content; supplier products require evidence. The selected brand logo is preserved. No product photos or supplier records were invented.
 
-## Status and review
+## Intake formats and statuses
 
-- `draft`: incomplete records; any product fields may be collected.
-- `pending-review`: evidence collected; qualified reviewer checks it.
-- `publishable`: full product schema, verified publication flags and complete signed review required.
-- `archived`: excluded from generated catalogue, like draft and pending-review.
+Use `templates/catalogue-intake.json` or `templates/catalogue-intake.csv`. The templates contain one incomplete draft with no real product. Keep completed files in a private directory, outside Git and `public/` (the default `/supplier-intake/` is ignored).
 
-For each publishable entry, `product` must match `lib/product-schema.ts`. `review` must include `reviewer`, ISO UTC `reviewedAt` and all five confirmations set to `true`: `supplier`, `modelSpecifications`, `imageRightsAndUniqueness`, `regulatoryReview`, `documentsAndClaims`. This is a recorded human attestation, not automated verification of the truth of supplier claims.
+- `draft`: incomplete facts; not published.
+- `pending-review`: awaiting the evidence review; not published.
+- `publishable`: complete verified product, exact review digest and all confirmations required.
+- `archived`: excluded; check the import manifest for resulting removals and broken relationships.
 
-## Evidence checklist
+CSV has one record per row. The authoritative header list is `intakeColumns` in `lib/catalog-csv.ts`. Nested fields use JSON cells: `source_json`, `supplier_json`, `specifications_json`, `dimensions_json`, arrays such as `documents_json` and `compatibilityEvidence_json`, and `review_json`. Use true/false for booleans; use `null` for unknown nullable dimensions, weight, freight class and lead time. Blank cells are omitted, so missing required product fields block publishable records. CSV accepts quoted commas/newlines and escaped double quotes; malformed rows, duplicate/unknown headers and inputs over 10 MB are rejected.
 
-1. Supplier identity, permission to offer the exact model, source URL, review date and reviewer.
-2. Exact SKU/model, dimensions, weight, transport/freight constraints, variants and specification sheet. Leave unknown optional values null; never manufacture evidence.
-3. Documents and performance claims scoped to the exact model. Validate links and certification scope with the issuing body.
-4. Rights for every image and its single placement; update ASSET-USAGE.md. Check hashes, visual duplicates and accessible prior-site inventories. Record inaccessible inventories privately.
-5. Buyer/province eligibility and qualified regulatory review. Unknown status stays unknown and blocks purchase. Publishable means suitable for an RFQ listing, not permission to sell or use a product.
-6. Accessories/relationships must refer to other publishable records and have compatibility evidence. Removing a referenced product requires updating its relationships.
+## Evidence and content rules
 
-## Import and review
+`product` must match `lib/product-schema.ts`. Required supplier/source records contain an HTTPS source, reviewer role/name and UTC date. Evidence dates cannot be in the future. Every document names the exact `model`. Every related accessory needs `compatibilityEvidence` with `accessorySlug`, matching `accessoryModel` and evidence. Relationship targets must exist in the published batch. Image licence/source/hash/unique-placement rules still apply. Draft intake is private; public product evidence fields must not include confidential or personal details.
 
-Run in a development checkout or controlled cloud environment:
+Capture, lures and deterrence categories cannot be marked general equipment. Known jurisdiction statuses require evidence; unknown remains unknown and blocks supply. Publication permits informational discovery only, not sale or use. No online checkout or offer/stock/price structured data is generated. Claims in features, specifications and variants receive the same model-evidence gate as title/summary. Validation records evidence requirements; a qualified human must verify its truth and scope.
+
+## Content-bound review
+
+Run these commands in a controlled development checkout or cloud environment:
 
 ```sh
-pnpm import:catalogue supplier-intake.json reviewed-products.json
+pnpm catalogue:digests supplier-intake/batch.json
 ```
 
-The command validates the entire batch and exclusively creates a new output; it never overwrites an existing file. Draft/pending/archived entries and internal notes/review attestations do not enter the output. Product source evidence remains part of published product data; keep personal reviewer details out of those public evidence fields.
+Copy the product's digest into `review.productSha256`. Add `reviewer`, `reviewedAt` and these five true attestations: `supplier`, `modelSpecifications`, `imageRightsAndUniqueness`, `regulatoryReview`, `documentsAndClaims`. Review every field first; the command calculates a digest, it does not grant approval. CSV uses the same review object in `review_json`. Object-key order does not change the digest; content/array changes do. Status and private notes are recorded separately.
 
-Review the diff, then copy approved output to `content/products.json`. Run catalogue checks, tests and a cloud build/three-engine browser suite before publishing. Imports do not scrape suppliers, upload assets, deploy, or enable checkout. Test fixtures are explicitly synthetic and must never be copied into production.
+```sh
+pnpm import:catalogue supplier-intake/batch.csv reviewed-catalogue content/products.json
+```
+
+The output directory must not exist. It is created privately (0700), with two 0600 files: `products.json` and `review-manifest.json`. The manifest records input/output hashes, per-record status/digest/review/notes and added/changed/removed slugs relative to the optional previous catalogue. The manifest is private and never copied to public hosting. Save each run under a new directory; prior outputs are never overwritten. This replaces Phase 1C's single-output-file CLI.
+
+Inspect the diff and all removals, then copy only approved products to `content/products.json`. Run catalogue checks and CI. Production checks reject placeholder evidence domains and validate local asset hashes. The isolated `product-fixtures` CI job uses synthetic data only in its own checkout and never creates deployment artifacts.
+
+See [supplier SOP](SUPPLIER-ONBOARDING.md), [release checklist](RELEASE-CHECKLIST.md) and [asset register](ASSET-USAGE.md).

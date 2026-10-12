@@ -2,7 +2,56 @@
   {
     "internalId": "replace-with-internal-reference",
     "status": "draft",
-    "notes": "Internal intake only. Complete the evidence checklist before review.",
-    "product": {}
+    "notes": "Complete evidence and exact model fields before review. No supplier record is implied.",
+    "product": {
+      "id": "",
+      "sku": "",
+      "slug": "",
+      "title": "",
+      "category": "",
+      "subcategory": "",
+      "manufacturer": "",
+      "model": "",
+      "summary": "",
+      "published": false,
+      "verification": "draft",
+      "source": {
+        "url": "",
+        "reviewedBy": "",
+        "reviewedAt": ""
+      },
+      "supplier": {
+        "id": "",
+        "name": "",
+        "verified": false,
+        "record": {
+          "url": "",
+          "reviewedBy": "",
+          "reviewedAt": ""
+        }
+      },
+      "specifications": {},
+      "dimensions": null,
+      "weightKg": null,
+      "variants": [],
+      "applications": [],
+      "features": [],
+      "transportRequirements": "",
+      "shippingFreightClass": null,
+      "leadTime": null,
+      "images": [],
+      "documents": [],
+      "availability": "quote-only",
+      "priceVisibility": "hidden",
+      "rfq": true,
+      "regulatoryClassification": "",
+      "buyerEligibility": [],
+      "provincesServed": [],
+      "jurisdictions": [],
+      "certificationsEvidence": [],
+      "relatedProducts": [],
+      "relatedAccessories": [],
+      "compatibilityEvidence": []
+    }
   }
 ]

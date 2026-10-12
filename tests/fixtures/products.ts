@@ -52,6 +52,7 @@ export const fixtureProduct = (slug = "internal-fixture"): Product => ({
     },
   ],
   certificationsEvidence: [],
+  compatibilityEvidence: [],
   relatedProducts: [],
   relatedAccessories: [],
 });

@@ -1,15 +1,17 @@
 import { chromium, firefox, webkit } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
 import { spawn } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const server = spawn(
   "python3",
   ["-m", "http.server", "4173", "--bind", "127.0.0.1", "--directory", "out"],
   { stdio: "ignore" },
 );
+const business = JSON.parse(await readFile("content/business.json", "utf8"));
 const base = "http://127.0.0.1:4173",
   reports = [];
+const performanceReports = [];
 await mkdir("screenshots", { recursive: true });
 try {
   for (let i = 0; i < 30; i++) {
@@ -35,20 +37,44 @@ try {
         ["desktop", 1440],
         ["tablet", 768],
         ["mobile", 390],
+        ["small-mobile", 320],
       ]) {
         await page.setViewportSize({ width, height: 1000 });
         await page.goto(base + "/", { waitUntil: "networkidle" });
+        performanceReports.push({
+          engine,
+          viewport: name,
+          ...(await page.evaluate(() => {
+            const navigation = performance.getEntriesByType("navigation")[0];
+            return {
+              loadMs: navigation.duration,
+              domContentLoadedMs: navigation.domContentLoadedEventEnd,
+              resourceBytes: performance
+                .getEntriesByType("resource")
+                .reduce((sum, r) => sum + r.encodedBodySize, 0),
+            };
+          })),
+        });
         assert.equal(await page.locator("h1").count(), 1);
         assert.ok(
           await page.evaluate(
             () => document.documentElement.scrollWidth <= innerWidth,
           ),
         );
-        assert.equal(
-          await page.locator('a[href^="tel:"]').count(),
-          0,
-          "Unconfirmed phone must not be dialable",
-        );
+        const calls = page.locator('a[href^="tel:"]');
+        if (business.phone) {
+          assert.ok((await calls.count()) >= 1);
+          for (const link of await calls.all())
+            assert.equal(
+              await link.getAttribute("href"),
+              `tel:${business.phone.e164}`,
+            );
+        } else
+          assert.equal(
+            await calls.count(),
+            0,
+            "Unconfirmed phone must not be dialable",
+          );
         if (engine === "chromium")
           await page.screenshot({
             path: `screenshots/${name}.png`,
@@ -80,7 +106,10 @@ try {
       await page.waitForURL("**/contact/");
       assert.equal(await page.locator(".mobile-quote").count(), 0);
       await page.getByRole("button", { name: "PREPARE EMAIL" }).click();
-      await page.getByRole("alert").filter({ hasText: "Review your message" }).waitFor();
+      await page
+        .getByRole("alert")
+        .filter({ hasText: "Review your message" })
+        .waitFor();
       await page.waitForFunction(
         () => document.activeElement?.className === "error-summary",
       );
@@ -235,13 +264,20 @@ try {
     } catch (error) {
       const failed = browser.contexts()[0]?.pages()[0];
       console.error(`${engine}: ${failed?.url()}`, error);
-      if (failed) await failed.screenshot({ path: `screenshots/${engine}-failure.png`, fullPage: true }).catch(() => {});
+      if (failed)
+        await failed
+          .screenshot({
+            path: `screenshots/${engine}-failure.png`,
+            fullPage: true,
+          })
+          .catch(() => {});
       throw error;
     } finally {
       await browser.close();
     }
   }
 } finally {
+  await writeFile("screenshots/performance-results.json", JSON.stringify(performanceReports, null, 2));
   await writeFile(
     "screenshots/accessibility-results.json",
     JSON.stringify(reports, null, 2),

@@ -39,16 +39,26 @@ Add supplier-backed records only after human evidence review. Validate identifie
 
 ## Product discovery and contact
 
-The latest owner brief replaces the public RFQ/basket model. Visitors browse categories and verified specifications, then contact the team. `/contact/` collects name, optional company/phone, email, subject and message with consent. With no delivery endpoint configured it prepares an explicitly unsent email link. Product enquiry links prefill name/SKU and URL. Staff handle quotations, tender documents and orders offline.
+The latest owner brief replaces the public RFQ/basket model. Visitors browse categories and verified specifications, then contact the team. `/contact/` collects name, optional company/phone, email, subject and message with consent. With no delivery endpoint configured it prepares an explicitly unsent email link. Product enquiry links prefill name/model/SKU and URL. Staff handle quotations, tender documents and orders offline.
 
-`/request-quote/` and `/equipment-package/` are retired with WHC 301 redirects and static/client fallbacks. Their old internal modules are not imported by public pages. No dialable placeholder phone remains; adding CALL US requires the confirmed business number.
+`/request-quote/` and `/equipment-package/` are retired with WHC 301 redirects and static/client fallbacks. Their old internal modules are not imported by public pages. The owner confirmed (833) 696-9996 in Phase 1D. `content/business.json` controls call links and organization telephone metadata. Setting `phone` to null hides call links; missing confirmation, malformed numbers or mismatched display text fail validation.
 
-See [contact delivery](docs/CONTACT-DELIVERY.md), [operations](docs/OPERATIONS.md), [supplier intake](docs/CATALOGUE-PUBLISHING.md) and [security assessment](docs/SECURITY.md). JSON imports produce reviewed `content/products.json`. No verified supplier records were provided, so the catalogue retains useful category discovery without invented products.
+See [contact delivery](docs/CONTACT-DELIVERY.md), [operations](docs/OPERATIONS.md), [supplier intake](docs/CATALOGUE-PUBLISHING.md) and [security assessment](docs/SECURITY.md). CSV/JSON imports bind human review to a content digest and produce a private change manifest alongside the publishable catalogue. No verified supplier records were provided, so the catalogue retains useful category discovery without invented products.
 
-The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured validation/queue/mail upstream. It is not included in the static upload ZIP. No Phase 1C deployment or real email delivery is claimed; Phase 1B remains live until an approved upload.
+The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured validation/queue/mail upstream. It is not included in the static upload ZIP. No Phase 1C/1D deployment or real email delivery is claimed; Phase 1B remains live until an approved upload.
+
+## Phase 1D workflow
+
+- [Supplier outreach and onboarding SOP](docs/SUPPLIER-ONBOARDING.md): evidence collection and review.
+- [Catalogue publication](docs/CATALOGUE-PUBLISHING.md): CSV/JSON templates, digest approval and private import manifests.
+- [Release checklist](docs/RELEASE-CHECKLIST.md): artifact/commit/hash review, explicit deployment approval, WHC smoke tests and rollback.
+- The static artifact includes a separate `release-manifest.json` companion with archive/file hashes, product count, confirmed phone and contact mode. Upload only the inner website ZIP.
+- A separate CI job builds synthetic product records and intercepts contact-service requests to verify detailed pages, filtering, accessibility and receipt/retry behavior. It cannot create release artifacts or send live mail.
+- Production browser evidence includes 320/390/768/1440px layouts and lab navigation/resource observations. These are CI measurements, not field Core Web Vitals.
 
 ## Reports
 
+- [Phase 1D implementation](docs/PHASE-1D-IMPLEMENTATION.md)
 - [Phase 1C implementation](docs/PHASE-1C-IMPLEMENTATION.md)
 - [Phase 1B historical implementation](docs/PHASE-1B-IMPLEMENTATION.md)
 - [Phase 1A historical review](docs/IMPLEMENTATION.md)

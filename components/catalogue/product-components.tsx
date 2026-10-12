@@ -50,13 +50,17 @@ export function TechnicalDocuments({ product: p }: { product: Product }) {
           {p.documents.map((d) => (
             <li key={d.url}>
               <a href={d.url} target="_blank" rel="noreferrer">
-                {d.title} ↗<span> {d.kind} · opens supplier document</span>
+                {d.title} ↗
+                <span>
+                  {" "}
+                  {d.kind} · {d.model} · opens supplier document
+                </span>
               </a>
             </li>
           ))}
         </ul>
       ) : (
-        <p>Include the documentation you require with our team.</p>
+        <p>Ask our team for the model-specific documents you need.</p>
       )}
     </section>
   );
@@ -97,6 +101,86 @@ export function RelatedAccessories({ records }: { records: Product[] }) {
           <ProductCard key={p.id} product={p} />
         ))}
       </div>
+    </section>
+  );
+}
+
+export function ProductLogistics({ product: p }: { product: Product }) {
+  return (
+    <section className="product-logistics">
+      <h2>Planning & delivery</h2>
+      <dl>
+        <dt>Transport requirements</dt>
+        <dd>{p.transportRequirements}</dd>
+        {p.shippingFreightClass && (
+          <>
+            <dt>Freight classification</dt>
+            <dd>{p.shippingFreightClass}</dd>
+          </>
+        )}
+        {p.leadTime && (
+          <>
+            <dt>Supplier lead-time guidance</dt>
+            <dd>{p.leadTime}</dd>
+          </>
+        )}
+      </dl>
+      <p>
+        Confirm current supply, destination access and delivery timing with our
+        team.
+      </p>
+      {p.variants.length > 0 && (
+        <>
+          <h3>Verified model variants</h3>
+          <div className="table-scroll">
+            <table className="spec-table">
+              <caption>Model options and supplier specifications</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Variant</th>
+                  <th scope="col">SKU</th>
+                  <th scope="col">Specifications</th>
+                </tr>
+              </thead>
+              <tbody>
+                {p.variants.map((v) => (
+                  <tr key={v.id}>
+                    <th scope="row">{v.label}</th>
+                    <td>{v.sku}</td>
+                    <td>
+                      {Object.entries(v.specifications).map(([k, value]) => (
+                        <div key={k}>
+                          {k}: {value}
+                        </div>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+      {p.applications.length > 0 && (
+        <>
+          <h3>Applications</h3>
+          <ul>
+            {p.applications.map((a) => (
+              <li key={a}>{a}</li>
+            ))}
+          </ul>
+        </>
+      )}
+      {p.features.length > 0 && (
+        <>
+          <h3>Features</h3>
+          <ul>
+            {p.features.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
+        </>
+      )}
     </section>
   );
 }

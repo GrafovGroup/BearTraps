@@ -29,7 +29,8 @@ export function contactMailto(contact: Contact): string {
 export function productContactHref(p: {
   title: string;
   sku: string;
+  model?: string;
   slug: string;
 }) {
-  return `/contact/?interest=${encodeURIComponent(`${p.title} / ${p.sku}`.slice(0, 200))}&product=${encodeURIComponent(`https://beartraps.ca/products/${p.slug}/`)}`;
+  return `/contact/?interest=${encodeURIComponent([p.title, p.model, p.sku].filter(Boolean).join(" / ").slice(0, 200))}&product=${encodeURIComponent(`https://beartraps.ca/products/${p.slug}/`)}`;
 }

@@ -1386,3 +1386,41 @@ button:disabled {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Phase 1D: long specifications and confirmed contact details. */
+.utility-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 8px 18px;
+}
+.contact-link {
+  display: block;
+  margin-bottom: 12px;
+}
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.spec-table {
+  overflow-wrap: anywhere;
+}
+.product-logistics {
+  margin-block: 48px;
+}
+.product-logistics dt {
+  font-weight: 700;
+  margin-top: 18px;
+}
+.product-logistics dd {
+  margin: 6px 0 18px;
+  line-height: 1.6;
+}
+.product-detail .breadcrumb {
+  flex-wrap: wrap;
+}
+@media (max-width: 540px) {
+  .utility > span {
+    max-width: 44%;
+  }
+}

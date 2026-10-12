@@ -35,3 +35,7 @@ Do not trust arbitrary forwarding headers. If WHC uses a reverse proxy, verify t
 6. Rebuild, review and approve deployment. Confirm accepted-for-processing copy, failure/retry behavior and private failure monitoring. Disable by rebuilding with an empty endpoint if reliable receipt cannot be maintained.
 
 No live email delivery tests have run. Unit tests use synthetic data and mocked dependencies; PHP tests cover receipt validation/rate limits, not WHC execution or inbox delivery.
+
+## Phase 1D verification additions
+
+The confirmed business number is (833) 696-9996. Phone configuration is independent of email delivery. Isolated CI now builds with a reserved test endpoint and intercepts requests to verify malformed 202 receipts remain failures, valid receipts show acceptance only, unchanged retries reuse a key and changed payloads use a new key. The production build leaves the endpoint unset. These tests never contact a provider or prove inbox delivery.

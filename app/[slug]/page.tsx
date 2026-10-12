@@ -1,3 +1,4 @@
+import BusinessPhone from "@/components/business-phone";
 export const dynamicParams = false;
 import { notFound } from "next/navigation";
 import Link from "@/components/site-link";
@@ -24,11 +25,11 @@ export async function generateMetadata({
   return {
     title: c?.title || p?.title || "Page not found",
     description: c?.summary || p?.intro,
-    alternates: { canonical: "/" + slug },
+    alternates: { canonical: "/" + slug + "/" },
     openGraph: {
       title: c?.title || p?.title,
       description: c?.summary || p?.intro,
-      url: "/" + slug,
+      url: "/" + slug + "/",
     },
   };
 }
@@ -180,6 +181,7 @@ export default async function Page({
         <>
           <section className="section pale">
             <h2>Equipment enquiries</h2>
+            <BusinessPhone className="contact-link" />
             <a className="contact-link" href="mailto:info@beartraps.ca">
               info@beartraps.ca
             </a>
@@ -206,7 +208,7 @@ export default async function Page({
                 "@type": "ListItem",
                 position: 2,
                 name: title,
-                item: siteUrl + "/" + slug,
+                item: siteUrl + "/" + slug + "/",
               },
             ],
           }),

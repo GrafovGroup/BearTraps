@@ -1,3 +1,4 @@
+import BusinessPhone from "@/components/business-phone";
 import Image from "next/image";
 import Link from "@/components/site-link";
 export function Brand() {
@@ -19,7 +20,10 @@ export function Header() {
     <>
       <div className="utility">
         <span>EQUIPMENT FOR CANADA’S WILD PLACES</span>
-        <a href="mailto:info@beartraps.ca">EMAIL OUR TEAM ↗</a>
+        <div className="utility-contact">
+          <BusinessPhone />
+          <a href="mailto:info@beartraps.ca">EMAIL OUR TEAM ↗</a>
+        </div>
       </div>
       <header>
         <Brand />
@@ -61,6 +65,7 @@ export function Footer() {
       <div className="footer-links">
         <span>© {new Date().getFullYear()} BEARTRAPS.CA</span>
         <Link href="/contact">CONTACT</Link>
+        <BusinessPhone />
         <a href="mailto:info@beartraps.ca">EMAIL US</a>
         <Link href="/product-compliance">PRODUCT COMPLIANCE</Link>
         <Link href="/privacy">PRIVACY</Link>

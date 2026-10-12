@@ -9,3 +9,8 @@ out/
 screenshots/
 
 node_modules
+
+# Private supplier intake and review manifests; never deployed.
+/supplier-intake/
+/reviewed-catalogue/
+/release-manifest.json
