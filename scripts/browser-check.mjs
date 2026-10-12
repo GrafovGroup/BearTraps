@@ -28,7 +28,7 @@ try {
     const browser = await type.launch();
     try {
       const context = await browser.newContext();
-      const page = await context.newPage();
+      let page = await context.newPage();
       const failures = [];
       page.on("pageerror", (e) => failures.push(e.message));
       for (const [name, width] of [
@@ -160,25 +160,9 @@ try {
           .isDisabled(),
         true,
       );
-      console.log(`${engine}: download passed; checking print`);
-      await page.evaluate(() => {
-        window.print = () => {
-          document.documentElement.dataset.printRequested = "true";
-        };
-      });
-      await page.getByRole("button", { name: "PRINT RFQ / SAVE PDF" }).click();
-      await page.waitForFunction(
-        () => document.documentElement.dataset.printRequested === "true",
-      );
-      await page.emulateMedia({ media: "print" });
-      assert.equal(await page.locator(".print-rfq").isVisible(), true);
-      assert.equal(await page.locator("header").isVisible(), false);
-      if (engine === "chromium")
-        await page.screenshot({
-          path: "screenshots/rfq-print.png",
-          fullPage: true,
-        });
-      await page.emulateMedia({ media: "screen" });
+      const rfqPage = page;
+      page = await context.newPage();
+      await page.goto(base + "/request-quote/", { waitUntil: "networkidle" });
       await page
         .getByRole("button", {
           name: "Remove Custom reflective sign size",
@@ -208,6 +192,13 @@ try {
           ),
           "Overflow " + engine + " " + path,
         );
+        if (path === "/request-quote/") {
+          assert.ok(await page.evaluate(() => {
+            const form = document.querySelector(".quote-layout form").getBoundingClientRect();
+            const footer = document.querySelector("footer").getBoundingClientRect();
+            return form.bottom <= footer.top;
+          }), "RFQ form overlaps footer " + engine);
+        }
         if (engine === "chromium") {
           const result = await new AxeBuilder({ page })
             .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
@@ -234,6 +225,27 @@ try {
         ).status(),
         404,
       );
+      await page.close();
+      page = rfqPage;
+      console.log(`${engine}: download passed; checking print`);
+      await page.evaluate(() => {
+        window.print = () => {
+          document.documentElement.dataset.printRequested = "true";
+        };
+      });
+      await page.getByRole("button", { name: "PRINT RFQ / SAVE PDF" }).click();
+      await page.waitForFunction(
+        () => document.documentElement.dataset.printRequested === "true",
+      );
+      await page.emulateMedia({ media: "print" });
+      assert.equal(await page.locator(".print-rfq").isVisible(), true);
+      assert.equal(await page.locator("header").isVisible(), false);
+      if (engine === "chromium")
+        await page.screenshot({
+          path: "screenshots/rfq-print.png",
+          fullPage: true,
+        });
+      await page.emulateMedia({ media: "screen" });
       assert.deepEqual(failures, []);
       console.log(
         `${engine}: responsive views, keyboard skip link, catalogue search, custom RFQ, deadline fields, persistence, print/download, package merging and no false submission passed.`,
