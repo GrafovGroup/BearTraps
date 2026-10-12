@@ -1,6 +1,6 @@
 # Phase 1B implementation report
 
-Branch: `codex/phase-1b`, based on Phase 1A `b8c98ff77ddf077747f7bd2cad12dfbe2ff9be0b`.
+Branch: `codex/phase-1b`, based on Phase 1A `b8c98ff77ddf077747f7bd2cad12dfbe2ff9be0b`, with the updated owner brief from `b972d4173b80c86d0fade6d8c825164e6b0ff504` merged. Pull request: [#2](https://github.com/GrafovGroup/BearTraps/pull/2), targeting the Phase 1A branch.
 
 ## Summary
 
@@ -50,7 +50,21 @@ Static routes, titles/descriptions, canonicals, sitemap, robots, breadcrumbs and
 
 ## Verification
 
-Pre-push checks used already-installed tools without a local web server. Initial TypeScript/lint checks and the first 19 unit tests passed. Final cloud results and commit references will be recorded after the feature build completes.
+Local checks used already-installed tools without a local web server. TypeScript, lint and all 21 unit tests passed. Production export and browser tests run in GitHub Actions; nothing is hosted on the Mac. Verified code commit: `c6155a29e4957a83348fa70f1600f9e2189bfd3f`. [GitHub Actions run 38282706739](https://github.com/GrafovGroup/BearTraps/actions/runs/38282706739) completed successfully on 2026-10-12. This report is a subsequent documentation-only update.
+
+| Check | Result |
+| --- | --- |
+| Frozen dependency installation | Passed |
+| Lint and TypeScript | Passed |
+| Unit tests | 21 passed, 0 failed |
+| Catalogue validation | Passed; 0 published products |
+| Production build and static export | Passed; 18 routes |
+| Chromium, Firefox and WebKit | Full scripted workflows passed |
+| Chromium axe WCAG 2 A/AA + 2.1 AA scan | No reported violations across 5 scanned pages |
+| Mobile RFQ/footer separation | Passed at 390px in all 3 engines |
+| WHC ZIP package | Generated successfully; not deployed |
+
+[WHC upload artifact](https://github.com/GrafovGroup/BearTraps/actions/runs/38282706739/artifacts/11762480544) and [screenshots/accessibility report](https://github.com/GrafovGroup/BearTraps/actions/runs/38282706739/artifacts/11762280963) are retained until 2026-10-26. Re-run the workflow to regenerate them afterward.
 
 Cloud commands:
 
@@ -64,7 +78,9 @@ Cloud commands:
 - `pnpm exec playwright install --with-deps chromium firefox webkit`
 - `pnpm run test:browser`
 
-The browser suite covers responsive widths, keyboard skip navigation, catalogue search, custom RFQ lines, basket persistence, tender fields, package merging, print/download and disabled online submission. Chromium axe checks target catalogue, RFQ, procurement, package and bear-trap category pages. Automated checks are not a full human screen-reader or legal audit.
+The browser suite covers responsive widths, keyboard skip navigation, catalogue search, custom RFQ lines, basket persistence, tender fields, package merging, print/download and disabled online submission. Chromium axe checks target catalogue, RFQ, procurement, package and bear-trap category pages. Automated checks are not a full human screen-reader or legal audit. Real Safari/iOS devices, verified product-detail content and live WHC performance remain to be checked.
+
+Cloud screenshots were visually inspected for the desktop homepage, mobile catalogue, mobile package builder, mobile RFQ and printable summary. This caught a mobile RFQ/footer overlap caused by a percentage row gap; the row gap now uses pixels, with a regression assertion. RFQ field names now explicitly reference their caption, avoiding contamination by select options and validation messages. Browser tests wait for focus and route transitions, and create explicit contexts for axe scanning. Linux WebKit stalled when navigating after print emulation; the suite now checks navigation in a separate tab and print last. All three engines passed that arrangement. It checks the print trigger and print CSS, not a native operating-system print dialog. The final mobile RFQ screenshot was re-inspected to confirm the footer separation.
 
 ## Remaining dependencies
 
