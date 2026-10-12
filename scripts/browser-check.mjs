@@ -92,6 +92,7 @@ try {
           exact: true,
         })
         .fill("Requested size: 600 x 900 mm");
+      console.log(`${engine}: custom lines added; checking persistence and validation`);
       await page.reload();
       assert.equal(await page.getByRole("spinbutton").count(), 3);
       await page.getByRole("button", { name: "DOWNLOAD YOUR RFQ" }).click();
@@ -137,6 +138,7 @@ try {
         .fill("Liftgate required");
       for (const checkbox of await page.getByRole("checkbox").all())
         await checkbox.check();
+      console.log(`${engine}: form completed; checking download`);
       const downloading = page.waitForEvent("download");
       await page.getByRole("button", { name: "DOWNLOAD YOUR RFQ" }).click();
       const download = await downloading;
@@ -158,6 +160,7 @@ try {
           .isDisabled(),
         true,
       );
+      console.log(`${engine}: download passed; checking print`);
       await page.evaluate(() => {
         window.print = () => {
           document.documentElement.dataset.printRequested = "true";
@@ -236,13 +239,14 @@ try {
         `${engine}: responsive views, keyboard skip link, catalogue search, custom RFQ, deadline fields, persistence, print/download, package merging and no false submission passed.`,
       );
     } catch (error) {
+      console.error(`${engine}: original browser failure`, error);
       const failedPage = browser.contexts()[0]?.pages()[0];
       if (failedPage) {
         console.error("Browser failure at", failedPage.url());
         await failedPage.screenshot({
           path: `screenshots/${engine}-failure.png`,
           fullPage: true,
-        });
+        }).catch((captureError) => console.error("Failure screenshot unavailable", captureError.message));
       }
       throw error;
     } finally {
