@@ -188,6 +188,8 @@ try {
       });
       await page.getByRole("button", { name: "ADD PACKAGE TO RFQ" }).click();
       await page.getByRole("link", { name: "REVIEW YOUR RFQ" }).click();
+      await page.waitForURL("**/request-quote/");
+      await page.getByRole("button", { name: "DOWNLOAD YOUR RFQ" }).waitFor();
       assert.equal(await page.getByRole("spinbutton").count(), 4);
       for (const path of [
         "/products/",
