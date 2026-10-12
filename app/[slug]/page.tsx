@@ -1,3 +1,5 @@
+import PagePhoto from "@/components/page-photo";
+import pageImages from "@/content/page-images.json";
 import BusinessPhone from "@/components/business-phone";
 export const dynamicParams = false;
 import { notFound } from "next/navigation";
@@ -43,17 +45,21 @@ export default async function Page({
   const p = pages[slug];
   if (!c && !p) notFound();
   const title = c?.title || p.title;
+  const photo = pageImages.find((image) => image.page === `/${slug}/`);
   return (
     <>
-      <div className="page-intro">
-        <Breadcrumb title={c?.short || slug.replaceAll("-", " ")} />
-        <p className="eyebrow">
-          {c
-            ? "EQUIPMENT DIRECTORY / " + c.number
-            : "BEARTRAPS.CA / FIELD & PROCUREMENT"}
-        </p>
-        <h1>{title}</h1>
-        <p className="large-copy">{c?.summary || p.intro}</p>
+      <div className={`page-intro ${photo ? "page-intro-with-photo" : ""}`}>
+        <div className="page-intro-copy">
+          <Breadcrumb title={c?.short || slug.replaceAll("-", " ")} />
+          <p className="eyebrow">
+            {c
+              ? "EQUIPMENT DIRECTORY / " + c.number
+              : "BEARTRAPS.CA / FIELD & PROCUREMENT"}
+          </p>
+          <h1>{title}</h1>
+          <p className="large-copy">{c?.summary || p.intro}</p>
+        </div>
+        {photo && <PagePhoto id={photo.id} priority />}
       </div>
       {c ? (
         <>

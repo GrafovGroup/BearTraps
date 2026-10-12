@@ -1425,3 +1425,99 @@ button:disabled {
     max-width: 44%;
   }
 }
+
+/* Each editorial photograph belongs to exactly one placement. */
+.page-photo {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--forest);
+}
+.page-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+.page-photo figcaption {
+  padding: 16px 20px;
+  color: #e9ece2;
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: 1.5px;
+}
+.hero-photography {
+  height: auto;
+  min-height: 320px;
+  padding: 36px 28px;
+  gap: 24px;
+  background: #203b2f;
+}
+.hero-photography .page-photo {
+  box-shadow: 0 18px 50px #091b1630;
+}
+.hero-photography .page-photo img {
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+}
+.hero-photo-link {
+  color: var(--amber);
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  padding: 0 20px;
+}
+.page-intro-with-photo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: 5%;
+  padding-bottom: 45px;
+}
+.page-intro-with-photo h1 {
+  font-size: clamp(38px, 4.3vw, 64px);
+}
+.page-intro-with-photo .breadcrumb {
+  margin-bottom: 32px;
+}
+.page-intro-with-photo .page-photo img {
+  aspect-ratio: 4 / 3;
+}
+.page-intro-with-photo .page-photo[data-photo-id="capture"] img,
+.page-intro-with-photo .page-photo[data-photo-id="deterrence"] img {
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #d7dece;
+}
+.page-intro-with-photo .page-photo[data-photo-id="storage"] img {
+  object-fit: contain;
+}
+.habitat-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6%;
+  align-items: center;
+}
+.habitat-copy h2 {
+  margin-top: 0;
+}
+@media (max-width: 760px) {
+  .page-intro-with-photo,
+  .habitat-section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  .page-intro-with-photo {
+    padding-bottom: 30px;
+  }
+  .page-intro-with-photo .page-photo img {
+    max-height: 460px;
+  }
+  .hero-photography {
+    padding: 24px 6% 30px;
+    gap: 18px;
+  }
+  .page-photo figcaption {
+    padding: 14px 16px;
+  }
+}
