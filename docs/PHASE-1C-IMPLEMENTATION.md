@@ -69,4 +69,12 @@ See CONTACT-DELIVERY.md, CATALOGUE-PUBLISHING.md, OPERATIONS.md and WHC-DEPLOYME
 
 ## Owner-selected logo follow-up
 
-Applied the first logo option to the shared header and footer: shield with bear, trees and amber sun, and BEARTRAPS wordmark without .ca. The transparent asset is stored in `public/brand/beartraps-shield.png`; provenance and SHA-256 are recorded in ASSET-USAGE.md. Responsive sizing and a light footer panel preserve legibility. The home link has an accessible name. This follow-up is part of PR #3 and has not been deployed to WHC. Follow-up cloud validation is pending.
+Applied the first logo option to the shared header and footer: shield with bear, trees and amber sun, and BEARTRAPS wordmark without .ca. The transparent asset is stored in `public/brand/beartraps-shield.png`; provenance and SHA-256 are recorded in ASSET-USAGE.md. Responsive sizing and a light footer panel preserve legibility. The home link has an accessible name. This follow-up is part of PR #3 and has not been deployed to WHC. Follow-up implementation commit **cf7b08e785769e79b04be9831ab98b0f6258e1a5** passed [cloud run 38290701247](https://github.com/GrafovGroup/BearTraps/actions/runs/38290701247) on October 12, 2026: frozen install, existing dependency audit policy, PHP checks, lint, TypeScript, unit tests, catalogue checks, production build/static export, Chromium/Firefox/WebKit workflows and accessibility checks. Desktop and mobile screenshots were visually inspected; logo sizing, navigation and footer contrast were intact. The asset is RGBA with real alpha transparency at 2172 × 724. No local server was started. The subsequent report commit changes documentation only.
+
+Updated release artifacts, expiring October 26:
+
+- [WHC static package with selected logo](https://github.com/GrafovGroup/BearTraps/actions/runs/38290701247/artifacts/11765547133)
+- [Updated screenshots and accessibility results](https://github.com/GrafovGroup/BearTraps/actions/runs/38290701247/artifacts/11766105154)
+- [Separate disabled bridge](https://github.com/GrafovGroup/BearTraps/actions/runs/38290701247/artifacts/11765871146)
+
+These supersede the earlier artifacts for the logo follow-up; the earlier package inspection/hash applies only to that earlier package. Production remains Phase 1B until deployment is approved.
