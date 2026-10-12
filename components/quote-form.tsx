@@ -1,0 +1,324 @@
+"use client";
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { categories } from "@/lib/catalog";
+import {
+  parseBasket,
+  writeBasket,
+  basketKey,
+  type BasketItem,
+} from "@/lib/basket";
+import { provinces, quoteSchema } from "@/lib/quote";
+const subscribe = (notify: () => void) => {
+  window.addEventListener("storage", notify);
+  window.addEventListener("basket-updated", notify);
+  return () => {
+    window.removeEventListener("storage", notify);
+    window.removeEventListener("basket-updated", notify);
+  };
+};
+let memoryBasket: string | null = null;
+const snapshot = () => {
+  if (memoryBasket !== null) return memoryBasket;
+  try {
+    return localStorage.getItem(basketKey) || "[]";
+  } catch {
+    return "[]";
+  }
+};
+export default function QuoteForm() {
+  const raw = useSyncExternalStore(subscribe, snapshot, () => "[]");
+  const items = useMemo<BasketItem[]>(() => parseBasket(raw), [raw]);
+  const ready = useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [status, setStatus] = useState("");
+  const errorRef = useRef<HTMLDivElement>(null);
+  function update(next: BasketItem[]) {
+    memoryBasket = JSON.stringify(next);
+    try {
+      writeBasket(next);
+      memoryBasket = null;
+    } catch {
+      setStatus(
+        "Browser storage is unavailable. Keep this page open until you download your request.",
+      );
+    }
+    window.dispatchEvent(new Event("basket-updated"));
+  }
+  function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const values = Object.fromEntries(form);
+    const result = quoteSchema.safeParse({
+      ...values,
+      items,
+      eligibility: form.get("eligibility") === "on",
+    });
+    if (!result.success) {
+      const next: Record<string, string> = {};
+      for (const e of result.error.issues) next[String(e.path[0])] = e.message;
+      setErrors(next);
+      setStatus("");
+      requestAnimationFrame(() => errorRef.current?.focus());
+      return;
+    }
+    setErrors({});
+    const d = result.data;
+    const content = [
+      "BEARTRAPS.CA — EQUIPMENT REQUEST",
+      "Prepared locally. Not submitted.",
+      "",
+      ...items.map(
+        (i) =>
+          `${categories.find((c) => c.slug === i.slug)?.title} — Quantity: ${i.quantity}`,
+      ),
+      "",
+      `Contact: ${d.name}`,
+      `Organization: ${d.organization}`,
+      `Email: ${d.email}`,
+      `Phone: ${d.phone}`,
+      `Province: ${d.province}`,
+      `Delivery destination: ${d.destination}`,
+      `Desired date: ${d.desiredDate || "To be confirmed"}`,
+      `Tender reference: ${d.tenderReference || "None"}`,
+      `Closing date: ${d.closingDate || "None"}`,
+      `Technical requirements: ${d.requirements}`,
+      `Notes: ${d.notes}`,
+      "",
+      "Eligibility acknowledged. Product suitability and availability require independent confirmation.",
+    ].join("\n");
+    const url = URL.createObjectURL(
+      new Blob([content], { type: "text/plain;charset=utf-8" }),
+    );
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "beartraps-equipment-request.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setStatus(
+      "Your RFQ file has been prepared for download. No request has been submitted.",
+    );
+  }
+  const field = (
+    name: string,
+    label: string,
+    type = "text",
+    required = false,
+  ) => (
+    <label className="field" key={name} htmlFor={name}>
+      <span>
+        {label}
+        {required ? " *" : ""}
+      </span>
+      <input
+        id={name}
+        name={name}
+        type={type}
+        required={required}
+        maxLength={name === "email" ? 254 : 2000}
+        autoComplete={
+          (
+            {
+              name: "name",
+              organization: "organization",
+              email: "email",
+              phone: "tel",
+            } as Record<string, string>
+          )[name] || "off"
+        }
+        aria-invalid={!!errors[name]}
+        aria-describedby={errors[name] ? name + "-error" : undefined}
+      />
+      {errors[name] && (
+        <span className="error" id={name + "-error"}>
+          {errors[name]}
+        </span>
+      )}
+    </label>
+  );
+  return (
+    <section className="section quote-layout">
+      <aside className="basket">
+        <p className="eyebrow">01 / EQUIPMENT LIST</p>
+        <h2>Your requirements</h2>
+        <p>
+          Add categories now. Exact models and specifications can be included
+          below.
+        </p>
+        <label className="field" htmlFor="add-category">
+          <span>ADD EQUIPMENT</span>
+          <select
+            id="add-category"
+            value=""
+            disabled={!ready}
+            onChange={(e) => {
+              if (
+                e.target.value &&
+                !items.some((i) => i.slug === e.target.value)
+              )
+                update([...items, { slug: e.target.value, quantity: 1 }]);
+            }}
+          >
+            <option value="">Select a category</option>
+            {categories
+              .filter((c) => !items.some((i) => i.slug === c.slug))
+              .map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.short}
+                </option>
+              ))}
+          </select>
+        </label>
+        {!items.length && (
+          <p className="empty-basket">Your equipment list is empty.</p>
+        )}
+        {items.map((i) => (
+          <div className="basket-item" key={i.slug}>
+            <h3>{categories.find((c) => c.slug === i.slug)?.short}</h3>
+            <div>
+              <label>
+                QUANTITY{" "}
+                <input
+                  type="number"
+                  min="1"
+                  max="9999"
+                  value={i.quantity}
+                  onChange={(e) =>
+                    update(
+                      items.map((x) =>
+                        x.slug === i.slug
+                          ? {
+                              ...x,
+                              quantity: Math.max(
+                                1,
+                                Math.min(
+                                  9999,
+                                  Math.trunc(Number(e.target.value) || 1),
+                                ),
+                              ),
+                            }
+                          : x,
+                      ),
+                    )
+                  }
+                />
+              </label>
+              <button
+                type="button"
+                onClick={() => update(items.filter((x) => x.slug !== i.slug))}
+                aria-label={
+                  "Remove " + categories.find((c) => c.slug === i.slug)?.short
+                }
+              >
+                REMOVE ×
+              </button>
+            </div>
+          </div>
+        ))}
+        <p className="error">{errors.items}</p>
+        <p className="basket-note">
+          No payment is collected. Regulated equipment requires buyer and
+          jurisdiction review.
+        </p>
+      </aside>
+      <form onSubmit={submit} noValidate>
+        <p className="eyebrow">02 / PROJECT DETAILS</p>
+        <h2>Tell us what the job needs.</h2>
+        <p>Fields marked * are required.</p>
+        {Object.keys(errors).length > 0 && (
+          <div
+            tabIndex={-1}
+            ref={errorRef}
+            className="error-summary"
+            role="alert"
+          >
+            <strong>Review your request</strong>
+            <ul>
+              {Object.entries(errors).map(([k, v]) => (
+                <li key={k}>{v}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div className="form-grid">
+          {field("name", "CONTACT NAME", "text", true)}
+          {field("organization", "ORGANIZATION", "text", true)}
+          {field("email", "EMAIL", "email", true)}
+          {field("phone", "PHONE", "tel", true)}
+          <label className="field" htmlFor="province">
+            <span>PROVINCE / TERRITORY *</span>
+            <select
+              id="province"
+              name="province"
+              required
+              aria-invalid={!!errors.province}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select province or territory
+              </option>
+              {provinces.map((p) => (
+                <option key={p}>{p}</option>
+              ))}
+            </select>
+            {errors.province && (
+              <span className="error">Select your province or territory</span>
+            )}
+          </label>
+          {field("destination", "DELIVERY DESTINATION", "text", true)}
+          {field("desiredDate", "DESIRED DELIVERY DATE", "date")}
+          {field("tenderReference", "TENDER REFERENCE")}
+          {field("closingDate", "TENDER CLOSING DATE", "date")}
+        </div>
+        <label className="field" htmlFor="requirements">
+          <span>TECHNICAL REQUIREMENTS</span>
+          <textarea
+            id="requirements"
+            name="requirements"
+            rows={5}
+            maxLength={2000}
+            placeholder="Models, dimensions, intended use, required evidence, compatibility…"
+          />
+        </label>
+        <label className="field" htmlFor="notes">
+          <span>ADDITIONAL NOTES</span>
+          <textarea id="notes" name="notes" rows={3} maxLength={2000} />
+        </label>
+        <div className="honeypot" aria-hidden="true">
+          <label>
+            Website
+            <input name="website" tabIndex={-1} autoComplete="off" />
+          </label>
+        </div>
+        <label className="checkbox">
+          <input
+            type="checkbox"
+            name="eligibility"
+            required
+            aria-invalid={!!errors.eligibility}
+          />
+          <span>
+            I understand that product availability, buyer authorization and
+            jurisdiction requirements must be confirmed before supply. *
+          </span>
+        </label>
+        {errors.eligibility && <p className="error">{errors.eligibility}</p>}
+        <button className="button amber" type="submit" disabled={!ready}>
+          DOWNLOAD YOUR RFQ ↓
+        </button>
+        <p role="status" className="form-status">
+          {status}
+        </p>
+        <p className="form-note">
+          Your contact details are not stored in the quote basket. This file is
+          prepared locally and is not sent automatically.
+        </p>
+      </form>
+    </section>
+  );
+}

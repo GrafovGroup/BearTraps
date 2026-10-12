@@ -1,0 +1,277 @@
+import Link from "next/link";
+import { categories } from "@/lib/catalog";
+import { CTA } from "@/components/site";
+export const metadata = { alternates: { canonical: "/" } };
+export default function Home() {
+  return (
+    <>
+      <section className="hero">
+        <div className="hero-copy">
+          <p className="eyebrow">
+            <span className="status-dot" /> PROFESSIONAL WILDLIFE EQUIPMENT
+          </p>
+          <h1>
+            Built for
+            <br />
+            the <em>field.</em>
+            <br />
+            Trusted for
+            <br />
+            the job.
+          </h1>
+          <p className="hero-description">
+            Bear capture equipment. Field-ready transport.
+            <br />
+            Safer infrastructure for the places we share.
+          </p>
+          <div className="actions">
+            <Link className="button amber" href="#equipment">
+              VIEW EQUIPMENT <span>↘</span>
+            </Link>
+            <Link className="text-link" href="/request-quote">
+              REQUEST A QUOTE ↗
+            </Link>
+          </div>
+          <p className="hero-footnote">
+            FOR PARKS, MUNICIPALITIES & PROFESSIONAL FIELD TEAMS
+          </p>
+        </div>
+        <div className="hero-art">
+          <svg
+            viewBox="0 0 650 680"
+            role="img"
+            aria-label="Original technical illustration of a culvert-style live-capture equipment enclosure"
+          >
+            <defs>
+              <pattern
+                id="grid"
+                width="40"
+                height="40"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M40 0H0V40"
+                  fill="none"
+                  stroke="#ffffff"
+                  strokeOpacity=".075"
+                />
+              </pattern>
+              <linearGradient id="metal" x2="1" y2="1">
+                <stop stopColor="#687875" />
+                <stop offset="1" stopColor="#253f36" />
+              </linearGradient>
+            </defs>
+            <rect width="650" height="680" fill="url(#grid)" />
+            <g fill="none" stroke="#91a99d" strokeWidth="1" opacity=".35">
+              <circle cx="330" cy="330" r="245" />
+              <circle cx="330" cy="330" r="230" />
+              <path d="M20 330h610M330 40v580" />
+            </g>
+            <g transform="translate(55 170)">
+              <path
+                d="M60 150 300 55Q380 20 470 115v208L210 430 60 335Z"
+                fill="url(#metal)"
+                stroke="#b9c5b9"
+                strokeWidth="2"
+              />
+              <path
+                d="M60 150Q147 65 210 230v200L60 335Z"
+                fill="#14271f"
+                stroke="#c2cabc"
+                strokeWidth="2"
+              />
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <path
+                  key={i}
+                  d={`M${220 + i * 28} ${221 - i * 12}v${199 - i * 0.4}`}
+                  stroke="#a3b2a5"
+                  opacity=".45"
+                />
+              ))}
+              <path
+                d="m72 170 126 77v160L72 329Z"
+                fill="none"
+                stroke="#c2cabc"
+                strokeWidth="5"
+              />
+              {[0, 1, 2, 3, 4].map((i) => (
+                <path
+                  key={i}
+                  d={`M${88 + i * 23} ${181 + i * 14}v150`}
+                  stroke="#87968b"
+                  strokeWidth="3"
+                />
+              ))}
+              <path
+                d="m75 221 120 74m-120-39 120 74m-120-39 120 74M50 343l166 98 268-111M213 437v20m255-128v22M304 50l40-18 28 13v29"
+                fill="none"
+                stroke="#bdc6b5"
+                strokeWidth="5"
+              />
+              <path
+                d="m33 383 176 103m21-1 273-114"
+                stroke="#e8a13b"
+                strokeWidth="1"
+              />
+              <path
+                d="m30 371 0 25m175 77v25m27-25v25m270-140v25"
+                stroke="#e8a13b"
+              />
+            </g>
+            <g fill="#e8a13b" fontSize="11" fontFamily="monospace">
+              <text x="35" y="55">
+                FIELD SYSTEMS / 01
+              </text>
+              <text x="35" y="640">
+                CAPTURE · TRANSPORT · MONITOR
+              </text>
+              <text x="435" y="55">
+                BEARTRAPS.CA
+              </text>
+            </g>
+          </svg>
+          <div className="art-caption">
+            <span>01 / PROFESSIONAL CAPTURE</span>
+            <Link href="/bear-traps">EXPLORE SYSTEMS ↗</Link>
+          </div>
+        </div>
+      </section>
+      <div className="capability-strip">
+        <span>PROFESSIONAL CAPTURE</span>
+        <span>TRANSPORT & LOGISTICS</span>
+        <span>SITE INFRASTRUCTURE</span>
+        <span>INSTITUTIONAL PROCUREMENT</span>
+      </div>
+      <section id="equipment" className="section">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">THE EQUIPMENT DIRECTORY</p>
+            <h2>
+              Ready for the requirements.
+              <br />
+              Built around the job.
+            </h2>
+          </div>
+          <p>
+            From a single warning sign to a coordinated equipment request. Start
+            with your category.
+          </p>
+        </div>
+        <div className="category-grid">
+          {categories.map((c) => (
+            <Link className="category-card" key={c.slug} href={"/" + c.slug}>
+              <span className="category-number">
+                {c.number}
+                <span>↗</span>
+              </span>
+              <h3>{c.title}</h3>
+              <p>{c.summary}</p>
+              <span className="card-action">EXPLORE CATEGORY</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+      <section className="feature-section">
+        <div>
+          <p className="eyebrow">01 / CAPTURE & TRANSPORT</p>
+          <h2>
+            A field system.
+            <br />
+            Not just a trap.
+          </h2>
+          <p>
+            Plan capture equipment together with its transport, monitoring and
+            site safety requirements. A well-defined request starts long before
+            equipment reaches the field.
+          </p>
+          <Link className="button amber" href="/bear-traps">
+            EXPLORE BEAR TRAPS ↗
+          </Link>
+        </div>
+        <div className="feature-list">
+          {[
+            [
+              "01",
+              "Professional live capture",
+              "Species, authorized use, dimensions and inspection requirements.",
+              "bear-traps",
+            ],
+            [
+              "02",
+              "Transport & handling",
+              "Trailers, cradles, loading access and vehicle compatibility.",
+              "transport-trailers",
+            ],
+            [
+              "03",
+              "Site safety & visibility",
+              "Warning signage, site communication and remote monitoring.",
+              "warning-signage",
+            ],
+          ].map(([n, t, d, s]) => (
+            <Link href={"/" + s} key={n}>
+              <span>{n}</span>
+              <div>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </div>
+              <b>↗</b>
+            </Link>
+          ))}
+        </div>
+      </section>
+      <section className="section split">
+        <div>
+          <p className="eyebrow">INFRASTRUCTURE FOR BEAR COUNTRY</p>
+          <h2>
+            Keep attractants
+            <br />
+            out of reach.
+          </h2>
+        </div>
+        <div>
+          <p className="large-copy">
+            Waste containers, food lockers and storage enclosures specified for
+            the site, the collection routine and the evidence your project
+            requires.
+          </p>
+          <Link className="text-link" href="/bear-resistant-furniture">
+            EXPLORE SITE INFRASTRUCTURE ↗
+          </Link>
+        </div>
+      </section>
+      <section className="procurement section">
+        <p className="eyebrow">FOR THE PEOPLE RESPONSIBLE FOR THE PLACE</p>
+        <div className="split">
+          <h2>
+            Field practical.
+            <br />
+            Procurement minded.
+          </h2>
+          <div>
+            <p className="large-copy">
+              Build a clear specification, document your requirements and bring
+              equipment, freight and tender details into one request.
+            </p>
+            <Link className="button outline" href="/government-procurement">
+              GOVERNMENT & INSTITUTIONAL PROCUREMENT ↗
+            </Link>
+          </div>
+        </div>
+        <div className="industry-row">
+          {[
+            "PARKS & CAMPGROUNDS",
+            "MUNICIPALITIES",
+            "CONSERVATION",
+            "COMMERCIAL SITES",
+          ].map((i) => (
+            <Link key={i} href="/industries">
+              {i} ↗
+            </Link>
+          ))}
+        </div>
+      </section>
+      <CTA />
+    </>
+  );
+}

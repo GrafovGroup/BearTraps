@@ -1,0 +1,69 @@
+import { z } from "zod";
+export const provinces = [
+  "Alberta",
+  "British Columbia",
+  "Manitoba",
+  "New Brunswick",
+  "Newfoundland and Labrador",
+  "Northwest Territories",
+  "Nova Scotia",
+  "Nunavut",
+  "Ontario",
+  "Prince Edward Island",
+  "Quebec",
+  "Saskatchewan",
+  "Yukon",
+] as const;
+const text = z.string().trim().max(2000);
+const date = z
+  .string()
+  .refine(
+    (v) =>
+      v === "" ||
+      (/^\d{4}-\d{2}-\d{2}$/.test(v) &&
+        !Number.isNaN(Date.parse(v)) &&
+        new Date(v).toISOString().slice(0, 10) === v),
+    "Enter a valid date",
+  );
+export const quoteSchema = z.object({
+  name: text.min(2, "Enter your name"),
+  organization: text.min(2, "Enter your organization"),
+  email: z.string().trim().email("Enter a valid email").max(254),
+  phone: z
+    .string()
+    .trim()
+    .min(7, "Enter a phone number")
+    .max(40)
+    .regex(/^[+\d\s().x-]+$/, "Enter a valid phone number"),
+  province: z.enum(provinces),
+  destination: text.min(5, "Enter a delivery destination"),
+  desiredDate: date,
+  tenderReference: text,
+  closingDate: date,
+  requirements: text,
+  notes: text,
+  eligibility: z.literal(true, {
+    errorMap: () => ({
+      message: "Acknowledge the equipment eligibility requirements",
+    }),
+  }),
+  website: z.string().max(0),
+  items: z
+    .array(
+      z.object({
+        slug: z.enum([
+          "bear-traps",
+          "transport-trailers",
+          "warning-signage",
+          "lures-supplies",
+          "bear-resistant-furniture",
+          "wildlife-equipment",
+          "deterrence-protection",
+        ]),
+        quantity: z.number().int().min(1).max(9999),
+      }),
+    )
+    .min(1, "Add at least one equipment requirement")
+    .max(7),
+});
+export type Quote = z.infer<typeof quoteSchema>;
