@@ -98,6 +98,9 @@ try {
         .getByRole("alert")
         .filter({ hasText: "Review your request" })
         .waitFor();
+      await page.waitForFunction(
+        () => document.activeElement?.className === "error-summary",
+      );
       assert.equal(
         await page.evaluate(() => document.activeElement?.className),
         "error-summary",
@@ -229,6 +232,16 @@ try {
       console.log(
         `${engine}: responsive views, keyboard skip link, catalogue search, custom RFQ, deadline fields, persistence, print/download, package merging and no false submission passed.`,
       );
+    } catch (error) {
+      const failedPage = browser.contexts()[0]?.pages()[0];
+      if (failedPage) {
+        console.error("Browser failure at", failedPage.url());
+        await failedPage.screenshot({
+          path: `screenshots/${engine}-failure.png`,
+          fullPage: true,
+        });
+      }
+      throw error;
     } finally {
       await browser.close();
     }
