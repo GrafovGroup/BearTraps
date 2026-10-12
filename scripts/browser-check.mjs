@@ -80,7 +80,7 @@ try {
       await page.waitForURL("**/contact/");
       assert.equal(await page.locator(".mobile-quote").count(), 0);
       await page.getByRole("button", { name: "PREPARE EMAIL" }).click();
-      await page.getByRole("alert").waitFor();
+      await page.getByRole("alert").filter({ hasText: "Review your message" }).waitFor();
       await page.waitForFunction(
         () => document.activeElement?.className === "error-summary",
       );
@@ -100,6 +100,7 @@ try {
         if (r.method() === "POST") sent.push(r.url());
       });
       await page.getByRole("button", { name: "PREPARE EMAIL" }).click();
+      console.log(`${engine}: validation passed; checking prepared email`);
       const email = page.getByRole("link", { name: "OPEN EMAIL APP" });
       await email.waitFor();
       const href = new URL(await email.getAttribute("href"));
@@ -133,6 +134,7 @@ try {
         await page.getByLabel("MESSAGE", { exact: true }).inputValue(),
         /products\/model-a/,
       );
+      console.log(`${engine}: email and prefill passed; checking redirects`);
       for (const route of ["request-quote", "equipment-package"]) {
         await page.goto(base + `/${route}/`);
         await page.waitForURL("**/contact/");
@@ -230,6 +232,11 @@ try {
       console.log(
         `${engine}: browsing, mobile contact, optional fields, accessible validation, truthful mailto, product prefill, legacy redirects and no public RFQ passed.`,
       );
+    } catch (error) {
+      const failed = browser.contexts()[0]?.pages()[0];
+      console.error(`${engine}: ${failed?.url()}`, error);
+      if (failed) await failed.screenshot({ path: `screenshots/${engine}-failure.png`, fullPage: true }).catch(() => {});
+      throw error;
     } finally {
       await browser.close();
     }
