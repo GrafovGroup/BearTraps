@@ -1,7 +1,7 @@
 name: Build and verify WHC website
 on:
   push:
-    branches: [main, 'codex/**']
+    branches: [main, "codex/**"]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -13,16 +13,24 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
       - run: npm install --no-audit --no-fund
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
         env:
-          NEXT_TELEMETRY_DISABLED: '1'
+          NEXT_TELEMETRY_DISABLED: "1"
       - name: Check exported routes
         run: node scripts/check-export.mjs
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-screenshots
+          path: screenshots/
+          retention-days: 14
       - name: Package WHC upload
         run: cd out && zip -r ../beartraps-whc.zip .
       - uses: actions/upload-artifact@v4

@@ -22,7 +22,7 @@ Titles, descriptions, canonicals, organization and breadcrumb structured data. S
 
 ## Validation
 
-The initial local TypeScript check passed using already-installed dependencies. The first lint identified a React effect issue and two configuration warnings, corrected in the cloud branch. Local installation/build and browser QA were blocked by the Mac's full disk. GitHub Actions is the authoritative validation for the resulting branch; see its actual results. Cloud checks include lint, types, six RFQ/compliance tests, production build and exported-route checks. No browser-based accessibility or responsive interaction test is claimed yet.
+The initial local TypeScript check passed using already-installed dependencies. The first lint identified a React effect issue and two configuration warnings, corrected in the cloud branch. Local installation/build and browser QA were blocked by the Mac's full disk. GitHub Actions is the authoritative validation for the resulting branch; see its actual results. Cloud checks include lint, types, six RFQ/compliance tests, production build and exported-route checks. Cloud browser checks cover desktop/tablet/mobile overflow, mobile navigation, basket persistence and removal, validation and RFQ download. See the actual Actions outcome; this is not a full accessibility audit.
 
 ## Requirement resolutions
 

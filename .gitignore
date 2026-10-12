@@ -6,3 +6,4 @@ out/
 *.tsbuildinfo
 
 .pnpm-store/
+screenshots/
