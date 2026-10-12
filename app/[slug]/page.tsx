@@ -147,9 +147,10 @@ export default async function Page({
             </Link>
           </div>
           <p>
-            Record your tender number, local closing time and time zone,
-            delivery deadline and document references. Download or print the RFQ
-            for your records. This does not submit a tender bid.
+            Email your completed request to info@beartraps.ca. Record your
+            tender number, local closing time and time zone, delivery deadline
+            and document references. Download or print the RFQ for your records.
+            This does not submit a tender bid.
           </p>
         </section>
       )}

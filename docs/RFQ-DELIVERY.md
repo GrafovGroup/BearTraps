@@ -2,7 +2,7 @@
 
 ## Current state
 
-The owner selected **info@beartraps.ca** on October 12, 2026. This is the intended recipient, not proof that the mailbox or a delivery service has been verified. No credentials, approved endpoint or delivered message were provided. The static deployment therefore has a visibly disabled online submission button and working local download/print actions. Clicking the mailto link opens the user's mail application; it does not send mail.
+The owner selected **info@beartraps.ca** on October 12, 2026. The owner confirms that this mailbox is active. That confirmation does not establish an outbound delivery service or end-to-end website delivery. No credentials, approved endpoint or delivered message were provided. The static deployment therefore has a visibly disabled online submission button and working local download/print actions. Clicking the mailto link opens the user's mail application; it does not send mail.
 
 ## Shared contract
 
@@ -33,7 +33,7 @@ The handler enforces origin, POST/JSON, a request-size limit of 128,000 bytes, Z
 
 ## Activation checklist
 
-1. Confirm mailbox access and an authorized delivery provider for info@beartraps.ca.
+1. Use the owner-confirmed active mailbox info@beartraps.ca and configure an authorized outbound delivery provider.
 2. Store provider secrets and `RFQ_RECIPIENT=info@beartraps.ca` in server-only environment configuration. No credentials go in source or `NEXT_PUBLIC_*` values.
 3. Deploy the independently secured service and configure exact CORS origins/preflight if it is cross-origin. Do not use wildcard credentialed CORS. Enforce all origin checks on the server.
 4. Test invalid input, body limits, missing consent, spam, rate limits, provider outage, queue failure, duplicate retries and receipt semantics. Never log contact bodies, document references or email content.

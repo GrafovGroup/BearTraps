@@ -6,7 +6,7 @@ Branch: `codex/phase-1b`, based on Phase 1A `b8c98ff77ddf077747f7bd2cad12dfbe2ff
 
 Implements the catalogue architecture, expanded RFQ, procurement package builder and validation described in `PHASE-1B-MASTER-PROMPT.md`. WHC static export and the existing brand are preserved. Phase 1A and main are not replaced.
 
-The owner designated **info@beartraps.ca** as the quote recipient. No endpoint credentials or supplier records were supplied. Therefore no products are fabricated and online submission remains disabled; downloads and print/PDF are functional. Mailbox delivery and WHC deployment are not claimed.
+The owner designated **info@beartraps.ca** as the quote recipient and confirms the mailbox is active. No endpoint credentials or supplier records were supplied. Therefore no products are fabricated and online submission remains disabled; downloads and print/PDF are functional. Mailbox delivery and WHC deployment are not claimed.
 
 ## Routes and components
 
@@ -69,7 +69,7 @@ The browser suite covers responsive widths, keyboard skip navigation, catalogue 
 ## Remaining dependencies
 
 1. Verified WHC access/document root, DNS/HTTPS and an authorized upload; no live deployment performed.
-2. Provisioned recipient mailbox, delivery service credentials, durable queue, spam/rate limits, retention policy and actual inbox confirmation before enabling submission.
+2. Delivery service credentials for the owner-confirmed active mailbox, durable queue, spam/rate limits, retention policy and actual inbox confirmation before enabling submission.
 3. Supplier-backed product/model/specification/evidence and unique licensed image records before publishing inventory.
 4. Human compatibility, provincial legal and buyer-authorization review for each regulated supply decision.
 5. Reviewed French translations and manual screen-reader/keyboard audit.

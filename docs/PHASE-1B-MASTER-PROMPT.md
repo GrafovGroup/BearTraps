@@ -26,7 +26,7 @@ Implement Phase 1B in GrafovGroup/BearTraps, building on the completed Phase 1A 
 - Preserve client-side and server-side Zod validation; add accessibility, clear errors, spam/rate-limit protections, and privacy-conscious data handling.
 - **Do not claim a quote has been submitted unless a configured backend actually accepted it.**
 - Hosting is WHC static export. Build a documented adapter/interface for a secure WHC-compatible PHP endpoint or vetted external form/email service. Do not add Next.js server routes that are assumed to execute on static hosting.
-- Implement actual delivery only if verified endpoint credentials and destination are available through secure environment configuration; otherwise retain a clear disabled state/local RFQ download with a deployment checklist. Never hardcode credentials or assume `info@beartraps.ca` is provisioned. Destination address is TBD by owner.
+- Implement actual delivery only if verified endpoint credentials and destination are available through secure environment configuration; otherwise retain a clear disabled state/local RFQ download with a deployment checklist. Never hardcode credentials or assume `info@beartraps.ca` is provisioned. The owner confirms **info@beartraps.ca** is active and is the designated sales, RFQ and procurement recipient. Use this address in contact copy and configuration defaults. Email inbox existence does not establish a configured outbound server or delivery API: implement actual submission only after secure SMTP/API credentials, hosting support, and end-to-end delivery verification. Do not expose credentials client-side or claim successful sending before backend confirmation.
 - If implementing an endpoint, require server validation, spam protection, request-size limits, safe handling of any uploads, logs without sensitive data, and delivery-failure reporting. Avoid storing sensitive procurement documents without configured secure storage and retention policy.
 - Add confirmation, error and retry UX only for actual backend states.
 
@@ -71,3 +71,10 @@ Create `docs/PHASE-1B-IMPLEMENTATION.md` covering: summary, commit/branch, route
 
 ## Execution
 Work on the existing Phase 1A implementation branch or a new feature branch based on it. Do not replace `main` without review. Inspect first, implement incrementally, run all available checks, commit the work and report the outcome.
+
+## Confirmed owner contact decision
+- Primary public contact and RFQ destination: **info@beartraps.ca** (owner confirms mailbox is active).
+- Show this address on contact and procurement pages and in appropriate footer links.
+- Implement secure server-side email delivery via WHC-compatible backend or authenticated external provider; never attempt SMTP from static client JavaScript.
+- Add a production smoke test checklist: submit sample RFQ, verify inbox receipt, check spam/rejection, verify success/failure UX, and log delivery errors without exposing private buyer information.
+- Until this is actually configured and tested, keep the local-download fallback and explicitly state that no email was sent.

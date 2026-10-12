@@ -41,7 +41,7 @@ Add supplier-backed records only after human evidence review. Validate identifie
 
 `/equipment-package/` combines category requirements without implying compatibility. The basket supports categories, published products/variants, custom sourcing, quantities and line specifications. Existing Phase 1A baskets migrate automatically. Contact/project fields remain in memory; equipment and line specifications persist on the device until cleared.
 
-`/request-quote/` collects buyer and tender details, validates closing date/time/time zone (including DST ambiguity), and generates a text or printable RFQ. It never submits a tender bid. The owner selected **info@beartraps.ca** as the intended recipient. The mailbox and backend have not been delivery-tested.
+`/request-quote/` collects buyer and tender details, validates closing date/time/time zone (including DST ambiguity), and generates a text or printable RFQ. It never submits a tender bid. The owner selected **info@beartraps.ca** as the intended recipient. The owner confirms the mailbox is active. Automated backend delivery has not been configured or tested.
 
 Online submission is disabled by default. [RFQ delivery integration](docs/RFQ-DELIVERY.md) describes the adapter, independent server contract, required durable queue/rate limiting/spam verification and activation procedure. `integrations/rfq-handler.ts` does not execute on static hosting. No API key belongs in the client bundle.
 

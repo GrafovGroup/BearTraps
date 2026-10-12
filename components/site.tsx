@@ -67,6 +67,7 @@ export function Footer() {
       <div className="footer-links">
         <span>© {new Date().getFullYear()} BEARTRAPS.CA</span>
         <Link href="/contact">CONTACT</Link>
+        <a href="mailto:info@beartraps.ca">EMAIL US</a>
         <Link href="/product-compliance">PRODUCT COMPLIANCE</Link>
         <Link href="/privacy">PRIVACY</Link>
         <Link href="/terms">TERMS</Link>
