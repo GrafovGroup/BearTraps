@@ -34,6 +34,7 @@ export default function QuoteBasket({
       <label className="field">
         <span>ADD EQUIPMENT</span>
         <select
+          aria-label="ADD EQUIPMENT"
           value=""
           disabled={!ready}
           onChange={(e) => {
@@ -73,6 +74,7 @@ export default function QuoteBasket({
         <label className="field">
           <span>SOURCING CATEGORY</span>
           <select
+            aria-label="SOURCING CATEGORY"
             value={category}
             onChange={(e) =>
               setCategory(e.target.value as BasketItem["category"])
