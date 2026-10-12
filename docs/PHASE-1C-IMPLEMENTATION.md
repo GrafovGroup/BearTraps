@@ -20,9 +20,36 @@ Principal files: `lib/contact.ts`, `lib/contact-delivery.ts`, `components/contac
 
 ## Verification
 
-Local unit suite: **26 passed** (including retained internal legacy tests, new contact/import checks). Final cloud build, security audit, PHP checks, static export and browser results pending; this section will be updated with actual evidence.
+Verified implementation commit: **df891f581ac459c76ded817289cfe5492ae68424**. [Cloud run 38288189136](https://github.com/GrafovGroup/BearTraps/actions/runs/38288189136) passed on October 12, 2026. This report update changes documentation only.
 
-No local website server was started. Builds/browser tests run in GitHub Actions. The first audit detected Next.js issues, addressed by upgrading to 16.3.8. An unpatched lint-only braces advisory has a documented narrowly scoped exception expiring October 26; see SECURITY.md. Zero vulnerabilities is not claimed.
+| Check | Actual result |
+| --- | --- |
+| Frozen install, lint, TypeScript | Passed |
+| Unit tests (`pnpm test`) | 26 passed; includes new contact/import tests and retained internal legacy tests |
+| Catalogue validation | Passed; zero published products |
+| Next.js production build | Passed, static export |
+| Export verification | 18 HTML paths: 16 content pages plus two legacy contact fallbacks; sitemap/robots/404/.htaccess present; no legacy public RFQ links |
+| Dependency audit | Gate passed; one high braces advisory explicitly ignored under the time-limited lint-only assessment in SECURITY.md. No zero-vulnerability claim |
+| PHP lint and receipt/rate-limit tests | Passed on cloud PHP 8.3.6; actual WHC PHP 8.2 execution still requires activation verification |
+| Chromium, Firefox, WebKit | Full scripted workflows passed with no recorded page errors |
+| Chromium axe WCAG 2 A/AA and 2.1 AA | Zero reported violations on catalogue, contact, procurement and bear-trap category pages |
+| Static package and separate bridge artifact | Produced successfully; not deployed |
+
+Cloud commands: `pnpm install --frozen-lockfile`, `pnpm audit --audit-level=high`, `php -l integrations/whc/contact.php`, `php tests/whc-bridge.php`, `pnpm run lint`, `pnpm run typecheck`, `pnpm test`, `pnpm run check:catalogue`, `pnpm run build`, `node scripts/check-export.mjs`, `pnpm exec playwright install --with-deps chromium firefox webkit`, `pnpm run test:browser`.
+
+Browser checks cover 1440/768/390px homepage layouts, keyboard skip link/mobile navigation, category search, sticky contact CTA/footer separation, required/optional fields and consent, focused error summary, correctly encoded mailto contents, no website POST in fallback mode, stale email-link removal after edits, product query prefill, both legacy client redirects, reduced-motion preference, missing-product 404 and absence of public RFQ actions. Tests do not send email or automate an email application. Actual Apache 301/header behavior remains a post-deployment check; CI uses a static HTTP server. Screenshot inspection covered desktop home, mobile catalogue/contact/procurement. Automated checks are not full manual screen-reader or real iOS/Safari validation.
+
+QA found a selector collision with Next's route announcer; the test now targets the form summary. WebKit then reported a speculative route-prefetch access-control error during navigation. Public links now disable speculative prefetch, and the complete rerun passed all engines. Contact labels remain stable when validation errors appear, and legacy RFQ-only print hiding was removed.
+
+No local website server was started. Production builds and browser tests ran in GitHub Actions. Next.js was upgraded to 16.3.8 to address the first audit's Next advisories. The remaining lint-only braces exception expires October 26; CI forces reassessment after expiry.
+
+Artifacts (expire October 26, 2026):
+
+- [WHC static upload package](https://github.com/GrafovGroup/BearTraps/actions/runs/38288189136/artifacts/11764073542)
+- [Screenshots and accessibility report](https://github.com/GrafovGroup/BearTraps/actions/runs/38288189136/artifacts/11764078492)
+- [Separate disabled contact bridge](https://github.com/GrafovGroup/BearTraps/actions/runs/38288189136/artifacts/11764700688)
+
+The downloaded static artifact was inspected: 140 ZIP entries, .htaccess included, no PHP endpoint bundled. Inner `beartraps-whc.zip` SHA-256: `158f063abc882b38e7063b093f0a39f71565d8cedbfeb3a0e468db7c1132acdc`. The bridge is a separate opt-in deployment, never implied by the static package.
 
 ## Hosting, delivery and supplier status
 
