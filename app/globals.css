@@ -872,7 +872,7 @@ button:disabled {
     padding: 10px 6%;
   }
   .brand {
-    width: 210px;
+    width: min(210px, calc(100vw - 132px));
   }
   .hero {
     grid-template-columns: 1fr;
