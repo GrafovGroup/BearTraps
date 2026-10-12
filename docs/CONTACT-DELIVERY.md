@@ -2,6 +2,8 @@
 
 ## Current status
 
+Deployed on WHC. One explicitly authorized live test received provider-confirmed success; owner inbox confirmation remains pending. See [implementation and deployment evidence](FORMSPREE-IMPLEMENTATION.md).
+
 The owner supplied and authorized Formspree endpoint `https://formspree.io/f/xqpedwyv`. The React contact form posts validated name, organization, email, phone, subject, message and consent directly to Formspree using JSON and `Accept: application/json`. No secret belongs in the browser. Formspree handles provider-side spam filtering and delivery; no WHC PHP bridge is needed for this provider.
 
 The existing React state and accessible validation are retained rather than introducing a second form-state SDK. `lib/formspree.ts` handles the Formspree response contract separately from the optional custom 202 receipt service. Success requires a successful HTTP response with `ok: true`. Timeouts, network errors, malformed responses and provider rejection retain entered fields and display retry/direct-email guidance. Repeated clicks during a request are blocked; an identical confirmed submission is not sent twice in the same mounted form. This is not provider-side idempotency: retrying an unconfirmed timeout may duplicate a submission.
@@ -38,7 +40,7 @@ Do not trust arbitrary forwarding headers. If WHC uses a reverse proxy, verify t
 5. Approve retention/deletion and update privacy disclosures to match actual operation. Set `NEXT_PUBLIC_CONTACT_ENDPOINT=https://beartraps.ca/api/contact.php` in the cloud build only after those checks; the workflow currently leaves it empty.
 6. Rebuild, review and approve deployment. Confirm accepted-for-processing copy, failure/retry behavior and private failure monitoring. Disable by rebuilding with an empty endpoint if reliable receipt cannot be maintained.
 
-No live email delivery tests have run. Unit tests use synthetic data and mocked dependencies; PHP tests cover receipt validation/rate limits, not WHC execution or inbox delivery.
+Before the Formspree integration, no live email delivery tests had run. Unit tests use synthetic data and mocked dependencies; PHP tests cover receipt validation/rate limits, not WHC execution or inbox delivery.
 
 ## Phase 1D verification additions
 

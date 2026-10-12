@@ -67,3 +67,7 @@ The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured 
 ## Page imagery update
 
 The [image enrichment report](docs/PAGE-IMAGERY-IMPLEMENTATION.md) records 12 distinct responsive images across 11 pages, verified sources and cloud test evidence. [Asset usage](docs/ASSET-USAGE.md) and `content/page-images.json` track each unique placement. The tested image package is live on WHC with owner approval. See [deployment verification](docs/DEPLOYMENT-IMAGERY-2026-10-12.md).
+
+## Formspree contact integration
+
+The contact form is live with the owner-provided Formspree endpoint. Cloud checks and one authorized live submission passed; recipient inbox confirmation remains with the owner. See [implementation and deployment evidence](docs/FORMSPREE-IMPLEMENTATION.md).
