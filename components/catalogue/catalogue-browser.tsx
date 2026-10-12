@@ -1,6 +1,6 @@
 "use client";
 import { useId, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { categories, publishedProducts } from "@/lib/catalog";
 import { categoryApplications } from "@/lib/categories";
 import {

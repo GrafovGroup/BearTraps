@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { categories } from "@/lib/catalog";
 import { CTA } from "@/components/site";
 export const metadata = { alternates: { canonical: "/" } };

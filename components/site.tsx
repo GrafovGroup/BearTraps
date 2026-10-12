@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 export function Brand() {
   return (
     <Link className="brand" href="/" aria-label="BearTraps.ca home">

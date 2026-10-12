@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 import type { Product } from "@/lib/catalog";
 export function ProductCard({ product: p }: { product: Product }) {
   return (

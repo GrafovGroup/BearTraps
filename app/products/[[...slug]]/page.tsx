@@ -10,7 +10,7 @@ import {
   ComplianceNotice,
   RelatedAccessories,
 } from "@/components/catalogue/product-components";
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { productContactHref } from "@/lib/contact";
 export const dynamicParams = false;
 export function generateStaticParams() {

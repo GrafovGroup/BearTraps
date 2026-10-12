@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { contactSchema, contactMailto } from "@/lib/contact";

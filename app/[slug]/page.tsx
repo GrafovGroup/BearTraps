@@ -1,6 +1,6 @@
 export const dynamicParams = false;
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { categories, siteUrl } from "@/lib/catalog";
 import { pages } from "@/lib/pages";
 import { Breadcrumb, CTA } from "@/components/site";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 import LegacyContactRedirect from "@/components/legacy-contact-redirect";
 export const metadata = {
   title: "Contact our team",
