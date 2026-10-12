@@ -66,4 +66,4 @@ The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured 
 
 ## Page imagery update
 
-The [image enrichment report](docs/PAGE-IMAGERY-IMPLEMENTATION.md) records 12 distinct responsive images across 11 pages, verified sources and cloud test evidence. [Asset usage](docs/ASSET-USAGE.md) and `content/page-images.json` track each unique placement. The tested image package is prepared for WHC; the last deployed release remains Phase 1D until its upload is approved.
+The [image enrichment report](docs/PAGE-IMAGERY-IMPLEMENTATION.md) records 12 distinct responsive images across 11 pages, verified sources and cloud test evidence. [Asset usage](docs/ASSET-USAGE.md) and `content/page-images.json` track each unique placement. The tested image package is live on WHC with owner approval. See [deployment verification](docs/DEPLOYMENT-IMAGERY-2026-10-12.md).

@@ -1,6 +1,6 @@
 # WHC release acceptance checklist
 
-Phase 1D is the last verified live release, deployed with owner approval on October 12, 2026. See [deployment evidence](DEPLOYMENT-PHASE-1D-2026-10-12.md). Future successful cloud artifacts alone are not proof of production upload. The brief requires explicit owner approval before WHC upload, DNS/MX changes or contact activation. File deployment must preserve existing mail and DNS.
+The page imagery update is the last verified live release, deployed with owner approval on October 12, 2026. See [deployment evidence](DEPLOYMENT-IMAGERY-2026-10-12.md). Future successful cloud artifacts alone are not proof of production upload. The brief requires explicit owner approval before WHC upload, DNS/MX changes or contact activation. File deployment must preserve existing mail and DNS.
 
 ## Review before requesting upload approval
 

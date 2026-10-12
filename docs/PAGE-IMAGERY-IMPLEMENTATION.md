@@ -23,4 +23,4 @@ All 12 selected originals and their contact sheet were visually inspected. SHA-2
 
 ## Operating state
 
-Phase 1D remains the last deployed release until this image update is uploaded to WHC. Contact remains email-app preparation to info@beartraps.ca. Phone remains (833) 696-9996. The image update does not alter DNS, mail, supplier records or contact delivery.
+The image update is live on WHC after explicit owner approval on October 12, 2026. See [deployment verification](DEPLOYMENT-IMAGERY-2026-10-12.md). Contact remains email-app preparation to info@beartraps.ca. Phone remains (833) 696-9996. The image update does not alter DNS, mail, supplier records or contact delivery.
