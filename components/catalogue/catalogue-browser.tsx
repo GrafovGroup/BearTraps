@@ -72,8 +72,9 @@ export default function CatalogueBrowser({
     options: { value: string; label: string }[],
   ) => (
     <label className="field">
-      <span>{label}</span>
+      <span id={`${id}-${key}-label`}>{label}</span>
       <select
+        aria-labelledby={`${id}-${key}-label`}
         value={filters[key]}
         onChange={(e) => update(key, e.target.value)}
       >

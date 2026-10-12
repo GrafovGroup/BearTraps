@@ -759,6 +759,7 @@ button:disabled {
     font-weight: 700;
   }
   .mobile-nav summary {
+    white-space: nowrap;
     cursor: pointer;
     padding: 15px;
   }
@@ -872,7 +873,7 @@ button:disabled {
     padding: 10px 6%;
   }
   .brand {
-    width: min(210px, calc(100vw - 132px));
+    width: min(210px, calc(100vw - 150px));
   }
   .hero {
     grid-template-columns: 1fr;
