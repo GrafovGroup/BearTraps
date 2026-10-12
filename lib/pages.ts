@@ -82,7 +82,7 @@ export const pages: Record<
     sections: [
       {
         title: "Equipment and procurement enquiries",
-        text: "Use the contact form to prepare an email or contact info@beartraps.ca directly. Our team discusses specifications, quotations and orders with you.",
+        text: "Send your enquiry using the contact form or email info@beartraps.ca directly. Our team discusses specifications, quotations and orders with you.",
       },
       {
         title: "What to include",
@@ -123,7 +123,7 @@ export const pages: Record<
     sections: [
       {
         title: "Contact form and email",
-        text: "Contact fields stay in the form while the page is open and are not saved in browser storage. Preparing an email creates a mailto link on your device; it does not submit data to our server. Opening the link passes the details to your chosen email application, where you review and send the message yourself.",
+        text: "When you send the contact form, your name, email, optional organization and phone, subject, message and consent are transmitted to Formspree to process your enquiry for BearTraps. Formspree may process technical information such as IP addresses for delivery and spam prevention. Fields are not saved in browser storage. You can also email info@beartraps.ca directly.",
       },
       {
         title: "Information you choose to share",
@@ -131,11 +131,11 @@ export const pages: Record<
       },
       {
         title: "Hosting and analytics",
-        text: "No advertising trackers or analytics are installed. Hosting infrastructure may process technical information such as IP addresses and access logs. Delivery-service disclosures will reflect the actual configured service before online submissions are enabled.",
+        text: "No advertising trackers or analytics are installed. Hosting infrastructure may process technical information such as IP addresses and access logs. Formspree provides our contact-form processing service.",
       },
       {
         title: "Your choices",
-        text: "Contact info@beartraps.ca about information you shared by email, including correction or deletion requests. Close or reload the form to clear entered details. Older saved equipment selections from a previous site version can be removed by clearing this website’s browser data.",
+        text: "Contact info@beartraps.ca about information you shared through the form or by email, including correction or deletion requests. Close or reload the form to clear entered details. Older saved equipment selections from a previous site version can be removed by clearing this website’s browser data.",
       },
     ],
   },
@@ -146,7 +146,7 @@ export const pages: Record<
     sections: [
       {
         title: "An enquiry is not an order",
-        text: "Category descriptions are sourcing requirements, not confirmation of stock, manufacturer affiliation, price or availability. Preparing an email does not send it or create a sale.",
+        text: "Category descriptions are sourcing requirements, not confirmation of stock, manufacturer affiliation, price or availability. Submitting an enquiry does not confirm an order or create a sale.",
       },
       {
         title: "Specifications and evidence",

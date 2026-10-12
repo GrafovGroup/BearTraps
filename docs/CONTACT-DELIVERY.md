@@ -2,9 +2,15 @@
 
 ## Current status
 
-Recipient **info@beartraps.ca** is owner-confirmed active. No website delivery credentials, authenticated provider, durable queue or actual inbox receipt has been verified. The form therefore validates locally and prepares an explicit **OPEN EMAIL APP** link. The visitor reviews and sends in their own application. No POST or fake submission success occurs. Direct email remains available without JavaScript.
+Deployed on WHC. One explicitly authorized live test received provider-confirmed success; owner inbox confirmation remains pending. See [implementation and deployment evidence](FORMSPREE-IMPLEMENTATION.md).
 
-The payload is name, optional organization, email, optional phone, subject/product interest, message, consent and an empty honeypot. It has no basket, quantities, tender deadlines, freight fields or attachments. `lib/contact.ts` is the strict shared validator. `lib/contact-delivery.ts` accepts only HTTPS and a valid receipt. Repeating an unchanged submission retains the same idempotency key for that form session.
+The owner supplied and authorized Formspree endpoint `https://formspree.io/f/xqpedwyv`. The React contact form posts validated name, organization, email, phone, subject, message and consent directly to Formspree using JSON and `Accept: application/json`. No secret belongs in the browser. Formspree handles provider-side spam filtering and delivery; no WHC PHP bridge is needed for this provider.
+
+The existing React state and accessible validation are retained rather than introducing a second form-state SDK. `lib/formspree.ts` handles the Formspree response contract separately from the optional custom 202 receipt service. Success requires a successful HTTP response with `ok: true`. Timeouts, network errors, malformed responses and provider rejection retain entered fields and display retry/direct-email guidance. Repeated clicks during a request are blocked; an identical confirmed submission is not sent twice in the same mounted form. This is not provider-side idempotency: retrying an unconfirmed timeout may duplicate a submission.
+
+The public endpoint defaults to the owner-provided Formspree URL; `NEXT_PUBLIC_CONTACT_ENDPOINT` remains a build-time override for isolated tests or an explicitly configured alternative. An explicit empty string restores email-app mode. Formspree submissions send no custom idempotency header. The local honeypot is validated and mapped to Formspree `_gotcha`. Visitors consent before submitting and the privacy page describes the processor. CAPTCHA/domain restrictions, quotas, recipient settings and retention are controlled in the owner's Formspree account; those account settings and actual inbox receipt have not been independently verified.
+
+Unit tests exercise the request and reject invalid/failure responses. Cloud browser tests intercept Formspree in each browser and check rate-limit recovery, all fields, success and duplicate suppression without sending mail. Deployment and actual inbox verification are recorded separately; mocked tests alone do not establish delivery to info@beartraps.ca.
 
 ## Verified WHC facts
 
@@ -25,7 +31,7 @@ Configure protected server environment, never source, public .htaccess, client c
 
 Do not trust arbitrary forwarding headers. If WHC uses a reverse proxy, verify the real-client identity mechanism with the host before activation. The current bridge intentionally uses REMOTE_ADDR. Set private abuse database cleanup for idle periods; expired ten-minute rows are deleted when requests arrive. Define queue/contact retention and deletion separately with the owner.
 
-## Activation and acceptance
+## Optional custom PHP service activation (not used by Formspree)
 
 1. Select/configure the secured validation/queue/mail service and fixed info@beartraps.ca recipient. Store all credentials privately. Authenticate the bridge upstream and verify least-privilege access.
 2. Verify WHC extensions/environment and private directory permissions. Upload the bridge only with owner approval at `/api/contact.php`; preserve DNS/MX and existing mail configuration.
@@ -34,8 +40,8 @@ Do not trust arbitrary forwarding headers. If WHC uses a reverse proxy, verify t
 5. Approve retention/deletion and update privacy disclosures to match actual operation. Set `NEXT_PUBLIC_CONTACT_ENDPOINT=https://beartraps.ca/api/contact.php` in the cloud build only after those checks; the workflow currently leaves it empty.
 6. Rebuild, review and approve deployment. Confirm accepted-for-processing copy, failure/retry behavior and private failure monitoring. Disable by rebuilding with an empty endpoint if reliable receipt cannot be maintained.
 
-No live email delivery tests have run. Unit tests use synthetic data and mocked dependencies; PHP tests cover receipt validation/rate limits, not WHC execution or inbox delivery.
+Before the Formspree integration, no live email delivery tests had run. Unit tests use synthetic data and mocked dependencies; PHP tests cover receipt validation/rate limits, not WHC execution or inbox delivery.
 
 ## Phase 1D verification additions
 
-The confirmed business number is (833) 696-9996. Phone configuration is independent of email delivery. Isolated CI now builds with a reserved test endpoint and intercepts requests to verify malformed 202 receipts remain failures, valid receipts show acceptance only, unchanged retries reuse a key and changed payloads use a new key. The production build leaves the endpoint unset. These tests never contact a provider or prove inbox delivery.
+The confirmed business number is (833) 696-9996. Phone configuration is independent of email delivery. Isolated CI now builds with a reserved test endpoint and intercepts requests to verify malformed 202 receipts remain failures, valid receipts show acceptance only, unchanged retries reuse a key and changed payloads use a new key. The historical Phase 1D production build left the endpoint unset; the Formspree update changes that default. These tests never contact a provider or prove inbox delivery.

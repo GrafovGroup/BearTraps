@@ -39,13 +39,13 @@ Add supplier-backed records only after human evidence review. Validate identifie
 
 ## Product discovery and contact
 
-The latest owner brief replaces the public RFQ/basket model. Visitors browse categories and verified specifications, then contact the team. `/contact/` collects name, optional company/phone, email, subject and message with consent. With no delivery endpoint configured it prepares an explicitly unsent email link. Product enquiry links prefill name/model/SKU and URL. Staff handle quotations, tender documents and orders offline.
+The latest owner brief replaces the public RFQ/basket model. Visitors browse categories and verified specifications, then contact the team. `/contact/` collects name, optional company/phone, email, subject and message with consent. The contact form submits to the owner-provided Formspree endpoint with consent, validation and retry guidance. Product enquiry links prefill name/model/SKU and URL. Staff handle quotations, tender documents and orders offline.
 
 `/request-quote/` and `/equipment-package/` are retired with WHC 301 redirects and static/client fallbacks. Their old internal modules are not imported by public pages. The owner confirmed (833) 696-9996 in Phase 1D. `content/business.json` controls call links and organization telephone metadata. Setting `phone` to null hides call links; missing confirmation, malformed numbers or mismatched display text fail validation.
 
 See [contact delivery](docs/CONTACT-DELIVERY.md), [operations](docs/OPERATIONS.md), [supplier intake](docs/CATALOGUE-PUBLISHING.md) and [security assessment](docs/SECURITY.md). CSV/JSON imports bind human review to a content digest and produce a private change manifest alongside the publishable catalogue. No verified supplier records were provided, so the catalogue retains useful category discovery without invented products.
 
-The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured validation/queue/mail upstream. It is not included in the static upload ZIP. Phase 1D is live on WHC. Automatic email delivery remains disabled; preparing a message does not send it.
+The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured validation/queue/mail upstream. It is not included in the static upload ZIP. Phase 1D is live on WHC. The Formspree integration replaces email-app preparation for new builds; actual recipient delivery requires inbox verification.
 
 ## Phase 1D workflow
 
@@ -67,3 +67,7 @@ The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured 
 ## Page imagery update
 
 The [image enrichment report](docs/PAGE-IMAGERY-IMPLEMENTATION.md) records 12 distinct responsive images across 11 pages, verified sources and cloud test evidence. [Asset usage](docs/ASSET-USAGE.md) and `content/page-images.json` track each unique placement. The tested image package is live on WHC with owner approval. See [deployment verification](docs/DEPLOYMENT-IMAGERY-2026-10-12.md).
+
+## Formspree contact integration
+
+The contact form is live with the owner-provided Formspree endpoint. Cloud checks and one authorized live submission passed; recipient inbox confirmation remains with the owner. See [implementation and deployment evidence](docs/FORMSPREE-IMPLEMENTATION.md).

@@ -108,7 +108,7 @@ try {
         .click();
       await page.waitForURL("**/contact/");
       assert.equal(await page.locator(".mobile-quote").count(), 0);
-      await page.getByRole("button", { name: "PREPARE EMAIL" }).click();
+      await page.getByRole("button", { name: "SEND MESSAGE" }).click();
       await page
         .getByRole("alert")
         .filter({ hasText: "Review your message" })
@@ -128,31 +128,47 @@ try {
         .fill("Please discuss specifications for our park.");
       await page.getByRole("checkbox").check();
       const sent = [];
-      page.on("request", (r) => {
-        if (r.method() === "POST") sent.push(r.url());
+      let formStatus = 429;
+      await page.route("https://formspree.io/f/xqpedwyv", async (route) => {
+        sent.push(route.request().postDataJSON());
+        await route.fulfill({
+          status: formStatus,
+          contentType: "application/json",
+          body: JSON.stringify(
+            formStatus === 200
+              ? { ok: true }
+              : { errors: [{ message: "Limit" }] },
+          ),
+        });
       });
-      await page.getByRole("button", { name: "PREPARE EMAIL" }).click();
-      console.log(`${engine}: validation passed; checking prepared email`);
-      const email = page.getByRole("link", { name: "OPEN EMAIL APP" });
-      await email.waitFor();
-      const href = new URL(await email.getAttribute("href"));
-      assert.equal(href.protocol, "mailto:");
-      assert.equal(href.pathname, "info@beartraps.ca");
-      assert.equal(href.searchParams.get("subject"), "Signage & transport");
-      assert.match(href.searchParams.get("body"), /QA Buyer/);
-      assert.match(
-        await page.getByRole("status").innerText(),
-        /Nothing has been submitted/,
+      await page.getByRole("button", { name: "SEND MESSAGE" }).click();
+      await page
+        .getByRole("status")
+        .filter({ hasText: "Too many attempts" })
+        .waitFor();
+      assert.equal(
+        await page.getByLabel("NAME", { exact: true }).inputValue(),
+        "QA Buyer",
       );
-      assert.deepEqual(sent, []);
+      formStatus = 200;
+      await page.getByRole("button", { name: "SEND MESSAGE" }).click();
+      await page.getByRole("status").filter({ hasText: "Thank you" }).waitFor();
+      assert.equal(sent.length, 2);
+      assert.equal(sent[1].email, "buyer@example.invalid");
+      assert.equal(sent[1].consent, true);
+      assert.equal(sent[1]._gotcha, "");
+      await page.getByRole("button", { name: "SEND MESSAGE" }).click();
+      await page
+        .getByRole("status")
+        .filter({ hasText: "already been received" })
+        .waitFor();
+      assert.equal(sent.length, 2);
       await page
         .getByLabel("MESSAGE", { exact: true })
         .fill("Changed details for our park.");
-      assert.equal(
-        await email.count(),
-        0,
-        "Stale prepared email must disappear after edits",
-      );
+      await page.getByRole("button", { name: "SEND MESSAGE" }).click();
+      await page.getByRole("status").filter({ hasText: "Thank you" }).waitFor();
+      assert.equal(sent.length, 3);
       await page.goto(
         base +
           "/contact/?interest=Model%20A%20%2F%20SKU-1&product=https%3A%2F%2Fbeartraps.ca%2Fproducts%2Fmodel-a%2F",
@@ -296,7 +312,7 @@ try {
       );
       assert.deepEqual(failures, []);
       console.log(
-        `${engine}: browsing, mobile contact, optional fields, accessible validation, truthful mailto, product prefill, legacy redirects and no public RFQ passed.`,
+        `${engine}: browsing, mobile contact, optional fields, accessible validation, mocked Formspree success, rate limit and duplicate protection, product prefill, legacy redirects and no public RFQ passed.`,
       );
     } catch (error) {
       const failed = browser.contexts()[0]?.pages()[0];
