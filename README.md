@@ -1,32 +1,52 @@
 # BEARTRAPS.CA
 
-Professional wildlife equipment website. Next.js App Router, TypeScript, Tailwind CSS. Hosting target: WHC.ca. GitHub builds the static website; no Mac server or Node process is needed for hosting.
+Professional wildlife equipment website: Next.js App Router, TypeScript, Tailwind CSS and a static export for WHC.ca. GitHub builds and tests the site. No web server needs to run on the owner's Mac.
 
-## Cloud workflow
+## Cloud build and hosting
 
-1. Push a branch or open a pull request. GitHub Actions installs dependencies and runs lint, TypeScript, RFQ tests, the production export and route checks.
-2. Download the `beartraps-whc` artifact from the successful Actions run. The artifact contains `beartraps-whc.zip`.
-3. In WHC cPanel > Domains, verify the document root for BearTraps.ca. Do not assume it is public_html when the domain is an addon.
-4. Back up existing files. Upload the inner ZIP in File Manager and extract its contents into the verified document root. Keep existing mail, validation, and unrelated domain files intact.
-5. Confirm HTTPS, direct category URLs, RFQ downloads, sitemap and 404 behavior on the live domain.
+The GitHub Actions workflow uses Node 22 and pnpm 11.25.0 with the committed lockfile. It runs lint, types, data/RFQ/compliance/delivery tests, catalogue integrity checks, production export, route checks, Chromium/Firefox/WebKit interaction tests and Chromium axe accessibility checks. Successful runs package `beartraps-whc.zip` and browser evidence as 14-day artifacts.
 
-Automated SFTP deployment is a next step after the correct WHC account, target directory, credentials and server fingerprint are verified. Never commit credentials. No deployment has been performed by this foundation change.
+Follow [WHC deployment](docs/WHC-DEPLOYMENT.md) to upload to the verified cPanel document root. No deployment has been performed by this feature branch. Product and RFQ delivery configuration is not inferred from the hosting provider.
 
-## Development (optional)
+## Development and checks (optional)
 
-Node 22.13 or newer: `npm install`, `npm run dev`. Checks: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `node scripts/check-export.mjs`. This is not required on the owner's Mac.
+Node >=22.13 and pnpm 11.25.0:
 
-## Content and architecture
+```sh
+pnpm install --frozen-lockfile
+pnpm run lint
+pnpm run typecheck
+pnpm test
+pnpm run check:catalogue
+pnpm run build
+node scripts/check-export.mjs
+pnpm exec playwright install --with-deps chromium firefox webkit
+pnpm run test:browser
+```
 
-- `app/page.tsx`: homepage.
-- `app/[slug]/page.tsx`: category and institutional/legal routes.
-- `lib/catalog.ts`: typed category/product model; no published supplier inventory.
-- `lib/pages.ts`: institutional and policy copy.
-- `components/quote-form.tsx`: persistent requirement basket, accessible client validation and local RFQ download.
-- `lib/quote.ts`: shared schema for a future server integration.
-- `integrations/quote-route.ts`: disabled server integration reference, excluded from the static deployment.
-- `templates/product-page.tsx`: product template, to activate under `app/products/[slug]/page.tsx` when verified records exist; add `generateStaticParams` for published products.
-- `public/.htaccess`: WHC/Apache response headers and custom 404.
-- `docs/IMPLEMENTATION.md`: verification limits and next-phase work.
+`pnpm run dev` is an optional developer preview, not the production hosting setup. All build and browser commands are also run in the cloud workflow.
 
-The current customer experience is a requirements catalog. It does not present invented inventory, prices, product evidence or manufacturer affiliations. RFQ downloads do not send email. No checkout or upload endpoint exists.
+## Content and catalogue
+
+- `lib/categories.ts`: category copy and sourcing applications.
+- `lib/product-schema.ts`: schema, publication/evidence/rights validation and structured data.
+- `lib/catalog.ts`: production records. No supplier products have been published; internal fixtures live only under `tests/fixtures/`.
+- `app/products/[[...slug]]/page.tsx`: `/products/` directory and static `/products/<slug>/` pages for verified published records. `generateStaticParams` includes the directory plus verified product slugs; there is no fabricated placeholder product route.
+- `components/catalogue/`: sourcing/product results, filters, specs, documents and accessory links.
+- `scripts/check-catalogue.ts`: local asset existence and hash checks in addition to schema validation.
+
+Add supplier-backed records only after human evidence review. Validate identifiers, variant SKUs, relationships, model-specific claims, image rights and per-province records. No price/Offer/availability schema is invented. Product photography is reserved for a single product-detail placement; cards are text-first to avoid image reuse. Document every new image in `docs/ASSET-USAGE.md` and check prior-site inventories before publishing.
+
+## Procurement and RFQ
+
+`/equipment-package/` combines category requirements without implying compatibility. The basket supports categories, published products/variants, custom sourcing, quantities and line specifications. Existing Phase 1A baskets migrate automatically. Contact/project fields remain in memory; equipment and line specifications persist on the device until cleared.
+
+`/request-quote/` collects buyer and tender details, validates closing date/time/time zone (including DST ambiguity), and generates a text or printable RFQ. It never submits a tender bid. The owner selected **info@beartraps.ca** as the intended recipient. The owner confirms the mailbox is active. Automated backend delivery has not been configured or tested.
+
+Online submission is disabled by default. [RFQ delivery integration](docs/RFQ-DELIVERY.md) describes the adapter, independent server contract, required durable queue/rate limiting/spam verification and activation procedure. `integrations/rfq-handler.ts` does not execute on static hosting. No API key belongs in the client bundle.
+
+## Reviews
+
+- [Phase 1A review](docs/IMPLEMENTATION.md)
+- [Phase 1B implementation report](docs/PHASE-1B-IMPLEMENTATION.md)
+- [Internal asset register](docs/ASSET-USAGE.md)

@@ -1,0 +1,3 @@
+# Use packaged native binaries; do not run the resolver's optional install hook.
+allowBuilds:
+  unrs-resolver: false

@@ -1,3 +1,23 @@
+# OWNER OVERRIDE — PRODUCT DISCOVERY + SIMPLE CONTACT (LATEST DECISION)
+
+This section supersedes conflicting RFQ/tender submission requirements below and in earlier phase briefs. Implement this model, not the older RFQ workflow.
+
+**Commercial objective:** BearTraps.ca is a government-grade product discovery and lead-generation website. Visitors browse equipment and specifications, then **call the sales team or submit a simple contact form**. Staff handle quotations, tender documents, pricing and orders offline. Do not offer website RFQ baskets, multi-line quote submissions, equipment package request builders, tender upload forms, checkout or automated tender submissions.
+
+## Required customer experience
+- Homepage and every product/category page prominently feature **CALL US** and **CONTACT US** actions. Use a real `tel:` link only after the owner confirms the business phone number; until then do not invent a phone number. Display a contact action or clearly configured placeholder instead.
+- Product detail pages: name, photos (rights-verified), description, technical specifications, documents (verified), related accessories, and **ASK ABOUT THIS PRODUCT**. This opens the simple contact page/form with product name/SKU/URL prefilled where possible.
+- Contact form: name, company/organization (optional), email, phone (optional), subject or product of interest, message, consent. Minimal validation, accessible errors, spam prevention, privacy protections. No tender deadlines, quantity basket, freight fields or procurement file uploads.
+- Form recipient: **info@beartraps.ca** (owner confirms active). Implement WHC-compatible secure server-side delivery only when configured and verified. No fake submission success. Provide mailto fallback until operational, without suggesting mailto is an automated submitted form.
+- Government procurement page: present supply capabilities, product categories and direct contact information. Invite procurement officers to call/email directly with their requirements. No online tender portal.
+- Remove RFQ basket, multi-item quote UX, equipment package builder and associated navigation/CTAs from the public UI. Retire or redirect legacy `/request-quote` and `/equipment-package` paths to the contact or relevant catalogue page without broken links. Keep useful internal code only if non-public and non-conflicting.
+- Prioritize product browsing: category search/filtering, rich verified specifications, accessory cross-links, SEO and strong mobile contact calls-to-action.
+- Keep regulated capture equipment quote-by-conversation only, subject to buyer/jurisdiction legal review; no direct checkout. No fabricated products, availability, suppliers or certifications.
+- Preserve WHC static export, visual identity, CI, existing functioning routes and accessibility. Update tests and docs to reflect the simplified sales funnel.
+- In the Phase 1C report explicitly confirm which legacy RFQ features were removed or redirected and which contact delivery tests actually passed.
+
+---
+
 # BearTraps.ca — Phase 1C Codex Master Prompt
 
 ## Goal
@@ -55,3 +75,12 @@ Before changing code, inspect current branch, open pull requests, commits, `docs
 
 ## Non-negotiable
 This is a commercial procurement site, not a general outdoor blog. Keep product hierarchy focused on professional bear traps first, transportation second, signage/lures third, and bear-resistant furniture/infrastructure alongside related wildlife equipment. Government-grade presentation, truthful claims, Canadian legal compliance and a working lead intake path are mandatory.
+
+## Owner-confirmed production hosting decision (2026-10-12)
+- **WHC.ca is the confirmed production host**, not an optional alternative. Keep the static Next.js export and WHC/cPanel-compatible deployment packaging.
+- **info@beartraps.ca** is the confirmed active sales and RFQ recipient. Do not assume mailbox activity means a working website submission endpoint.
+- Determine and document the exact cPanel document root, PHP availability/version, HTTPS, rewrite support and upload method before any deployment; do not guess the path.
+- Prefer a small secure PHP handler on WHC if the account supports it, otherwise a vetted HTTPS form service. Use server-side credentials and anti-spam/rate limiting; no SMTP credentials in browser code or GitHub.
+- Preserve MX/DNS and existing mail configuration; do not modify them without approval.
+- Prepare reproducible deployment and rollback steps, with backup, zip artifact, HTTPS/route tests, and verified email-delivery smoke tests.
+- Deployment requires explicit owner approval and verified access. If access is unavailable, complete staging/build artifacts and checklist without claiming live deployment.

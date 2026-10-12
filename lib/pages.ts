@@ -116,11 +116,11 @@ export const pages: Record<
     sections: [
       {
         title: "Information in this browser",
-        text: "The quote basket stores equipment categories and quantities in local storage on your device. Contact details remain in the form while the page is open and are not saved to the basket.",
+        text: "The quote basket stores equipment categories, product selections, quantities and line specifications in local storage on your device. Contact and project details remain in the form while the page is open and are not saved to the basket. Avoid confidential information in persistent line specifications.",
       },
       {
         title: "RFQ downloads",
-        text: "Generating an RFQ creates a text file on your device. Downloading does not send your request to BEARTRAPS.CA. You decide how and with whom to share the file.",
+        text: "Generating an RFQ creates a text file on your device. Printing lets you save a PDF through your browser. Downloading does not send your request to BEARTRAPS.CA. You decide how and with whom to share the file.",
       },
       {
         title: "Server and hosting information",

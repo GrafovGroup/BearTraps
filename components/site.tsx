@@ -30,7 +30,7 @@ export function Header() {
       <header>
         <Brand />
         <nav aria-label="Main navigation">
-          <Link href="/bear-traps">EQUIPMENT</Link>
+          <Link href="/products/">EQUIPMENT</Link>
           <Link href="/government-procurement">PROCUREMENT</Link>
           <Link href="/industries">INDUSTRIES</Link>
           <Link href="/about">ABOUT</Link>
@@ -41,7 +41,7 @@ export function Header() {
         <details className="mobile-nav">
           <summary>MENU</summary>
           <nav aria-label="Mobile navigation">
-            <Link href="/bear-traps">EQUIPMENT</Link>
+            <Link href="/products/">EQUIPMENT</Link>
             <Link href="/government-procurement">PROCUREMENT</Link>
             <Link href="/industries">INDUSTRIES</Link>
             <Link href="/about">ABOUT</Link>
@@ -67,6 +67,7 @@ export function Footer() {
       <div className="footer-links">
         <span>© {new Date().getFullYear()} BEARTRAPS.CA</span>
         <Link href="/contact">CONTACT</Link>
+        <a href="mailto:info@beartraps.ca">EMAIL US</a>
         <Link href="/product-compliance">PRODUCT COMPLIANCE</Link>
         <Link href="/privacy">PRIVACY</Link>
         <Link href="/terms">TERMS</Link>

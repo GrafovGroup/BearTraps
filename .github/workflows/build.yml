@@ -6,25 +6,33 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: whc-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   website:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: npm install --no-audit --no-fund
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+          run_install: false
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
+      - run: pnpm run typecheck
+      - run: pnpm test
+      - run: pnpm run check:catalogue
+      - run: pnpm run build
         env:
           NEXT_TELEMETRY_DISABLED: "1"
-      - name: Check exported routes
-        run: node scripts/check-export.mjs
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:browser
+      - run: node scripts/check-export.mjs
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - run: pnpm run test:browser
       - uses: actions/upload-artifact@v4
         if: always()
         with:
