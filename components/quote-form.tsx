@@ -109,7 +109,7 @@ export default function QuoteForm() {
     required = false,
   ) => (
     <label className="field" htmlFor={name} key={name}>
-      <span>
+      <span id={name + "-label"}>
         {label}
         {required ? " *" : ""}
       </span>
@@ -129,6 +129,7 @@ export default function QuoteForm() {
             } as Record<string, string>
           )[name] || "off"
         }
+        aria-labelledby={name + "-label"}
         aria-invalid={!!errors[name]}
         aria-describedby={errors[name] ? name + "-error" : undefined}
       />
@@ -146,7 +147,7 @@ export default function QuoteForm() {
     required = false,
   ) => (
     <label className="field" htmlFor={name}>
-      <span>
+      <span id={name + "-label"}>
         {label}
         {required ? " *" : ""}
       </span>
@@ -155,6 +156,7 @@ export default function QuoteForm() {
         id={name}
         defaultValue=""
         required={required}
+        aria-labelledby={name + "-label"}
         aria-invalid={!!errors[name]}
         aria-describedby={errors[name] ? name + "-error" : undefined}
       >
@@ -174,12 +176,13 @@ export default function QuoteForm() {
   );
   const area = (name: string, label: string) => (
     <label className="field" htmlFor={name}>
-      <span>{label}</span>
+      <span id={name + "-label"}>{label}</span>
       <textarea
         id={name}
         name={name}
         rows={3}
         maxLength={2000}
+        aria-labelledby={name + "-label"}
         aria-invalid={!!errors[name]}
         aria-describedby={errors[name] ? name + "-error" : undefined}
       />
@@ -279,7 +282,8 @@ export default function QuoteForm() {
                     name={name}
                     type="checkbox"
                     required
-                    aria-invalid={!!errors[name]}
+                    aria-labelledby={name + "-label"}
+        aria-invalid={!!errors[name]}
                     aria-describedby={
                       errors[name] ? name + "-error" : undefined
                     }
