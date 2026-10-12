@@ -1,6 +1,6 @@
 # Phase 1D implementation report
 
-Branch `codex/phase-1d`, based on Phase 1C `5fdf94dc5799f5ddf826b2fa6adfd66a26e199fb`. The owner selected the shield logo in Phase 1C and confirmed the business phone (833) 696-9996 during Phase 1D. Phase 1C remains intact; no merge or deployment is performed.
+Branch `codex/phase-1d`, based on Phase 1C `5fdf94dc5799f5ddf826b2fa6adfd66a26e199fb`. The owner selected the shield logo in Phase 1C and confirmed the business phone (833) 696-9996 during Phase 1D. Phase 1C remains intact. Phase 1D was subsequently deployed with owner approval; no merge was performed. See [deployment record](DEPLOYMENT-PHASE-1D-2026-10-12.md).
 
 ## Delivered
 
@@ -19,7 +19,7 @@ Published products: **0**. No verified supplier/model/specification/image-rights
 
 Production contact remains **email-app preparation**, with recipient info@beartraps.ca. PHP/upstream code remains disabled. No new service credentials, runtime extension verification, actual submission or inbox receipt is claimed. Owner-confirmed phone: **+18336969996**. Search Console token remains owner-supplied only; no analytics tracker or fabricated property ID was enabled.
 
-Last verified live site: **Phase 1B on WHC**. Phase 1C and this Phase 1D are source/release candidates. No WHC upload, DNS/MX/mail setting change or production service activation occurred. Hosting remains WHC; no Mac website server was started.
+Last verified live site: **Phase 1D on WHC**, uploaded with owner approval on October 12, 2026. All 115 public release files matched the manifest, and 16 routes plus redirects, headers, contact preparation, catalogue search and mobile navigation passed live checks. No DNS/MX/mail setting change or automatic contact service activation occurred. Hosting remains WHC; no Mac website server was started.
 
 ## Verification
 
@@ -51,14 +51,14 @@ Artifacts expire October 26, 2026:
 - [Screenshots, accessibility and lab performance evidence](https://github.com/GrafovGroup/BearTraps/actions/runs/38292869565/artifacts/11766463770)
 - [Separate disabled PHP bridge](https://github.com/GrafovGroup/BearTraps/actions/runs/38292869565/artifacts/11766468916)
 
-Inner `beartraps-whc.zip` SHA-256: `35253e3591c0abd3be17f01405f3450697a25ac20e65fa75afad34383702e9aa`. Manifest confirms 0 products, +18336969996 and `email-app` mode. Archive and every listed file were independently hashed after download. Actual Apache redirects/headers, WHC backend execution and live receipt remain post-approval external checks.
+Inner `beartraps-whc.zip` SHA-256: `35253e3591c0abd3be17f01405f3450697a25ac20e65fa75afad34383702e9aa`. Manifest confirms 0 products, +18336969996 and `email-app` mode. Archive and every listed file were independently hashed after download. Actual Apache redirects and headers passed during the approved deployment. WHC backend execution and live inbox receipt remain unperformed; automatic delivery is disabled.
 
 ## Release acceptance and external inputs
 
-1. Use RELEASE-CHECKLIST.md to review the exact passing artifact, commit, checksum, screenshots and contact mode; obtain explicit owner upload approval.
-2. Verify cPanel root/TLS, back up the existing site and hidden .htaccess outside public hosting, upload only the static ZIP, preserve mail/DNS and run all live route/redirect/header/contact/phone smoke tests. Roll back if any fail.
+1. Completed for this release: exact artifact, commit, checksum, screenshots and contact mode reviewed; owner approved upload.
+2. Completed for this release: cPanel root/TLS verified, existing site and hidden .htaccess backed up outside public hosting, static ZIP uploaded, mail/DNS preserved and live smoke checks passed. See the deployment record for rollback.
 3. Gather supplier/model specifications and image licences using SUPPLIER-ONBOARDING.md. Review exact models, compatibility, evidence and all import changes before publishing any products.
 4. Before optional automatic delivery, verify WHC extensions/private environment, configure authenticated durable intake, confirm lead owner/retention and complete authorized inbox/spam/failure tests. The mocked CI job does not satisfy this gate.
 5. Complete manual screen-reader and real-device checks; CI axe/engine coverage does not constitute a complete accessibility audit. Performance observations are local-to-CI lab timings, not field Core Web Vitals.
 
-The time-limited lint-only braces exception in SECURITY.md remains unchanged and expires October 26, 2026. This report does not claim zero vulnerabilities, legal certification or observed production deployment.
+The time-limited lint-only braces exception in SECURITY.md remains unchanged and expires October 26, 2026. This report does not claim zero vulnerabilities or legal certification. Observed production deployment is recorded in the linked deployment report.

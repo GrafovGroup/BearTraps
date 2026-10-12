@@ -1,6 +1,6 @@
 # WHC release acceptance checklist
 
-Phase 1B is the last verified live release. Phase 1C/1D source and successful cloud artifacts are not proof of a production upload. The brief requires explicit owner approval before WHC upload, DNS/MX changes or contact activation. File deployment must preserve existing mail and DNS.
+Phase 1D is the last verified live release, deployed with owner approval on October 12, 2026. See [deployment evidence](DEPLOYMENT-PHASE-1D-2026-10-12.md). Future successful cloud artifacts alone are not proof of production upload. The brief requires explicit owner approval before WHC upload, DNS/MX changes or contact activation. File deployment must preserve existing mail and DNS.
 
 ## Review before requesting upload approval
 
@@ -26,4 +26,4 @@ The disabled PHP bridge is a separate artifact. Follow CONTACT-DELIVERY.md for W
 
 ## Remaining external inputs
 
-Verified supplier/model/specification/image-rights records; secured delivery service configuration; lead ownership and retention policy; manual assistive-technology/real-device assessment; deployment approval. The phone is owner-confirmed and no longer an outstanding input.
+Verified supplier/model/specification/image-rights records; secured delivery service configuration; lead ownership and retention policy; manual assistive-technology/real-device assessment; approval for future releases. The phone is owner-confirmed and no longer an outstanding input.

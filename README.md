@@ -6,7 +6,7 @@ Professional wildlife equipment website: Next.js App Router, TypeScript, Tailwin
 
 The GitHub Actions workflow uses Node 22 and pnpm 11.25.0 with the committed lockfile. It runs lint, types, catalogue/contact/compliance tests (plus retained internal legacy tests), catalogue integrity checks, production export, route checks, Chromium/Firefox/WebKit interaction tests and Chromium axe accessibility checks. Successful runs package `beartraps-whc.zip` and browser evidence as 14-day artifacts.
 
-Follow [WHC deployment](docs/WHC-DEPLOYMENT.md) to upload to the verified cPanel document root. No deployment has been performed by this feature branch. Product and contact delivery configuration is not inferred from the hosting provider.
+Follow [WHC deployment](docs/WHC-DEPLOYMENT.md) to upload to the verified cPanel document root. Phase 1D was deployed and verified on October 12, 2026; see the [deployment record](docs/DEPLOYMENT-PHASE-1D-2026-10-12.md). Product and contact delivery configuration is not inferred from the hosting provider.
 
 ## Development and checks (optional)
 
@@ -45,7 +45,7 @@ The latest owner brief replaces the public RFQ/basket model. Visitors browse cat
 
 See [contact delivery](docs/CONTACT-DELIVERY.md), [operations](docs/OPERATIONS.md), [supplier intake](docs/CATALOGUE-PUBLISHING.md) and [security assessment](docs/SECURITY.md). CSV/JSON imports bind human review to a content digest and produce a private change manifest alongside the publishable catalogue. No verified supplier records were provided, so the catalogue retains useful category discovery without invented products.
 
-The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured validation/queue/mail upstream. It is not included in the static upload ZIP. No Phase 1C/1D deployment or real email delivery is claimed; Phase 1B remains live until an approved upload.
+The optional PHP 8.2 bridge is a separate disabled artifact requiring a secured validation/queue/mail upstream. It is not included in the static upload ZIP. Phase 1D is live on WHC. Automatic email delivery remains disabled; preparing a message does not send it.
 
 ## Phase 1D workflow
 
