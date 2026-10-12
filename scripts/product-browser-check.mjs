@@ -21,7 +21,8 @@ try {
     }
   }
   browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  const context = await browser.newContext({ viewport: { width: 390, height: 900 } });
+  const page = await context.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(base + "/products/fixture-model/", { waitUntil: "networkidle" });
