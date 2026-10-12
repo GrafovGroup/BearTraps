@@ -1,0 +1,375 @@
+[
+  {
+    "id": "hero",
+    "website": "BearTraps.ca",
+    "page": "/",
+    "placement": "Homepage hero",
+    "alt": "Culvert-style capture enclosure on a steel cradle beside a forest road",
+    "label": "CAPTURE \u00b7 TRANSPORT \u00b7 FIELD EQUIPMENT",
+    "width": 1536,
+    "height": 1024,
+    "variants": [
+      {
+        "src": "/images/hero-640.webp",
+        "width": 640,
+        "height": 427,
+        "bytes": 94762,
+        "sha256": "e27397d6752e1a3ad2997fb2a9c1261d54b849e1605ed2b58902ce9f0c2ad7b4"
+      },
+      {
+        "src": "/images/hero-1280.webp",
+        "width": 1280,
+        "height": 853,
+        "bytes": 300532,
+        "sha256": "524144381d3473b8ba44b679eb60657fbc3ec62fb3d2b162ddc51b05b942cd66"
+      }
+    ],
+    "sourceSha256": "374e378e921312015737117f1f8301a6a4bd5b0a432f0c952a868d2b15763de6",
+    "kind": "generated",
+    "reviewedAt": "2026-10-12",
+    "source": "Built-in image_gen; exec-761c0d10-cdf6-4a3c-aeda-11329788081d.png",
+    "license": "Generated for this project; owner accepted generated images"
+  },
+  {
+    "id": "black-bear",
+    "website": "BearTraps.ca",
+    "page": "/",
+    "placement": "Infrastructure feature",
+    "alt": "Black bear standing among green woodland vegetation",
+    "label": "BUILT AROUND WILDLIFE & THE PLACES WE SHARE",
+    "width": 1200,
+    "height": 800,
+    "variants": [
+      {
+        "src": "/images/black-bear-640.webp",
+        "width": 640,
+        "height": 427,
+        "bytes": 37514,
+        "sha256": "09aa3843b3a189333dadcd16646e78c52b75692185ef56e2a62b80b44975f50a"
+      },
+      {
+        "src": "/images/black-bear-1200.webp",
+        "width": 1200,
+        "height": 800,
+        "bytes": 81878,
+        "sha256": "45307ce0397d25f3520a84035c2a3dc0743033f27f9a2155a9bcf0611c9ef56d"
+      }
+    ],
+    "sourceSha256": "dc0503fab1b432cc31b357152e69d044e0d726d16575bab7540cec0d5cdd0b1f",
+    "kind": "photograph",
+    "reviewedAt": "2026-10-12",
+    "source": "https://www.usgs.gov/media/images/shenandoah-black-bear",
+    "download": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/Shenandoah%20black%20bear2.jpg?itok=mtb4ZNdU",
+    "license": "Public domain"
+  },
+  {
+    "id": "capture",
+    "website": "BearTraps.ca",
+    "page": "/bear-traps/",
+    "placement": "Page introduction",
+    "alt": "Cylindrical bear capture enclosure in a wooded clearing",
+    "label": "PROFESSIONAL CAPTURE",
+    "width": 1822,
+    "height": 2228,
+    "variants": [
+      {
+        "src": "/images/capture-640.webp",
+        "width": 640,
+        "height": 783,
+        "bytes": 143422,
+        "sha256": "3fdd60a2051f795fa063bed39b0cf7f2e4cbacd2ca0276bdc1ce5a51dd94b713"
+      },
+      {
+        "src": "/images/capture-1280.webp",
+        "width": 1280,
+        "height": 1565,
+        "bytes": 401592,
+        "sha256": "3a129a8b8412cab811df661ed9a0b0c14a2f5529457f828d13ee1c42cfd57f12"
+      }
+    ],
+    "sourceSha256": "c5c0131eac6c0ace9205839922bd56f42dfb38ad3eeea3d813e86ab5500f3a06",
+    "kind": "photograph",
+    "reviewedAt": "2026-10-12",
+    "source": "https://commons.wikimedia.org/wiki/File:Bear_cage_trap.jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Bear_cage_trap.jpg",
+    "license": "Public domain dedication by Trevor MacInnis"
+  },
+  {
+    "id": "transport",
+    "website": "BearTraps.ca",
+    "page": "/transport-trailers/",
+    "placement": "Page introduction",
+    "alt": "Culvert-style capture enclosure mounted on a trailer in a forest",
+    "label": "TRANSPORT & HANDLING",
+    "width": 1336,
+    "height": 888,
+    "variants": [
+      {
+        "src": "/images/transport-640.webp",
+        "width": 640,
+        "height": 425,
+        "bytes": 79032,
+        "sha256": "d075318926110aa1a694a2eab728925a8e20d45bdbd218cf4fce218fdd38d8d7"
+      },
+      {
+        "src": "/images/transport-1280.webp",
+        "width": 1280,
+        "height": 851,
+        "bytes": 268346,
+        "sha256": "07ff3a0d9448d3b421f09b9648227fb02ae8c5441738d890c956a21628fc1ee1"
+      }
+    ],
+    "sourceSha256": "366fed41c0143b7a4b732f7b513f89601a1d7f11553af5a13adb50650f9af971",
+    "kind": "photograph",
+    "reviewedAt": "2026-10-12",
+    "source": "https://www.usgs.gov/media/images/culvert-trap",
+    "download": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/4_CulvertTrap_IGBST_4.JPG?itok=VHm-bn8S",
+    "license": "Public domain"
+  },
+  {
+    "id": "signage",
+    "website": "BearTraps.ca",
+    "page": "/warning-signage/",
+    "placement": "Page introduction",
+    "alt": "Yellow bear-symbol warning sign beside a woodland trail",
+    "label": "SITE COMMUNICATION",
+    "width": 1536,
+    "height": 1024,
+    "variants": [
+      {
+        "src": "/images/signage-640.webp",
+        "width": 640,
+        "height": 427,
+        "bytes": 106564,
+        "sha256": "12c99265ce82e7e68d5bad7a4afa59841036946b10e6aebb14b18b5858fc4a7d"
+      },
+      {
+        "src": "/images/signage-1280.webp",
+        "width": 1280,
+        "height": 853,
+        "bytes": 294856,
+        "sha256": "2c5e98f174c4f56e52274c198f16cda3dd2f8388a0fa6139d4c88418204fbac7"
+      }
+    ],
+    "sourceSha256": "5cf12044181d3dc99c3a1bae1154560e57beeda9f4fe4d54e806fba2a5b3f595",
+    "kind": "generated",
+    "reviewedAt": "2026-10-12",
+    "source": "Built-in image_gen; exec-ea8fe007-dd7b-4db1-8d73-e292a87bea33.png",
+    "license": "Generated for this project; owner accepted generated images"
+  },
+  {
+    "id": "supplies",
+    "website": "BearTraps.ca",
+    "page": "/lures-supplies/",
+    "placement": "Page introduction",
+    "alt": "Open field case with gloves, rope, radio and closed sample jars",
+    "label": "FIELD PREPARATION",
+    "width": 1536,
+    "height": 1024,
+    "variants": [
+      {
+        "src": "/images/supplies-640.webp",
+        "width": 640,
+        "height": 427,
+        "bytes": 62360,
+        "sha256": "9bd1ffcd5d3a35b1beab6a330d2392a123d862e7641b6eb51b32d36f6fa6555c"
+      },
+      {
+        "src": "/images/supplies-1280.webp",
+        "width": 1280,
+        "height": 853,
+        "bytes": 174698,
+        "sha256": "d08043f68b9f84d658c85ff894680d965f1c6b26ef9cc6ba6de9fb74b6664377"
+      }
+    ],
+    "sourceSha256": "3ce61e0c9432ce852ab15d29657bf9f8cdeaec75e3fb5bdbc189a8b0956ebbfd",
+    "kind": "generated",
+    "reviewedAt": "2026-10-12",
+    "source": "Built-in image_gen; exec-3c771db4-e901-4388-827c-f2a593375c9d.png",
+    "license": "Generated for this project; owner accepted generated images"
+  },
+  {
+    "id": "storage",
+    "website": "BearTraps.ca",
+    "page": "/bear-resistant-furniture/",
+    "placement": "Page introduction",
+    "alt": "Metal food storage locker on a raised base beside woodland",
+    "label": "SITE INFRASTRUCTURE",
+    "width": 600,
+    "height": 450,
+    "variants": [
+      {
+        "src": "/images/storage-600.webp",
+        "width": 600,
+        "height": 450,
+        "bytes": 81038,
+        "sha256": "e77445b78d1047bf1be48de4ba0006c69007d77717deb546cae6af3766bf11e2"
+      }
+    ],
+    "sourceSha256": "b76d62aa6f2a1ecd02e5461f4578b339af7b9f54c27b2f0f4587ff9d57732dc3",
+    "kind": "photograph",
+    "reviewedAt": "2026-10-12",
+    "source": "https://npgallery.nps.gov/AssetDetail/964506d7-a2fa-0468-05c1-c471ae4c4920",
+    "download": "https://npgallery.nps.gov/GetAsset/964506d7-a2fa-0468-05c1-c471ae4c4920/proxyhires.jpg",
+    "license": "Public domain; full granting rights"
+  },
+  {
+    "id": "monitoring",
+    "website": "BearTraps.ca",
+    "page": "/wildlife-equipment/",
+    "placement": "Page introduction",
+    "alt": "Weatherproof trail camera secured to a spruce trunk",
+    "label": "REMOTE MONITORING",
+    "width": 1536,
+    "height": 1024,
+    "variants": [
+      {
+        "src": "/images/monitoring-640.webp",
+        "width": 640,
+        "height": 427,
+        "bytes": 73636,
+        "sha256": "8a4b816fa93bc90fa5da5d9c0ca1110138205d42193930ec93eacffc993f6292"
+      },
+      {
+        "src": "/images/monitoring-1280.webp",
+        "width": 1280,
+        "height": 853,
+        "bytes": 210758,
+        "sha256": "53f4a40d9c9381bb74d953e73d6aef0f6f90c7d6b68b4bc70b49f5b7bd07dce4"
+      }
+    ],
+    "sourceSha256": "20367239c5916934e651460bf3aef7256b1792c3986f7ea1dd3875a6a0a2117f",
+    "kind": "generated",
+    "reviewedAt": "2026-10-12",
+    "source": "Built-in image_gen; exec-dff6bfa0-0725-49ef-bb4d-3cd9d61c6669.png",
+    "license": "Generated for this project; owner accepted generated images"
+  },
+  {
+    "id": "deterrence",
+    "website": "BearTraps.ca",
+    "page": "/deterrence-protection/",
+    "placement": "Page introduction",
+    "alt": "Electric fence gate at the edge of a forest campground",
+    "label": "SITE BOUNDARIES",
+    "width": 750,
+    "height": 1000,
+    "variants": [
+      {
+        "src": "/images/deterrence-640.webp",
+        "width": 640,
+        "height": 853,
+        "bytes": 182808,
+        "sha256": "613dfaa2eed80759e20ce3a63c22cba0b609c4c6537db4cec1feabbb2195ae6b"
+      },
+      {
+        "src": "/images/deterrence-750.webp",
+        "width": 750,
+        "height": 1000,
+        "bytes": 250724,
+        "sha256": "373b4af8a050d265587325afd0d3c7db81b39131188bd19cbe61451695c2adf3"
+      }
+    ],
+    "sourceSha256": "f27232f91d736cc5b9dce5e8ab301c8400370016e9d7e97d45c2514cec6aab62",
+    "kind": "photograph",
+    "reviewedAt": "2026-10-12",
+    "source": "https://npgallery.nps.gov/AssetDetail/21259702-1dd8-b71c-07a3-bda4d5645796",
+    "download": "https://npgallery.nps.gov/GetAsset/21259702-1dd8-b71c-07a3-bda4d5645796/proxyhires.jpg",
+    "license": "Public domain; full granting rights"
+  },
+  {
+    "id": "about",
+    "website": "BearTraps.ca",
+    "page": "/about/",
+    "placement": "Page introduction",
+    "alt": "Field researcher using a radio antenna in a mountain valley",
+    "label": "FIELD CONDITIONS",
+    "width": 1336,
+    "height": 1002,
+    "variants": [
+      {
+        "src": "/images/about-640.webp",
+        "width": 640,
+        "height": 480,
+        "bytes": 43374,
+        "sha256": "967daa60dab426e08fd3e12f9a9830de74bf54dc5c475ab8d97e6163a698bba9"
+      },
+      {
+        "src": "/images/about-1280.webp",
+        "width": 1280,
+        "height": 960,
+        "bytes": 118196,
+        "sha256": "607cbf127d49188a54acc3cf57e5a614591056fe33fcde7b0cf42249dea82263"
+      }
+    ],
+    "sourceSha256": "120a6ae0c90d941cc6e05c6724e2794efc8a6b584774588278438bf0bc6df77b",
+    "kind": "photograph",
+    "reviewedAt": "2026-10-12",
+    "source": "https://www.usgs.gov/media/images/telemetry-foot",
+    "download": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/19_Telemetry_IGBST_2.JPG?itok=adQ9NUui",
+    "license": "Public domain"
+  },
+  {
+    "id": "industries",
+    "website": "BearTraps.ca",
+    "page": "/industries/",
+    "placement": "Page introduction",
+    "alt": "Tent in a grassy forest campground",
+    "label": "PARKS & CAMPGROUNDS",
+    "width": 1000,
+    "height": 750,
+    "variants": [
+      {
+        "src": "/images/industries-640.webp",
+        "width": 640,
+        "height": 480,
+        "bytes": 117334,
+        "sha256": "dac44da34169e6be1639c7b5b83c05d1621cdfa2a8248bd5cf16fd4440f46bce"
+      },
+      {
+        "src": "/images/industries-1000.webp",
+        "width": 1000,
+        "height": 750,
+        "bytes": 289460,
+        "sha256": "f4ffc4de6d6b39744b88d7ef58d5b13175200870ee6acb3f7f5e80af6403dd5c"
+      }
+    ],
+    "sourceSha256": "e13789feb20c556ef4facef4f58e4110e270ead6bf2da249e60827c83e9a4530",
+    "kind": "photograph",
+    "reviewedAt": "2026-10-12",
+    "source": "https://npgallery.nps.gov/AssetDetail/212c662e-1dd8-b71c-0717-ca410c746a4e",
+    "download": "https://npgallery.nps.gov/GetAsset/212c662e-1dd8-b71c-0717-ca410c746a4e/proxyhires.jpg",
+    "license": "Public domain; full granting rights"
+  },
+  {
+    "id": "procurement",
+    "website": "BearTraps.ca",
+    "page": "/government-procurement/",
+    "placement": "Page introduction",
+    "alt": "Timber cooking shelter and picnic table in a wooded campground",
+    "label": "PUBLIC-SPACE REQUIREMENTS",
+    "width": 1000,
+    "height": 750,
+    "variants": [
+      {
+        "src": "/images/procurement-640.webp",
+        "width": 640,
+        "height": 480,
+        "bytes": 90860,
+        "sha256": "549587843ec59868f2c841caa6eea48a23e7af543cbed5535a0a81a557fef347"
+      },
+      {
+        "src": "/images/procurement-1000.webp",
+        "width": 1000,
+        "height": 750,
+        "bytes": 221102,
+        "sha256": "000197ee3340e96702fef5b1abc9d2a12af40c9c893f2230975ce5c3fd1f5fd7"
+      }
+    ],
+    "sourceSha256": "a103d2383ef3ad9acf856f0430095304159d2a215db4412a4fb7631dcbf8d950",
+    "kind": "photograph",
+    "reviewedAt": "2026-10-12",
+    "source": "https://npgallery.nps.gov/AssetDetail/21343820-1dd8-b71c-07a0-6af89a07b315",
+    "download": "https://npgallery.nps.gov/GetAsset/21343820-1dd8-b71c-07a0-6af89a07b315/proxyhires.jpg",
+    "license": "Public domain; full granting rights"
+  }
+]

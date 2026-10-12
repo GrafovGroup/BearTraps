@@ -12,6 +12,9 @@ const business = JSON.parse(await readFile("content/business.json", "utf8"));
 const base = "http://127.0.0.1:4173",
   reports = [];
 const performanceReports = [];
+const pageImages = JSON.parse(
+  await readFile("content/page-images.json", "utf8"),
+);
 await mkdir("screenshots", { recursive: true });
 try {
   for (let i = 0; i < 30; i++) {
@@ -245,6 +248,40 @@ try {
           });
         }
       }
+      if (engine === "chromium") {
+        for (const width of [1440, 320]) {
+          await page.setViewportSize({ width, height: 1000 });
+          for (const route of [
+            ...new Set(pageImages.map((image) => image.page)),
+          ]) {
+            await page.goto(base + route, { waitUntil: "networkidle" });
+            for (const photo of pageImages.filter(
+              (image) => image.page === route,
+            )) {
+              const image = page.locator(`[data-photo-id="${photo.id}"] img`);
+              await image.scrollIntoViewIfNeeded();
+              await image.evaluate((element) => element.decode());
+              assert.ok(
+                await image.evaluate(
+                  (element) => element.complete && element.naturalWidth > 0,
+                ),
+              );
+              assert.equal(await image.getAttribute("alt"), photo.alt);
+            }
+            assert.ok(
+              await page.evaluate(
+                () => document.documentElement.scrollWidth <= innerWidth,
+              ),
+              `Image overflow ${route} at ${width}px`,
+            );
+            await page.evaluate(() => scrollTo(0, 0));
+            await page.screenshot({
+              path: `screenshots/imagery-${width}-${route.replaceAll("/", "") || "home"}.png`,
+              fullPage: false,
+            });
+          }
+        }
+      }
       await page.emulateMedia({ reducedMotion: "reduce" });
       assert.ok(
         await page.evaluate(
@@ -277,7 +314,10 @@ try {
     }
   }
 } finally {
-  await writeFile("screenshots/performance-results.json", JSON.stringify(performanceReports, null, 2));
+  await writeFile(
+    "screenshots/performance-results.json",
+    JSON.stringify(performanceReports, null, 2),
+  );
   await writeFile(
     "screenshots/accessibility-results.json",
     JSON.stringify(reports, null, 2),
