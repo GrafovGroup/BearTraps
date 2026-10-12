@@ -30,7 +30,7 @@ const report = {
   ).length,
   contactMode: process.env.NEXT_PUBLIC_CONTACT_ENDPOINT
     ? "service-configured-requires-external-acceptance"
-    : "email-app",
+    : "formspree",
   confirmedPhone: config.phone?.e164 || null,
   package: {
     file: "beartraps-whc.zip",

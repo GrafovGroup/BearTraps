@@ -4,7 +4,8 @@ import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { contactSchema, contactMailto } from "@/lib/contact";
 import { contactDelivery } from "@/lib/contact-delivery";
-const endpoint = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT || "";
+import { formspreeEndpoint, submitFormspree } from "@/lib/formspree";
+const endpoint = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT ?? formspreeEndpoint;
 export default function ContactForm() {
   const params = useSearchParams();
   const product = params.get("product") || "";
@@ -20,6 +21,8 @@ export default function ContactForm() {
   const [mailto, setMailto] = useState("");
   const [busy, setBusy] = useState(false);
   const summary = useRef<HTMLDivElement>(null);
+  const inFlight = useRef(false);
+  const submitted = useRef("");
   const retry = useRef({ payload: "", key: "" });
   function errorFocus() {
     requestAnimationFrame(() => summary.current?.focus());
@@ -40,7 +43,7 @@ export default function ContactForm() {
         }}
         onSubmit={async (event) => {
           event.preventDefault();
-          if (busy) return;
+          if (inFlight.current) return;
           const data = Object.fromEntries(new FormData(event.currentTarget));
           const parsed = contactSchema.safeParse({
             ...data,
@@ -61,23 +64,44 @@ export default function ContactForm() {
             );
             return;
           }
-          setBusy(true);
           const payload = JSON.stringify(parsed.data);
+          if (submitted.current === payload) {
+            setMessage(
+              "This message has already been received. Edit it to send a new enquiry.",
+            );
+            return;
+          }
+          inFlight.current = true;
+          setBusy(true);
           if (retry.current.payload !== payload)
             retry.current = { payload, key: crypto.randomUUID() };
           try {
-            const receipt = await contactDelivery(endpoint).submit(
-              parsed.data,
-              retry.current.key,
-            );
+            if (endpoint === formspreeEndpoint) {
+              await submitFormspree(parsed.data);
+              submitted.current = payload;
+              setMessage(
+                "Thank you. Your message has been received by our form service for the BearTraps team.",
+              );
+            } else {
+              const receipt = await contactDelivery(endpoint).submit(
+                parsed.data,
+                retry.current.key,
+              );
+              setMessage(
+                `Accepted for processing. Reference: ${receipt.reference}. This confirms receipt by the service, not delivery to our inbox.`,
+              );
+            }
+          } catch (error) {
             setMessage(
-              `Accepted for processing. Reference: ${receipt.reference}. This confirms receipt by the service, not delivery to our inbox.`,
-            );
-          } catch {
-            setMessage(
-              "Receipt was not confirmed. Retry or email info@beartraps.ca directly.",
+              error instanceof Error && endpoint === formspreeEndpoint
+                ? error.message.startsWith("Too many") ||
+                  error.message.startsWith("Your message")
+                  ? error.message
+                  : "Your message could not be confirmed. Your details are still here; try again or email info@beartraps.ca."
+                : "Receipt was not confirmed. Retry or email info@beartraps.ca directly.",
             );
           } finally {
+            inFlight.current = false;
             setBusy(false);
           }
         }}
@@ -194,7 +218,8 @@ export default function ContactForm() {
             </p>
           )}
           <p>
-            See our <Link href="/privacy/">privacy information</Link>.
+            Messages are processed by Formspree. See our{" "}
+            <Link href="/privacy/">privacy information</Link>.
           </p>
           <button className="button amber" type="submit">
             {busy ? "SENDING…" : endpoint ? "SEND MESSAGE" : "PREPARE EMAIL"}
