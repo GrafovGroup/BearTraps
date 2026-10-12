@@ -37,3 +37,11 @@ if (
   home.includes("internal-fixture")
 )
   throw new Error("Internal fixture leaked into export");
+
+for (const route of routes.filter(r => !["request-quote", "equipment-package"].includes(r))) {
+  const html = readFileSync("out/" + (route ? route + "/" : "") + "index.html", "utf8");
+  if (/href="[^"#]*(request-quote|equipment-package)/.test(html)) throw new Error("Legacy RFQ link in " + route);
+  if (/ADD REQUIREMENT TO RFQ|BUILD YOUR RFQ|PREPARE TENDER RFQ/.test(html)) throw new Error("Legacy workflow in " + route);
+}
+const sitemap = readFileSync("out/sitemap.xml", "utf8");
+if (/request-quote|equipment-package/.test(sitemap)) throw new Error("Retired route in sitemap");

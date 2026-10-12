@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { categories } from "@/lib/catalog";
 import { CTA } from "@/components/site";
 export const metadata = { alternates: { canonical: "/" } };
@@ -28,8 +28,8 @@ export default function Home() {
             <Link className="button amber" href="#equipment">
               VIEW EQUIPMENT <span>↘</span>
             </Link>
-            <Link className="text-link" href="/request-quote">
-              REQUEST A QUOTE ↗
+            <Link className="text-link" href="/contact/">
+              CONTACT US ↗
             </Link>
           </div>
           <p className="hero-footnote">

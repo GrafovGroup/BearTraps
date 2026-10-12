@@ -1,3 +1,8 @@
 # Use packaged native binaries; do not run the resolver's optional install hook.
 allowBuilds:
   unrs-resolver: false
+
+# Temporary lint-only exposure exception; rationale/expiry in docs/SECURITY.md.
+audit:
+  ignore:
+    - GHSA-vfj7-8cjw-p6xm

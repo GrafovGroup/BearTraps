@@ -1,22 +1,16 @@
-import Link from "next/link";
+import Image from "next/image";
+import Link from "@/components/site-link";
 export function Brand() {
   return (
-    <Link className="brand" href="/" aria-label="BearTraps.ca home">
-      <svg viewBox="0 0 44 46" width="38" height="40" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M22 1 41 8v16c0 10-12 18-19 21C15 42 3 34 3 24V8Z"
-        />
-        <path
-          fill="#192A24"
-          d="m10 22 3-9 6 2 6-1 7 6 3 2-2 5-9 1-3 7-5-2 1-6-7-1Z"
-        />
-        <circle cx="28" cy="20" r="1.4" fill="#F5F5F0" />
-      </svg>
-      <span>
-        BEARTRAPS<span className="brand-ca">.CA</span>
-        <small>PROFESSIONAL WILDLIFE EQUIPMENT</small>
-      </span>
+    <Link className="brand" href="/" aria-label="BearTraps home">
+      <Image
+        className="brand-logo"
+        src="/brand/beartraps-shield.png"
+        alt="BEARTRAPS"
+        width={2172}
+        height={724}
+        priority
+      />
     </Link>
   );
 }
@@ -25,7 +19,7 @@ export function Header() {
     <>
       <div className="utility">
         <span>EQUIPMENT FOR CANADA’S WILD PLACES</span>
-        <a href="tel:+18336969996">(833) 696-9996 ↗</a>
+        <a href="mailto:info@beartraps.ca">EMAIL OUR TEAM ↗</a>
       </div>
       <header>
         <Brand />
@@ -35,8 +29,8 @@ export function Header() {
           <Link href="/industries">INDUSTRIES</Link>
           <Link href="/about">ABOUT</Link>
         </nav>
-        <Link className="button amber header-quote" href="/request-quote">
-          REQUEST A QUOTE <span>↗</span>
+        <Link className="button amber header-quote" href="/contact/">
+          CONTACT US <span>↗</span>
         </Link>
         <details className="mobile-nav">
           <summary>MENU</summary>
@@ -45,7 +39,7 @@ export function Header() {
             <Link href="/government-procurement">PROCUREMENT</Link>
             <Link href="/industries">INDUSTRIES</Link>
             <Link href="/about">ABOUT</Link>
-            <Link href="/request-quote">REQUEST A QUOTE</Link>
+            <Link href="/contact/">CONTACT US</Link>
           </nav>
         </details>
       </header>
@@ -62,7 +56,7 @@ export function Footer() {
           <br />
           Trusted for the job.
         </p>
-        <a href="tel:+18336969996">(833) 696-9996 ↗</a>
+        <a href="mailto:info@beartraps.ca">EMAIL OUR TEAM ↗</a>
       </div>
       <div className="footer-links">
         <span>© {new Date().getFullYear()} BEARTRAPS.CA</span>
@@ -95,8 +89,8 @@ export function CTA() {
           Our starting point.
         </h2>
       </div>
-      <Link className="button dark" href="/request-quote">
-        BUILD YOUR RFQ <span>↗</span>
+      <Link className="button dark" href="/contact/">
+        CONTACT US <span>↗</span>
       </Link>
     </section>
   );
