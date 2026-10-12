@@ -162,6 +162,8 @@ try {
       );
       const rfqPage = page;
       page = await context.newPage();
+      await page.setViewportSize({ width: 390, height: 1000 });
+      page.on("pageerror", (e) => failures.push(e.message));
       await page.goto(base + "/request-quote/", { waitUntil: "networkidle" });
       await page
         .getByRole("button", {
