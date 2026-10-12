@@ -35,3 +35,7 @@ Photo credits: black bear — Neal Lewis / NPS; culvert trailer and radio teleme
 Generated assets: hero capture enclosure, field supplies, warning sign and trail camera. Full prompts are in `docs/PAGE-IMAGE-PROMPTS.md`; original PNGs are preserved in the owner's project `design/page-images-2026-10-12/`. All website references point to committed `public/images/` WebP files, never the image-generation cache. No customer-facing provenance disclaimers are added.
 
 Validation: post-export check enforces one placement per source/id and all variant hashes. Cloud browser checks load every image at desktop and 320px widths, assert alt text and no horizontal overflow, and save screenshots. See PAGE-IMAGERY-IMPLEMENTATION.md for duplicate-check scope and verification results.
+
+## Bear favicon — October 12, 2026
+
+Original code-authored bear face, cream and amber on the brand green background. Source: `public/favicon.svg`; browser fallback `public/favicon.ico` (16/32/48px) and Apple touch icon `public/apple-touch-icon.png` (180px) are format variants of this single site-identity placement. Added at the owner's explicit request for a bear favicon. No photo or external icon source reused. This site-identity icon is separate from the 12 content-image placements.
