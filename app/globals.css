@@ -1321,3 +1321,57 @@ button:disabled {
   object-fit: contain;
   margin-bottom: 30px;
 }
+
+.mobile-quote {
+  display: none;
+}
+@media screen and (max-width: 760px) {
+  body:has(.mobile-quote) {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+  .mobile-quote {
+    display: block;
+    position: fixed;
+    z-index: 20;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 5% calc(12px + env(safe-area-inset-bottom));
+    background: #192a24;
+    border-top: 1px solid #77857b;
+  }
+  .mobile-quote .button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  html {
+    scroll-padding-bottom: 100px;
+  }
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  summary {
+    scroll-margin-bottom: 100px;
+  }
+}
+@media print {
+  .mobile-quote {
+    display: none !important;
+  }
+}
+
+.category-faq details {
+  padding: 22px 0;
+  border-bottom: 1px solid #a9b2ab;
+}
+.category-faq summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.category-faq p {
+  max-width: 75ch;
+  line-height: 1.7;
+}

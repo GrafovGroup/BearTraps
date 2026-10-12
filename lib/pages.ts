@@ -8,6 +8,14 @@ export const pages: Record<
       "A structured starting point for government, municipal and institutional equipment requests.",
     sections: [
       {
+        title: "Municipal and parks purchasing",
+        text: "Start with visitor signage, waste infrastructure and monitoring needs. Include site counts, collection access, mounting requirements and seasonal delivery windows.",
+      },
+      {
+        title: "Authorized field and conservation teams",
+        text: "Build a capture and transport package around the approved program and buyer authorization. Request exact-model dimensions, weight, handling documentation and compatibility evidence for each component.",
+      },
+      {
         title: "One coordinated equipment request",
         text: "Group capture equipment, transport, signage, storage and monitoring requirements. Include quantities, delivery locations and any mandatory technical criteria.",
       },
@@ -125,6 +133,10 @@ export const pages: Record<
       {
         title: "Server and hosting information",
         text: "The site does not include advertising trackers or analytics. Hosting infrastructure may process technical request information such as IP addresses and access logs. A delivery integration requires updated disclosures before activation.",
+      },
+      {
+        title: "Privacy enquiries",
+        text: "Contact info@beartraps.ca about information you have shared by email or to request correction or deletion. Do not include sensitive procurement documents in website fields; arrange an appropriate transfer method directly.",
       },
       {
         title: "Clearing your information",

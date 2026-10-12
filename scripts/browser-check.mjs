@@ -72,7 +72,12 @@ try {
       await page
         .getByRole("button", { name: "ADD REQUIREMENT TO RFQ" })
         .click();
-      await page.getByRole("link", { name: "VIEW YOUR RFQ" }).click();
+      await page
+        .getByRole("complementary", { name: "Quote shortcut" })
+        .getByRole("link", { name: "VIEW RFQ (1 LINE)" })
+        .click();
+      await page.waitForURL("**/request-quote/");
+      assert.equal(await page.locator(".mobile-quote").count(), 0);
       await page
         .getByLabel("ADD EQUIPMENT", { exact: true })
         .selectOption("bear-traps");
@@ -92,7 +97,9 @@ try {
           exact: true,
         })
         .fill("Requested size: 600 x 900 mm");
-      console.log(`${engine}: custom lines added; checking persistence and validation`);
+      console.log(
+        `${engine}: custom lines added; checking persistence and validation`,
+      );
       await page.reload();
       assert.equal(await page.getByRole("spinbutton").count(), 3);
       await page.getByRole("button", { name: "DOWNLOAD YOUR RFQ" }).click();
@@ -194,12 +201,51 @@ try {
           ),
           "Overflow " + engine + " " + path,
         );
+        if (path !== "/request-quote/") {
+          assert.equal(await page.locator(".mobile-quote").isVisible(), true);
+          await page
+            .getByRole("link", { name: "TERMS", exact: true })
+            .scrollIntoViewIfNeeded();
+          assert.ok(
+            await page
+              .getByRole("link", { name: "TERMS", exact: true })
+              .evaluate((el) => {
+                const r = el.getBoundingClientRect();
+                const sticky = document
+                  .querySelector(".mobile-quote")
+                  .getBoundingClientRect();
+                return r.bottom <= sticky.top;
+              }),
+            "Mobile shortcut obscures footer navigation",
+          );
+          await page.evaluate(() => scrollTo(0, 0));
+        }
+        if (path === "/bear-traps/") {
+          await page
+            .getByText("DOES A REQUEST CONFIRM AVAILABILITY OR ELIGIBILITY?", {
+              exact: true,
+            })
+            .click();
+          assert.equal(
+            await page
+              .getByText("No. Supply, lead time", { exact: false })
+              .isVisible(),
+            true,
+          );
+        }
         if (path === "/request-quote/") {
-          assert.ok(await page.evaluate(() => {
-            const form = document.querySelector(".quote-layout form").getBoundingClientRect();
-            const footer = document.querySelector("footer").getBoundingClientRect();
-            return form.bottom <= footer.top;
-          }), "RFQ form overlaps footer " + engine);
+          assert.ok(
+            await page.evaluate(() => {
+              const form = document
+                .querySelector(".quote-layout form")
+                .getBoundingClientRect();
+              const footer = document
+                .querySelector("footer")
+                .getBoundingClientRect();
+              return form.bottom <= footer.top;
+            }),
+            "RFQ form overlaps footer " + engine,
+          );
         }
         if (engine === "chromium") {
           const result = await new AxeBuilder({ page })
@@ -257,10 +303,17 @@ try {
       const failedPage = browser.contexts()[0]?.pages()[0];
       if (failedPage) {
         console.error("Browser failure at", failedPage.url());
-        await failedPage.screenshot({
-          path: `screenshots/${engine}-failure.png`,
-          fullPage: true,
-        }).catch((captureError) => console.error("Failure screenshot unavailable", captureError.message));
+        await failedPage
+          .screenshot({
+            path: `screenshots/${engine}-failure.png`,
+            fullPage: true,
+          })
+          .catch((captureError) =>
+            console.error(
+              "Failure screenshot unavailable",
+              captureError.message,
+            ),
+          );
       }
       throw error;
     } finally {

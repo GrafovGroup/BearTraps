@@ -50,3 +50,9 @@ Online submission is disabled by default. [RFQ delivery integration](docs/RFQ-DE
 - [Phase 1A review](docs/IMPLEMENTATION.md)
 - [Phase 1B implementation report](docs/PHASE-1B-IMPLEMENTATION.md)
 - [Internal asset register](docs/ASSET-USAGE.md)
+
+## Phase 1C
+
+Supplier intake now supports four review statuses and JSON import into `content/products.json`; see [publication workflow](docs/CATALOGUE-PUBLISHING.md). Mobile catalogue/category pages offer a persistent RFQ shortcut. [Operations](docs/OPERATIONS.md) covers measurement, lead handling, privacy, delivery acceptance and rollback. The optional PHP 8.2 bridge is a separate, disabled artifact requiring a secured validation/queue/mail upstream; see [RFQ delivery](docs/RFQ-DELIVERY.md).
+
+No verified supplier records or live online delivery have been added. Phase 1B remains the deployed site until the Phase 1C artifact is approved. See [Phase 1C report](docs/PHASE-1C-IMPLEMENTATION.md) for actual checks and remaining configuration.

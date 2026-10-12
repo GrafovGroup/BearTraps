@@ -23,6 +23,13 @@ jobs:
           version: 11.25.0
           run_install: false
       - run: pnpm install --frozen-lockfile
+      - name: Dependency vulnerability audit
+        run: pnpm audit --audit-level=high
+      - name: Verify optional WHC PHP bridge
+        run: |
+          php --version
+          php -l integrations/whc/rfq.php
+          php tests/whc-bridge.php
       - run: pnpm run lint
       - run: pnpm run typecheck
       - run: pnpm test
@@ -45,4 +52,9 @@ jobs:
         with:
           name: beartraps-whc
           path: beartraps-whc.zip
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: whc-rfq-bridge-disabled
+          path: integrations/whc/rfq.php
           retention-days: 14

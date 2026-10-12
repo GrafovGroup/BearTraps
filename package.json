@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test lib/*.test.ts tests/*.test.ts",
     "test:browser": "node scripts/browser-check.mjs",
-    "check:catalogue": "node --experimental-strip-types scripts/check-catalogue.ts"
+    "check:catalogue": "node --experimental-strip-types scripts/check-catalogue.ts",
+    "import:catalogue": "node --experimental-strip-types scripts/import-catalogue.ts"
   },
   "dependencies": {
     "next": "16.3.4",

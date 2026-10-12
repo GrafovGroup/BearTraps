@@ -103,6 +103,29 @@ export default async function Page({
               </div>
             </div>
           </section>
+          <section className="section category-faq">
+            <h2>Before you request a quote</h2>
+            <details>
+              <summary>
+                WHAT INFORMATION HELPS SPECIFY {c.short.toUpperCase()}?
+              </summary>
+              <p>
+                Include {c.items.join(", ").toLowerCase()}, quantities, delivery
+                destination and required date. Attach model-specific evidence to
+                your email if your procurement requires an exact specification.
+              </p>
+            </details>
+            <details>
+              <summary>
+                DOES A REQUEST CONFIRM AVAILABILITY OR ELIGIBILITY?
+              </summary>
+              <p>
+                No. Supply, lead time, freight and suitability are confirmed in
+                a written quote. Buyer authorization and applicable product
+                restrictions require individual review.
+              </p>
+            </details>
+          </section>
           <section className="section">
             <p className="eyebrow">COMPLETE YOUR REQUEST</p>
             <h2>Related equipment</h2>

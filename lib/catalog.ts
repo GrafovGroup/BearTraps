@@ -1,8 +1,9 @@
+import records from "../content/products.json" with { type: "json" };
 import { validateCatalog } from "./product-schema.ts";
 export { categories } from "./categories.ts";
 export type { Product } from "./product-schema.ts";
 // Add only evidence-backed supplier records. Test fixtures are never imported here.
-export const products = validateCatalog([]);
+export const products = validateCatalog(records);
 export const publishedProducts = products.filter(
   (p) => p.published && p.verification === "verified",
 );

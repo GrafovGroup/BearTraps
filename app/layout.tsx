@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Header, Footer } from "@/components/site";
 import { siteUrl } from "@/lib/catalog";
 import "./globals.css";
+import MobileQuote from "@/components/mobile-quote";
 export const metadata: Metadata = {
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
   metadataBase: new URL(siteUrl),
   title: {
     default: "BEARTRAPS.CA | Professional Wildlife Equipment",
@@ -22,6 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <MobileQuote />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
