@@ -30,7 +30,7 @@ export function Header() {
       <header>
         <Brand />
         <nav aria-label="Main navigation">
-          <Link href="/bear-traps">EQUIPMENT</Link>
+          <Link href="/products/">EQUIPMENT</Link>
           <Link href="/government-procurement">PROCUREMENT</Link>
           <Link href="/industries">INDUSTRIES</Link>
           <Link href="/about">ABOUT</Link>
@@ -41,7 +41,7 @@ export function Header() {
         <details className="mobile-nav">
           <summary>MENU</summary>
           <nav aria-label="Mobile navigation">
-            <Link href="/bear-traps">EQUIPMENT</Link>
+            <Link href="/products/">EQUIPMENT</Link>
             <Link href="/government-procurement">PROCUREMENT</Link>
             <Link href="/industries">INDUSTRIES</Link>
             <Link href="/about">ABOUT</Link>

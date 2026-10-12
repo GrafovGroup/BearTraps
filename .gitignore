@@ -7,3 +7,5 @@ out/
 
 .pnpm-store/
 screenshots/
+
+node_modules

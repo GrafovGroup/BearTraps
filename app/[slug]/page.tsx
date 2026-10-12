@@ -4,6 +4,7 @@ import Link from "next/link";
 import { categories, siteUrl } from "@/lib/catalog";
 import { pages } from "@/lib/pages";
 import { Breadcrumb, CTA } from "@/components/site";
+import CatalogueBrowser from "@/components/catalogue/catalogue-browser";
 import AddToQuote from "@/components/add-to-quote";
 export function generateStaticParams() {
   return [
@@ -79,6 +80,9 @@ export default async function Page({
               </p>
             </div>
           </section>
+          <section className="section">
+            <CatalogueBrowser initialCategory={c.slug} />
+          </section>
           <section className="section pale">
             <div className="split">
               <div>
@@ -122,6 +126,40 @@ export default async function Page({
               <p>{s.text}</p>
             </article>
           ))}
+        </section>
+      )}
+      {slug === "government-procurement" && (
+        <section className="section pale">
+          <p className="eyebrow">COORDINATE YOUR REQUIREMENTS</p>
+          <h2>One package. A clear line-item request.</h2>
+          <p className="large-copy">
+            Combine capture equipment, transport, signage, monitoring and
+            consumables. Include bulk quantities, fabrication requirements,
+            freight access and bilingual documentation needs. Each product and
+            compatibility requirement is reviewed individually.
+          </p>
+          <div className="procurement-actions">
+            <Link className="button amber" href="/equipment-package/">
+              BUILD EQUIPMENT PACKAGE ↗
+            </Link>
+            <Link className="button dark" href="/request-quote/">
+              PREPARE TENDER RFQ ↗
+            </Link>
+          </div>
+          <p>
+            Record your tender number, local closing time and time zone,
+            delivery deadline and document references. Download or print the RFQ
+            for your records. This does not submit a tender bid.
+          </p>
+        </section>
+      )}
+      {slug === "contact" && (
+        <section className="section pale">
+          <h2>Equipment enquiries</h2>
+          <a className="contact-link" href="mailto:info@beartraps.ca">
+            info@beartraps.ca
+          </a>
+          <p>Attach your completed RFQ when contacting us by email.</p>
         </section>
       )}
       {!["privacy", "terms"].includes(slug) && <CTA />}

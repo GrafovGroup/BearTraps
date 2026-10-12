@@ -1,95 +1,93 @@
 "use client";
-import { useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { categories } from "@/lib/catalog";
+import { useRef, useState } from "react";
+import { useBasket } from "./use-basket";
+import QuoteBasket from "./quote-basket";
 import {
-  parseBasket,
-  writeBasket,
-  basketKey,
-  type BasketItem,
-} from "@/lib/basket";
-import { provinces, quoteSchema } from "@/lib/quote";
-const subscribe = (notify: () => void) => {
-  window.addEventListener("storage", notify);
-  window.addEventListener("basket-updated", notify);
-  return () => {
-    window.removeEventListener("storage", notify);
-    window.removeEventListener("basket-updated", notify);
-  };
-};
-let memoryBasket: string | null = null;
-const snapshot = () => {
-  if (memoryBasket !== null) return memoryBasket;
-  try {
-    return localStorage.getItem(basketKey) || "[]";
-  } catch {
-    return "[]";
-  }
-};
+  provinces,
+  timezones,
+  buyerTypes,
+  quoteSchema,
+  type Quote,
+} from "@/lib/quote";
+import { rfqSummary } from "@/lib/rfq-summary";
+import { httpDelivery, type Receipt } from "@/lib/rfq-delivery";
+const endpoint = process.env.NEXT_PUBLIC_RFQ_ENDPOINT || "";
 export default function QuoteForm() {
-  const raw = useSyncExternalStore(subscribe, snapshot, () => "[]");
-  const items = useMemo<BasketItem[]>(() => parseBasket(raw), [raw]);
-  const ready = useSyncExternalStore(
-    subscribe,
-    () => true,
-    () => false,
-  );
+  const { items, ready, update } = useBasket();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState("");
+  const [summary, setSummary] = useState("");
+  const [sending, setSending] = useState(false);
+  const [receipt, setReceipt] = useState<Receipt | null>(null);
+  const [deliveryError, setDeliveryError] = useState("");
   const errorRef = useRef<HTMLDivElement>(null);
-  function update(next: BasketItem[]) {
-    memoryBasket = JSON.stringify(next);
-    try {
-      writeBasket(next);
-      memoryBasket = null;
-    } catch {
+  const retry = useRef<{ payload: string; key: string } | null>(null);
+  function save(items: Parameters<typeof update>[0]) {
+    if (!update(items))
       setStatus(
-        "Browser storage is unavailable. Keep this page open until you download your request.",
+        "Selections are retained for this tab only because browser storage is unavailable.",
       );
-    }
-    window.dispatchEvent(new Event("basket-updated"));
   }
-  function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const values = Object.fromEntries(form);
+  function validate(form: HTMLFormElement): Quote | null {
+    const data = new FormData(form);
     const result = quoteSchema.safeParse({
-      ...values,
+      ...Object.fromEntries(data),
       items,
-      eligibility: form.get("eligibility") === "on",
+      eligibility: data.get("eligibility") === "on",
+      consent: data.get("consent") === "on",
     });
     if (!result.success) {
       const next: Record<string, string> = {};
-      for (const e of result.error.issues) next[String(e.path[0])] = e.message;
+      for (const issue of result.error.issues)
+        next[String(issue.path[0])] = issue.message;
       setErrors(next);
       setStatus("");
       requestAnimationFrame(() => errorRef.current?.focus());
-      return;
+      return null;
     }
     setErrors({});
-    const d = result.data;
-    const content = [
-      "BEARTRAPS.CA — EQUIPMENT REQUEST",
-      "Prepared locally. Not submitted.",
-      "",
-      ...items.map(
-        (i) =>
-          `${categories.find((c) => c.slug === i.slug)?.title} — Quantity: ${i.quantity}`,
-      ),
-      "",
-      `Contact: ${d.name}`,
-      `Organization: ${d.organization}`,
-      `Email: ${d.email}`,
-      `Phone: ${d.phone}`,
-      `Province: ${d.province}`,
-      `Delivery destination: ${d.destination}`,
-      `Desired date: ${d.desiredDate || "To be confirmed"}`,
-      `Tender reference: ${d.tenderReference || "None"}`,
-      `Closing date: ${d.closingDate || "None"}`,
-      `Technical requirements: ${d.requirements}`,
-      `Notes: ${d.notes}`,
-      "",
-      "Eligibility acknowledged. Product suitability and availability require independent confirmation.",
-    ].join("\n");
+    return result.data;
+  }
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const quote = validate(event.currentTarget);
+    if (!quote) return;
+    const content = rfqSummary(quote);
+    setSummary(content);
+    const action =
+      (event.nativeEvent as SubmitEvent).submitter?.getAttribute("value") ||
+      "download";
+    if (action === "print") {
+      requestAnimationFrame(() => window.print());
+      return;
+    }
+    if (action === "send") {
+      if (!endpoint) return;
+      const payload = JSON.stringify(quote);
+      if (retry.current?.payload !== payload)
+        retry.current = { payload, key: crypto.randomUUID() };
+      setSending(true);
+      setDeliveryError("");
+      setReceipt(null);
+      try {
+        const accepted = await httpDelivery(endpoint).submit(
+          quote,
+          retry.current!.key,
+        );
+        setReceipt(accepted);
+        setStatus(
+          "Your request was accepted for review. Reference: " +
+            accepted.reference,
+        );
+      } catch {
+        setDeliveryError(
+          "Receipt could not be confirmed. Download a copy, or retry the same request. Do not assume it was delivered.",
+        );
+      } finally {
+        setSending(false);
+      }
+      return;
+    }
     const url = URL.createObjectURL(
       new Blob([content], { type: "text/plain;charset=utf-8" }),
     );
@@ -110,7 +108,7 @@ export default function QuoteForm() {
     type = "text",
     required = false,
   ) => (
-    <label className="field" key={name} htmlFor={name}>
+    <label className="field" htmlFor={name} key={name}>
       <span>
         {label}
         {required ? " *" : ""}
@@ -141,184 +139,229 @@ export default function QuoteForm() {
       )}
     </label>
   );
+  const select = (
+    name: string,
+    label: string,
+    options: readonly string[],
+    required = false,
+  ) => (
+    <label className="field" htmlFor={name}>
+      <span>
+        {label}
+        {required ? " *" : ""}
+      </span>
+      <select
+        name={name}
+        id={name}
+        defaultValue=""
+        required={required}
+        aria-invalid={!!errors[name]}
+        aria-describedby={errors[name] ? name + "-error" : undefined}
+      >
+        <option value="">Select {label.toLowerCase()}</option>
+        {options.map((o) => (
+          <option key={o} value={o}>
+            {o.replace("America/", "").replaceAll("_", " ")}
+          </option>
+        ))}
+      </select>
+      {errors[name] && (
+        <span className="error" id={name + "-error"}>
+          {errors[name]}
+        </span>
+      )}
+    </label>
+  );
+  const area = (name: string, label: string) => (
+    <label className="field" htmlFor={name}>
+      <span>{label}</span>
+      <textarea
+        id={name}
+        name={name}
+        rows={3}
+        maxLength={2000}
+        aria-invalid={!!errors[name]}
+        aria-describedby={errors[name] ? name + "-error" : undefined}
+      />
+      {errors[name] && (
+        <span className="error" id={name + "-error"}>
+          {errors[name]}
+        </span>
+      )}
+    </label>
+  );
   return (
-    <section className="section quote-layout">
-      <aside className="basket">
-        <p className="eyebrow">01 / EQUIPMENT LIST</p>
-        <h2>Your requirements</h2>
-        <p>
-          Add categories now. Exact models and specifications can be included
-          below.
-        </p>
-        <label className="field" htmlFor="add-category">
-          <span>ADD EQUIPMENT</span>
-          <select
-            id="add-category"
-            value=""
-            disabled={!ready}
-            onChange={(e) => {
-              if (
-                e.target.value &&
-                !items.some((i) => i.slug === e.target.value)
-              )
-                update([...items, { slug: e.target.value, quantity: 1 }]);
-            }}
-          >
-            <option value="">Select a category</option>
-            {categories
-              .filter((c) => !items.some((i) => i.slug === c.slug))
-              .map((c) => (
-                <option key={c.slug} value={c.slug}>
-                  {c.short}
-                </option>
-              ))}
-          </select>
-        </label>
-        {!items.length && (
-          <p className="empty-basket">Your equipment list is empty.</p>
-        )}
-        {items.map((i) => (
-          <div className="basket-item" key={i.slug}>
-            <h3>{categories.find((c) => c.slug === i.slug)?.short}</h3>
-            <div>
-              <label>
-                QUANTITY{" "}
-                <input
-                  type="number"
-                  min="1"
-                  max="9999"
-                  value={i.quantity}
-                  onChange={(e) =>
-                    update(
-                      items.map((x) =>
-                        x.slug === i.slug
-                          ? {
-                              ...x,
-                              quantity: Math.max(
-                                1,
-                                Math.min(
-                                  9999,
-                                  Math.trunc(Number(e.target.value) || 1),
-                                ),
-                              ),
-                            }
-                          : x,
-                      ),
-                    )
-                  }
-                />
-              </label>
-              <button
-                type="button"
-                onClick={() => update(items.filter((x) => x.slug !== i.slug))}
-                aria-label={
-                  "Remove " + categories.find((c) => c.slug === i.slug)?.short
-                }
+    <>
+      <section className="section quote-layout">
+        <QuoteBasket
+          items={items}
+          ready={ready}
+          update={save}
+          error={errors.items}
+        />
+        <form onSubmit={submit} noValidate>
+          <fieldset disabled={sending} className="quote-fields">
+            <legend className="eyebrow">02 / PROJECT DETAILS</legend>
+            <h2>Tell us what the job needs.</h2>
+            <p>
+              Fields marked * are required. Provide document references, not
+              confidential attachments.
+            </p>
+            {Object.keys(errors).length > 0 && (
+              <div
+                tabIndex={-1}
+                ref={errorRef}
+                className="error-summary"
+                role="alert"
               >
-                REMOVE ×
+                <strong>Review your request</strong>
+                <ul>
+                  {Object.entries(errors).map(([key, value]) => (
+                    <li key={key}>
+                      <a href={"#" + key}>{value}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="form-grid">
+              {field("name", "CONTACT NAME", "text", true)}
+              {field("organization", "ORGANIZATION", "text", true)}
+              {select("buyerType", "BUYER TYPE", buyerTypes, true)}
+              {field("email", "EMAIL", "email", true)}
+              {field("phone", "PHONE", "tel", true)}
+              {select("province", "PROVINCE / TERRITORY", provinces, true)}
+              {field("destination", "DELIVERY DESTINATION", "text", true)}
+              {field("desiredDate", "DELIVERY DEADLINE", "date")}
+            </div>
+            <fieldset className="tender-fields">
+              <legend>TENDER & PROCUREMENT DETAILS</legend>
+              <p>
+                For a tender, include its closing date, local time and time
+                zone. An RFQ here does not submit a tender bid.
+              </p>
+              <div className="form-grid">
+                {field("tenderReference", "TENDER REFERENCE")}
+                {field("closingDate", "TENDER CLOSING DATE", "date")}
+                {field("closingTime", "TENDER CLOSING TIME", "time")}
+                {select("closingTimezone", "CLOSING TIME ZONE", timezones)}
+              </div>
+              {field("procurementReference", "PROCUREMENT DOCUMENT REFERENCE")}
+            </fieldset>
+            {area("requirements", "TECHNICAL REQUIREMENTS")}
+            {area("freightNeeds", "FREIGHT / UNLOADING NEEDS")}
+            {area("installationNeeds", "INSTALLATION REQUIREMENTS")}
+            {area("notes", "ADDITIONAL NOTES")}
+            <p className="form-note">
+              Installation requirements inform equipment sourcing. Installation
+              services and availability require separate confirmation.
+            </p>
+            <div className="honeypot" aria-hidden="true">
+              <label>
+                Website
+                <input name="website" tabIndex={-1} autoComplete="off" />
+              </label>
+            </div>
+            {[
+              [
+                "eligibility",
+                "I understand that product availability, compatibility, buyer authorization and jurisdiction requirements must be confirmed before supply.",
+              ],
+              [
+                "consent",
+                "I authorize inclusion of these contact and project details in this RFQ. I understand that downloading or printing does not send it.",
+              ],
+            ].map(([name, label]) => (
+              <div key={name}>
+                <label className="checkbox">
+                  <input
+                    id={name}
+                    name={name}
+                    type="checkbox"
+                    required
+                    aria-invalid={!!errors[name]}
+                    aria-describedby={
+                      errors[name] ? name + "-error" : undefined
+                    }
+                  />
+                  <span>{label} *</span>
+                </label>
+                {errors[name] && (
+                  <p className="error" id={name + "-error"}>
+                    {errors[name]}
+                  </p>
+                )}
+              </div>
+            ))}
+            <div className="rfq-actions">
+              <button
+                className="button amber"
+                value="download"
+                type="submit"
+                disabled={!ready}
+              >
+                DOWNLOAD YOUR RFQ ↓
+              </button>
+              <button
+                className="button dark"
+                value="print"
+                type="submit"
+                disabled={!ready}
+              >
+                PRINT RFQ / SAVE PDF
               </button>
             </div>
-          </div>
-        ))}
-        <p className="error">{errors.items}</p>
-        <p className="basket-note">
-          No payment is collected. Regulated equipment requires buyer and
-          jurisdiction review.
-        </p>
-      </aside>
-      <form onSubmit={submit} noValidate>
-        <p className="eyebrow">02 / PROJECT DETAILS</p>
-        <h2>Tell us what the job needs.</h2>
-        <p>Fields marked * are required.</p>
-        {Object.keys(errors).length > 0 && (
-          <div
-            tabIndex={-1}
-            ref={errorRef}
-            className="error-summary"
-            role="alert"
-          >
-            <strong>Review your request</strong>
-            <ul>
-              {Object.entries(errors).map(([k, v]) => (
-                <li key={k}>{v}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <div className="form-grid">
-          {field("name", "CONTACT NAME", "text", true)}
-          {field("organization", "ORGANIZATION", "text", true)}
-          {field("email", "EMAIL", "email", true)}
-          {field("phone", "PHONE", "tel", true)}
-          <label className="field" htmlFor="province">
-            <span>PROVINCE / TERRITORY *</span>
-            <select
-              id="province"
-              name="province"
-              required
-              aria-invalid={!!errors.province}
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Select province or territory
-              </option>
-              {provinces.map((p) => (
-                <option key={p}>{p}</option>
-              ))}
-            </select>
-            {errors.province && (
-              <span className="error">Select your province or territory</span>
-            )}
-          </label>
-          {field("destination", "DELIVERY DESTINATION", "text", true)}
-          {field("desiredDate", "DESIRED DELIVERY DATE", "date")}
-          {field("tenderReference", "TENDER REFERENCE")}
-          {field("closingDate", "TENDER CLOSING DATE", "date")}
-        </div>
-        <label className="field" htmlFor="requirements">
-          <span>TECHNICAL REQUIREMENTS</span>
-          <textarea
-            id="requirements"
-            name="requirements"
-            rows={5}
-            maxLength={2000}
-            placeholder="Models, dimensions, intended use, required evidence, compatibility…"
-          />
-        </label>
-        <label className="field" htmlFor="notes">
-          <span>ADDITIONAL NOTES</span>
-          <textarea id="notes" name="notes" rows={3} maxLength={2000} />
-        </label>
-        <div className="honeypot" aria-hidden="true">
-          <label>
-            Website
-            <input name="website" tabIndex={-1} autoComplete="off" />
-          </label>
-        </div>
-        <label className="checkbox">
-          <input
-            type="checkbox"
-            name="eligibility"
-            required
-            aria-invalid={!!errors.eligibility}
-          />
-          <span>
-            I understand that product availability, buyer authorization and
-            jurisdiction requirements must be confirmed before supply. *
-          </span>
-        </label>
-        {errors.eligibility && <p className="error">{errors.eligibility}</p>}
-        <button className="button amber" type="submit" disabled={!ready}>
-          DOWNLOAD YOUR RFQ ↓
-        </button>
-        <p role="status" className="form-status">
-          {status}
-        </p>
-        <p className="form-note">
-          Your contact details are not stored in the quote basket. This file is
-          prepared locally and is not sent automatically.
-        </p>
-      </form>
-    </section>
+            <div className="delivery-panel">
+              <h3>Send your equipment request</h3>
+              <p>
+                Use your downloaded RFQ to contact{" "}
+                <a href="mailto:info@beartraps.ca">info@beartraps.ca</a>.
+                Opening your email app does not send a request automatically.
+              </p>
+              <button
+                className="button dark"
+                type="submit"
+                value="send"
+                disabled={!endpoint || !ready || sending}
+                aria-describedby="delivery-state"
+              >
+                {sending
+                  ? "SENDING…"
+                  : endpoint
+                    ? "SUBMIT RFQ"
+                    : "ONLINE SUBMISSION UNAVAILABLE"}
+              </button>
+              <p id="delivery-state" className="form-note">
+                {endpoint
+                  ? "A receipt appears only after the delivery service confirms acceptance."
+                  : "Download or print your RFQ to retain a copy and email it yourself."}
+              </p>
+              {deliveryError && (
+                <p role="alert" className="error">
+                  {deliveryError}
+                </p>
+              )}
+              {receipt && (
+                <p role="status">
+                  Accepted for review: {receipt.reference}. Acceptance does not
+                  confirm product availability or eligibility.
+                </p>
+              )}
+            </div>
+            <p role="status" className="form-status">
+              {status}
+            </p>
+            <p className="form-note">
+              Equipment selections and line specifications are saved in this
+              browser. Contact and project fields are not saved. Clear the
+              equipment list on shared devices.
+            </p>
+          </fieldset>
+        </form>
+      </section>
+      <section className="print-rfq" aria-label="Prepared RFQ summary">
+        <pre>{summary}</pre>
+      </section>
+    </>
   );
 }

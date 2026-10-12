@@ -13,6 +13,8 @@ const routes = [
   "about",
   "contact",
   "request-quote",
+  "products",
+  "equipment-package",
   "product-compliance",
   "privacy",
   "terms",
@@ -26,5 +28,12 @@ for (const route of routes) {
 for (const file of ["sitemap.xml", "robots.txt", "404.html", ".htaccess"])
   if (!existsSync("out/" + file)) throw new Error("Missing " + file);
 console.log(
-  "Verified 16 routes, sitemap, robots, 404 and Apache configuration.",
+  "Verified 18 routes, sitemap, robots, 404 and Apache configuration.",
 );
+
+const home = readFileSync("out/products/index.html", "utf8");
+if (
+  home.includes("INTERNAL TEST MANUFACTURER") ||
+  home.includes("internal-fixture")
+)
+  throw new Error("Internal fixture leaked into export");

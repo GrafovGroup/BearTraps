@@ -2,24 +2,35 @@
 import { useState } from "react";
 import Link from "next/link";
 import { readBasket, writeBasket } from "@/lib/basket";
-export default function AddToQuote({ slug }: { slug: string }) {
+import { categoryLine, mergeLines, type BasketItem } from "@/lib/line-items";
+import type { CategoryId } from "@/lib/categories";
+export default function AddToQuote({
+  slug,
+  line,
+}: {
+  slug: CategoryId;
+  line?: BasketItem;
+}) {
   const [added, setAdded] = useState(false);
-  const [error, setError] = useState("");
+  const [status, setStatus] = useState("");
   return (
     <div>
       <button
         className="button amber"
         onClick={() => {
           try {
-            const items = readBasket();
-            if (!items.some((i) => i.slug === slug))
-              items.push({ slug, quantity: 1 });
-            writeBasket(items);
+            const saved = writeBasket(
+              mergeLines(readBasket(), [line || categoryLine(slug)]),
+            );
             setAdded(true);
-            setError("");
-          } catch {
-            setError(
-              "Your browser could not save this selection. Open the RFQ builder to add it there.",
+            setStatus(
+              saved
+                ? ""
+                : "Selection retained for this tab. Browser storage is unavailable.",
+            );
+          } catch (e) {
+            setStatus(
+              e instanceof Error ? e.message : "Could not add the selection.",
             );
           }
         }}
@@ -31,7 +42,7 @@ export default function AddToQuote({ slug }: { slug: string }) {
           VIEW YOUR RFQ →
         </Link>
       )}
-      <p role="status">{error}</p>
+      <p role="status">{status}</p>
     </div>
   );
 }

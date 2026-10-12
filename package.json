@@ -1,6 +1,6 @@
 {
   "name": "beartraps-ca",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
@@ -8,8 +8,9 @@
     "start": "next start --hostname 127.0.0.1",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test lib/quote.test.ts",
-    "test:browser": "node scripts/browser-check.mjs"
+    "test": "node --experimental-strip-types --test lib/*.test.ts tests/*.test.ts",
+    "test:browser": "node scripts/browser-check.mjs",
+    "check:catalogue": "node --experimental-strip-types scripts/check-catalogue.ts"
   },
   "dependencies": {
     "next": "16.3.4",
@@ -26,9 +27,12 @@
     "eslint-config-next": "16.3.4",
     "tailwindcss": "4.2.1",
     "@tailwindcss/postcss": "4.2.1",
-    "playwright": "1.56.1"
+    "playwright": "1.56.1",
+    "@axe-core/playwright": "4.10.2"
   },
   "engines": {
     "node": ">=22.13.0"
-  }
+  },
+  "packageManager": "pnpm@11.25.0",
+  "type": "module"
 }

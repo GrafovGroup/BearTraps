@@ -1,0 +1,25 @@
+import { categoryLine } from "../../lib/line-items.ts";
+// Internal synthetic test data. Never import into production UI or published content.
+export const validQuote = () => ({
+  name: "Test Buyer",
+  organization: "Test Organization",
+  buyerType: "Municipality" as const,
+  email: "buyer@example.invalid",
+  phone: "+1 416 555 0123",
+  province: "Ontario" as const,
+  destination: "Test destination, Ontario",
+  desiredDate: "",
+  tenderReference: "",
+  closingDate: "",
+  closingTime: "",
+  closingTimezone: "" as const,
+  procurementReference: "",
+  requirements: "",
+  freightNeeds: "",
+  installationNeeds: "",
+  notes: "",
+  eligibility: true as const,
+  consent: true as const,
+  website: "",
+  items: [{ ...categoryLine("bear-traps"), quantity: 2 }],
+});
