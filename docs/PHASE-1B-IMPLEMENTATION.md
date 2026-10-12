@@ -2,6 +2,10 @@
 
 Branch: `codex/phase-1b`, based on Phase 1A `b8c98ff77ddf077747f7bd2cad12dfbe2ff9be0b`, with the updated owner brief from `b972d4173b80c86d0fade6d8c825164e6b0ff504` merged. Pull request: [#2](https://github.com/GrafovGroup/BearTraps/pull/2), targeting the Phase 1A branch.
 
+## Deployment follow-up
+
+On October 12, 2026, the owner subsequently authorized connecting the domain. The static site is now deployed to WHC with verified HTTPS; see [deployment record](DEPLOYMENT-2026-10-12.md). The phase-completion statements below describe the state before deployment. Live email delivery remains unconfigured.
+
 ## Summary
 
 Implements the catalogue architecture, expanded RFQ, procurement package builder and validation described in `PHASE-1B-MASTER-PROMPT.md`. WHC static export and the existing brand are preserved. Phase 1A and main are not replaced.
