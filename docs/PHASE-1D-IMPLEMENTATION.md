@@ -23,7 +23,35 @@ Last verified live site: **Phase 1B on WHC**. Phase 1C and this Phase 1D are sou
 
 ## Verification
 
-Local direct Node checks: 32 unit tests passed; TypeScript and ESLint passed before the final documentation/CI additions. Full final cloud checks and visual inspection are pending. This paragraph will be replaced with actual commit/run/artifact results before completion.
+Verified implementation commit: **37e635f3374aa3930755c56082eb7389edcd8a39**. Both jobs in [cloud run 38292869565](https://github.com/GrafovGroup/BearTraps/actions/runs/38292869565) passed on October 12, 2026. The subsequent report commit changes documentation only.
+
+| Check | Actual result |
+| --- | --- |
+| Frozen install, ESLint, TypeScript | Passed |
+| Unit tests | 32 passed, zero failures |
+| CSV template import | Direct Node command passed; zero publishable records, private output/manifest created |
+| Production catalogue | Passed; zero products, no fixtures |
+| Dependency audit | Passed under the existing time-limited lint-only exception, not a zero-vulnerability result |
+| PHP lint/receipt/rate tests | Passed in cloud; no WHC service activation or inbox test |
+| Production build/export | Passed; 18 base HTML routes including retired contact fallbacks |
+| Production Chromium/Firefox/WebKit | Passed: 1440/768/390/320px home layouts, mobile navigation, confirmed tel links, sourcing, contact fallback, errors/consent/prefill and legacy redirects |
+| Production Chromium axe | Zero reported WCAG 2 A/AA and 2.1 AA violations on catalogue, contact, procurement and bear-trap category |
+| Isolated synthetic product job | Passed: build, detail/specification/variant/logistics/document/accessory output, model metadata, manufacturer search and empty-result sourcing prefill |
+| Isolated product accessibility/contact | Chromium axe passed; mocked malformed 202 rejected, valid receipt accepted, unchanged retry key reused and changed-payload key replaced |
+| Visual inspection | Final desktop home and 320px contact screenshots inspected; logo, menu, call links, form and footer intact. Prior 320px homepage inspected during QA |
+| Static release integrity | Archive SHA-256 and all 116 exported file hashes matched the manifest; .htaccess present, PHP and private intake excluded |
+
+Cloud commands: `pnpm install --frozen-lockfile`, `pnpm audit --audit-level=high`, `php -l integrations/whc/contact.php`, `php tests/whc-bridge.php`, `pnpm run lint`, `pnpm run typecheck`, `pnpm test`, `pnpm run check:catalogue`, `pnpm run build`, `node scripts/check-export.mjs`, `pnpm exec playwright install --with-deps chromium firefox webkit`, `pnpm run test:browser`, static ZIP packaging and `pnpm run release:manifest`. The separate CI checkout runs `node --experimental-strip-types scripts/prepare-test-catalogue.ts`, a production build with an intercepted test endpoint, Chromium installation and `node scripts/product-browser-check.mjs`. That checkout never uploads artifacts.
+
+QA corrected an axe setup requirement for an explicit browser context, ambiguous select labels and a menu-marker wrap at 320px. The final rerun passed. Production performance evidence records 12 navigation samples across three engines/four widths: load observations approximately 27–860 ms against a local CI server, with mixed warm-cache behavior. These are lab observations, not production network timings, Core Web Vitals or a measured before/after improvement.
+
+Artifacts expire October 26, 2026:
+
+- [WHC static ZIP and release manifest](https://github.com/GrafovGroup/BearTraps/actions/runs/38292869565/artifacts/11766478792)
+- [Screenshots, accessibility and lab performance evidence](https://github.com/GrafovGroup/BearTraps/actions/runs/38292869565/artifacts/11766463770)
+- [Separate disabled PHP bridge](https://github.com/GrafovGroup/BearTraps/actions/runs/38292869565/artifacts/11766468916)
+
+Inner `beartraps-whc.zip` SHA-256: `35253e3591c0abd3be17f01405f3450697a25ac20e65fa75afad34383702e9aa`. Manifest confirms 0 products, +18336969996 and `email-app` mode. Archive and every listed file were independently hashed after download. Actual Apache redirects/headers, WHC backend execution and live receipt remain post-approval external checks.
 
 ## Release acceptance and external inputs
 
