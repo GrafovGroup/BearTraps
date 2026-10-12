@@ -55,3 +55,12 @@ Before changing code, inspect current branch, open pull requests, commits, `docs
 
 ## Non-negotiable
 This is a commercial procurement site, not a general outdoor blog. Keep product hierarchy focused on professional bear traps first, transportation second, signage/lures third, and bear-resistant furniture/infrastructure alongside related wildlife equipment. Government-grade presentation, truthful claims, Canadian legal compliance and a working lead intake path are mandatory.
+
+## Owner-confirmed production hosting decision (2026-10-12)
+- **WHC.ca is the confirmed production host**, not an optional alternative. Keep the static Next.js export and WHC/cPanel-compatible deployment packaging.
+- **info@beartraps.ca** is the confirmed active sales and RFQ recipient. Do not assume mailbox activity means a working website submission endpoint.
+- Determine and document the exact cPanel document root, PHP availability/version, HTTPS, rewrite support and upload method before any deployment; do not guess the path.
+- Prefer a small secure PHP handler on WHC if the account supports it, otherwise a vetted HTTPS form service. Use server-side credentials and anti-spam/rate limiting; no SMTP credentials in browser code or GitHub.
+- Preserve MX/DNS and existing mail configuration; do not modify them without approval.
+- Prepare reproducible deployment and rollback steps, with backup, zip artifact, HTTPS/route tests, and verified email-delivery smoke tests.
+- Deployment requires explicit owner approval and verified access. If access is unavailable, complete staging/build artifacts and checklist without claiming live deployment.
